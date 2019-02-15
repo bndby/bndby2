@@ -1,5 +1,11 @@
+import Layout from "../components/Layout";
+import Head from 'next/head'
+
 export default () => (
-	<>
+	<Layout>
+		<Head>
+			<title>Deploy A Next.js App on Heroku</title>
+		</Head>
 		<h1>Deploy A Next.js App on Heroku</h1>
 
 		<h2>1. Create a project</h2>
@@ -73,5 +79,5 @@ heroku create my-app
 			<li> X Click “Deploy Branch”</li>
 			<li>XI Click “View”</li>
 		</ol>
-	</>
+	</Layout>
 )

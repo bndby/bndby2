@@ -1,8 +1,0 @@
-.age {
-	color: rgb(0 0 100% / 90%);
-	display: inline-flex;
-  
-	&:hover {
-	  color: rebeccapurple;
-	}
-  }

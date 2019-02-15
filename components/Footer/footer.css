@@ -1,0 +1,9 @@
+/************
+Footer styles
+*************/
+.footer {
+	padding: var(--padding);
+	background-color: #ccc;
+	display: flex;
+	justify-content: space-between;
+}

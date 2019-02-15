@@ -1,14 +1,23 @@
+/**
+ * 
+ */
+import Layout from '../components/Layout'
 import Age from '../components/Age'
+import Head from 'next/head'
 
-const expirienceStyle = {
-	display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gridTemplateAreas: '"n o" "n h"',
-    gridColumnGap: '1rem'
-}
+/**
+ * 
+ */
+import './index.css'
 
+/**
+ * 
+ */
 export default () => (
-	<>
+	<Layout>
+		<Head>
+			<title>Бондаренко Юрий, веб-разработчик</title>
+		</Head>
 		<h1>Бондаренко Юрий, веб-разработчик</h1>
 		<p>Меня зовут Бондаренко Юрий, мне <Age />. Люблю жену и дочь. Занимаюсь созданием сайтов, баз знаний и онлайн-справочников.</p>
 
@@ -20,7 +29,7 @@ export default () => (
 
 		<hr />
 
-		<div style={expirienceStyle}>
+		<div className="exp">
 			<div style={{gridArea: 'n'}}>
 				<h2>Навыки</h2>
 				<ol>
@@ -144,5 +153,5 @@ export default () => (
 		</ul>
 
 		<p></p>
-	</>
+	</Layout>
 )

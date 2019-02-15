@@ -1,5 +1,3 @@
-import './age.css'
-
 const wasBurn = new Date( 1981, 10, 16, 19, 55, 0, 0 )
 const now = new Date
 const age = new Date( Math.abs( now - wasBurn ) )

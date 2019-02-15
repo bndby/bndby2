@@ -1,0 +1,14 @@
+@custom-media --mobile (width <= 480px);
+
+.exp {
+	display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "n o" "n h";
+	grid-column-gap: 1rem;
+	
+	@media (--mobile) {
+		grid-template-areas: "n" "o" "h";
+		grid-template-columns: 1fr;
+		grid-template-rows: repeat(3, auto);
+	}
+}
