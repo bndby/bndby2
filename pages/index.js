@@ -34,7 +34,7 @@ export default () => (
 				<h2>Навыки</h2>
 				<ol>
 					<li>HTML, Markdown;</li>
-					<li>CSS, LESS, SCSS;</li>
+					<li>CSS, LESS, SCSS, Stylus, PostCSS;</li>
 					<li>JavaScript, JQuery;</li>
 					<li>ES6, Node.js, React, Next.js;</li>
 					<li>XML, XSLT, XPath, SVG;</li>
