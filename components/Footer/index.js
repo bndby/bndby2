@@ -14,6 +14,14 @@ const Footer = () => (
 		<div className="footer__nav">
 			<Menu />
 		</div>
+		<style jsx>{`
+			.footer {
+				padding: 0.5rem 1rem;
+				background-color: #ccc;
+				display: flex;
+				justify-content: space-between;
+			}
+		`}</style>
 	</div>
 )
 
