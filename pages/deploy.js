@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import Layout from '../components/Layout'
 import Head from 'next/head'
 
 export default () => (
@@ -11,7 +11,7 @@ export default () => (
 		<h2>1. Create a project</h2>
 		<p>Open your terminal and navigate to the location you would like to save the project then type the following in your terminal.</p>
 		<pre>
-		{`mkdir my-app
+			{`mkdir my-app
 cd my-app
 npm init -y
 npm install --save react react-dom next
@@ -24,7 +24,7 @@ cd ..`}
 
 		<h2>2. Add Code to Index.js</h2>
 		<pre>
-{`const Index = () => (
+			{`const Index = () => (
 <div>
   <p>Hello World!</p>
 </div>
@@ -34,26 +34,25 @@ export default Index`}
 
 		<h2>3. Add Code to .gitignore</h2>
 		<pre>
-{`node_modules/
+			{`node_modules/
 .next/
 *.log`}
 		</pre>
 
 		<h2>4. Modify package.json</h2>
 		<pre>
-{`"scripts": {
+			{`"scripts": {
   "dev": "next",
   "build": "next build",
   "start": "next start -p $PORT",
   "heroku-postbuild": "npm run build",
-  "test": "echo \"Error: no test specified\" && exit 1"
+  "test": "echo \\"Error: no test specified\\" && exit 1"
 },`}
 		</pre>
 
 		<h2>5. Push to Github</h2>
 		<p>Create a new repository in your browser on Github. Then type the following in your root directory.</p>
-		<pre>{`
-git init
+		<pre>{`git init
 git add .
 git commit -m "First Commit"
 git remote add origin https://github.com/{username}/{repositoryname}
@@ -79,5 +78,12 @@ heroku create my-app
 			<li> X Click “Deploy Branch”</li>
 			<li>XI Click “View”</li>
 		</ol>
+		<style global jsx>{`
+			pre {
+				padding: 0.5rem 1rem;
+				background: #eee;
+				border: 1px solid #ddd;
+			}
+		`}</style>
 	</Layout>
 )
