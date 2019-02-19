@@ -1,6 +1,7 @@
 /**
  * 
  */
+import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Header from '../Header'
 import Footer from '../Footer'
@@ -19,12 +20,10 @@ const Layout = ( props ) => (
 		<Head>
 			<title>...Title...</title>
 			<meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      	</Head>
-		<Header />
+		</Head>
 		<div className="layout">
 			{props.children}
 		</div>
-		<Footer />
 	</>
 )
 
@@ -32,3 +31,7 @@ const Layout = ( props ) => (
  * 
  */
 export default Layout
+
+Layout.propTypes = {
+	children: PropTypes.node
+}

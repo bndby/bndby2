@@ -23,11 +23,7 @@ button {
 	font-size: 1rem;
 }
 
-h1, h2 {
-	font-weight: 300;
-}
-
-h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {
 	font-weight: 400;
 }
 
@@ -35,3 +31,17 @@ h3, h4, h5, h6 {
 	padding: 0 30px;
 }
 
+.layout {
+	display: grid;
+	grid-template-areas: "aside main";
+	grid-template-columns: 1fr 2fr;
+	grid-gap: 30px;
+
+	aside {
+		grid-area: aside;
+	}
+
+	main {
+		grid-area: main;
+	}
+}
