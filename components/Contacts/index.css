@@ -1,0 +1,18 @@
+.contacts {
+	margin-top: 2rem;
+	font-size: 0.85rem;
+
+	@media (width <= 480px) {
+		margin-top: 0;
+		display: flex;
+		justify-content: center;
+	}
+
+	& > div {
+		margin-right: 1rem;
+	}
+
+	& > div:last-child {
+		margin-right: 0;
+	}
+}

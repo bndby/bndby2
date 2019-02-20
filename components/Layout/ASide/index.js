@@ -2,27 +2,30 @@
  * 
  */
 import PropTypes from 'prop-types'
+import StickyBox from 'react-sticky-box'
 import Contacts from '../../Contacts'
+
+/**
+ * 
+ */
+import './index.css'
 
 /**
  * 
  */
 const ASide = ( props ) => (
 	<aside>
-		<h1>Бондаренко Юрий</h1>
-		{props.children}
-		<Contacts />
-		<style jsx>{`
-			aside {
-				display: flex;
-				flex-direction: column;
-				align-items: flex-end;
-			}
-			
-			h1 {
-				font-size: 1.5rem;
-			}
-		`}</style>
+		<StickyBox offsetTop={0} offsetBottom={20}>
+			<div className="aside">
+				<h1 className="aside__heading">Бондаренко Юрий</h1>
+				<div className="aside__inner">
+					{props.children}
+				</div>
+				<div className="aside__contacts">
+					<Contacts />
+				</div>
+			</div>
+		</StickyBox>
 	</aside>
 )
 

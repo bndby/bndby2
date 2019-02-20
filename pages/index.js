@@ -1,6 +1,7 @@
 /**
  * 
  */
+import Head from 'next/head'
 import Layout from '../components/Layout'
 import ASide from '../components/Layout/ASide'
 import Main from '../components/Layout/Main'
@@ -10,13 +11,11 @@ import Ancor from '../components/Layout/Ancor'
 /**
  * 
  */
-import './index.css'
-
-/**
- * 
- */
 export default () => (
 	<Layout>
+		<Head>
+			<title>Бондаренко Юрий</title>
+		</Head>
 		<ASide>
 			<Ancor id="skills">Навыки</Ancor>
 			<Ancor id="experience">Опыт работы</Ancor>

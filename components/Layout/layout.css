@@ -6,6 +6,10 @@
 
 html {
 	font-size: 18px;
+
+	@media (width <= 480px) {
+		font-size: 14px;
+	}
 }
 
 body {
@@ -25,17 +29,23 @@ button {
 
 h1, h2, h3, h4, h5, h6 {
 	font-weight: 400;
-}
-
-.layout {
-	padding: 0 30px;
+	margin-top: 0;
+	padding-top: 0.8em;
 }
 
 .layout {
 	display: grid;
 	grid-template-areas: "aside main";
 	grid-template-columns: 1fr 2fr;
-	grid-gap: 30px;
+	grid-gap: 2rem;
+	padding: 0 30px;
+
+	@media (width <= 480px) {
+		grid-template-areas: "aside" "main";
+		grid-template-columns: 1fr;
+		grid-template-rows: auto auto;
+		padding: 0 15px;
+	}
 
 	aside {
 		grid-area: aside;

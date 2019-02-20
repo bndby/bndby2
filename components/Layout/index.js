@@ -3,8 +3,6 @@
  */
 import PropTypes from 'prop-types'
 import Head from 'next/head'
-import Header from '../Header'
-import Footer from '../Footer'
 
 /**
  * 
