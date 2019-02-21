@@ -1,10 +1,13 @@
 /**
  * 
  */
-import React from 'react';
-import Swiper from 'react-id-swiper';
+import React from 'react'
+import Swiper from 'react-id-swiper'
 import Head from 'next/head'
-import Layout from "../components/Layout";
+import Link from 'next/link'
+import Layout from '../components/Layout'
+import ASide from '../components/Layout/ASide'
+import Main from '../components/Layout/Main'
 
 /**
  * 
@@ -26,24 +29,31 @@ class SwiperPage extends React.Component {
 				<Head>
 					<title>Swiper test page</title>
 				</Head>
-
-				<h1>Swiper test page</h1>
-
-				<Swiper {...params}>
-					<div style={{background: 'red'}}>Slide 1</div>
-					<div style={{background: 'green'}}>Slide 2</div>
-					<div>Slide 3</div>
-					<div>Slide 4</div>
-					<div>Slide 5</div>
-					<style jsx>{`
-						div {
-							min-height: 200px;
-							display: flex;
-							align-items: center;
-							justify-content: center;
-						}
-					`}</style>
-				</Swiper>
+				<ASide>
+					<Link href="/">
+						<a>Назад</a>
+					</Link>
+					<h1>Swiper test page</h1>
+				</ASide>
+				<Main>
+					<div style={{width: '100%'}}>
+						<Swiper {...params}>
+							<div style={{background: 'red'}}>Slide 1</div>
+							<div style={{background: 'green'}}>Slide 2</div>
+							<div>Slide 3</div>
+							<div>Slide 4</div>
+							<div>Slide 5</div>
+							<style jsx>{`
+								div {
+									min-height: 200px;
+									display: flex;
+									align-items: center;
+									justify-content: center;
+								}
+							`}</style>
+						</Swiper>
+					</div>
+				</Main>
 			</Layout>
 		)
 	}

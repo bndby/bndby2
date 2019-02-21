@@ -28,8 +28,9 @@ const Layout = ( props ) => (
 /**
  * 
  */
-export default Layout
-
 Layout.propTypes = {
 	children: PropTypes.node
 }
+
+export default Layout
+

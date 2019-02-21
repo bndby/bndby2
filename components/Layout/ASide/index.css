@@ -6,10 +6,10 @@
 	@media (width <= 480px) {
 		align-items: center;
 	}
-}
 
-.aside__heading {
-	font-size: 1.5rem;
+	& h1 {
+		font-size: 1.5rem;
+	}
 }
 
 .aside__inner {
@@ -28,4 +28,8 @@
 
 .aside__contacts {
 
+}
+
+.aside__addong {
+	font-size: 0.85rem;
 }

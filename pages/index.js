@@ -2,6 +2,7 @@
  * 
  */
 import Head from 'next/head'
+import Link from 'next/link'
 import Layout from '../components/Layout'
 import ASide from '../components/Layout/ASide'
 import Main from '../components/Layout/Main'
@@ -17,9 +18,31 @@ export default () => (
 			<title>Бондаренко Юрий</title>
 		</Head>
 		<ASide>
+			<h1>Бондаренко Юрий</h1>
 			<Ancor id="skills">Навыки</Ancor>
 			<Ancor id="experience">Опыт работы</Ancor>
 			<Ancor id="education">Образование</Ancor>
+			<hr />
+			<div className="aside__addon">
+				Тесты:
+				<ul>
+					<li>
+						<Link href="/fancybox">
+							<a>Фотогалерея</a>
+						</Link>
+					</li>
+					<li>
+						<Link href="/swiper">
+							<a>Карусель</a>
+						</Link>
+					</li>
+					<li>
+						<Link href="/yamap">
+							<a>Яндекс карты</a>
+						</Link>
+					</li>
+				</ul>
+			</div>
 		</ASide>
 		<Main>
 			<Section id="skills">
