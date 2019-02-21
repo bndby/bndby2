@@ -8,7 +8,7 @@ import Contacts from '../../Contacts'
 /**
  * 
  */
-import './index.css'
+import './aside.css'
 
 /**
  * 

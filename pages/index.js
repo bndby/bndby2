@@ -19,9 +19,11 @@ export default () => (
 		</Head>
 		<ASide>
 			<h1>Бондаренко Юрий</h1>
-			<Ancor id="skills">Навыки</Ancor>
-			<Ancor id="experience">Опыт работы</Ancor>
-			<Ancor id="education">Образование</Ancor>
+			<div className="aside__nav">
+				<Ancor id="skills">Навыки</Ancor>
+				<Ancor id="experience">Опыт работы</Ancor>
+				<Ancor id="education">Образование</Ancor>
+			</div>
 			<hr />
 			<div className="aside__addon">
 				Тесты:

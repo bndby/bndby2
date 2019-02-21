@@ -21,7 +21,8 @@ class SwiperPage extends React.Component {
 
 	render() {
 		const params = {
-			spaceBetween: 30
+			spaceBetween: 30,
+			slidesPerView: 1
 		}
 
 		return (
@@ -36,23 +37,21 @@ class SwiperPage extends React.Component {
 					<h1>Swiper test page</h1>
 				</ASide>
 				<Main>
-					<div style={{width: '100%'}}>
-						<Swiper {...params}>
-							<div style={{background: 'red'}}>Slide 1</div>
-							<div style={{background: 'green'}}>Slide 2</div>
-							<div>Slide 3</div>
-							<div>Slide 4</div>
-							<div>Slide 5</div>
-							<style jsx>{`
-								div {
-									min-height: 200px;
-									display: flex;
-									align-items: center;
-									justify-content: center;
-								}
-							`}</style>
-						</Swiper>
-					</div>
+					<Swiper {...params}>
+						<div style={{background: 'tomato'}}>Slide 1</div>
+						<div style={{background: 'green'}}>Slide 2</div>
+						<div style={{background: 'silver'}}>Slide 3</div>
+						<div style={{background: 'gold'}}>Slide 4</div>
+						<div style={{background: 'skyblue'}}>Slide 5</div>
+						<style jsx>{`
+							div {
+								min-height: 200px;
+								display: flex;
+								align-items: center;
+								justify-content: center;
+							}
+						`}</style>
+					</Swiper>
 				</Main>
 			</Layout>
 		)

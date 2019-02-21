@@ -15,7 +15,7 @@
 .aside__inner {
 	display: flex;
 	flex-direction: column;
-	align-items: flex-end;
+	align-items: flex-start;
 
 	@media (width <= 480px) {
 		width: 100%;
@@ -26,10 +26,25 @@
 	}
 }
 
-.aside__contacts {
+.aside__nav {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 
+	@media (width <= 480px) {
+		width: 100%;
+		flex-direction: row;
+		justify-content: space-around;
+	}
 }
 
-.aside__addong {
+.aside__contacts {}
+
+.aside__addon {
+	width: 100%;
 	font-size: 0.85rem;
+
+	@media (width <= 480px) {
+		display: none;
+	}
 }

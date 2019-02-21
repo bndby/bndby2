@@ -34,17 +34,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .layout {
+	width: 100%;
 	display: grid;
 	grid-template-areas: "aside main";
 	grid-template-columns: 1fr 2fr;
 	grid-gap: 2rem;
-	padding: 0 30px;
+	padding: 0 2rem;
 
 	@media (width <= 480px) {
 		grid-template-areas: "aside" "main";
 		grid-template-columns: 1fr;
 		grid-template-rows: auto auto;
-		padding: 0 15px;
+		padding: 0 1rem;
 	}
 
 	& aside {
@@ -53,5 +54,10 @@ h1, h2, h3, h4, h5, h6 {
 
 	& main {
 		grid-area: main;
+		max-width: calc(2 * 100vw / 3 - 4rem);
+
+		@media (width <= 480px) {
+			max-width: 100%;
+		}
 	}
 }
