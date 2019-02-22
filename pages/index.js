@@ -43,6 +43,11 @@ export default () => (
 							<a>Яндекс карты</a>
 						</Link>
 					</li>
+					<li>
+						<Link href="/calc">
+							<a>Калькулятор</a>
+						</Link>
+					</li>
 				</ul>
 			</div>
 		</ASide>
