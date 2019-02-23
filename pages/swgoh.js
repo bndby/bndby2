@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Layout from '../components/Layout'
 import ASide from '../components/Layout/ASide'
 import Main from '../components/Layout/Main'
+import { useState, useEffect } from 'react'
 
 /**
  * 
@@ -13,6 +14,16 @@ import Main from '../components/Layout/Main'
 const Swgoh = ( props ) => {
 
 	const me = '644892133'
+
+	const [data, setData] = useState( {} )
+
+	useEffect( () => {
+		const proxyurl = 'https://cors-anywhere.herokuapp.com/'
+		fetch( `${proxyurl}https://swgoh.gg/api/player/${ me }/`).then( response => ( response.json() ) ).then( data => {
+			setData( data.data )
+		})
+
+	}, [ data ] )
 
 	return (
 		<Layout>
@@ -26,22 +37,13 @@ const Swgoh = ( props ) => {
 				<h1>SWGOH 644-892-133</h1>
 			</ASide>
 			<Main>
-				<ul>
-					<li>Player name: {props.data.name}</li>
-					<li>Power: {props.data.galactic_power}</li>
-					<li>Guild name: {props.data.guild_name}</li> 
-				</ul>
+				{data.name}
 			</Main>
 		</Layout>
 	)
 }
 
-Swgoh.getInitialProps = async function() {
-	const res = await fetch('https://swgoh.gg/api/player/644892133/')
-	const data = await res.json()
-	return {
-	  data: data.data
-	}
-}
-
+/**
+ * 
+ */
 export default Swgoh

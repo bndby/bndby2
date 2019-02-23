@@ -6,9 +6,13 @@ const port = process.env.PORT || 3000
 const app = next({ dev })
 const handle = app.getRequestHandler()
 
+const cors = require( 'cors' )
+
 app.prepare()
 	.then( () => {
 		const server = express()
+
+		server.use( cors() )
 
 		server.get( '*', ( req, res ) => {
 			return handle(req, res)
