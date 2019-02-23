@@ -6,7 +6,6 @@ import Link from 'next/link'
 import Layout from '../components/Layout'
 import ASide from '../components/Layout/ASide'
 import Main from '../components/Layout/Main'
-import Player from '../components/Swgoh/Player'
 
 /**
  * 
@@ -30,7 +29,7 @@ const Swgoh = ( props ) => {
 				<ul>
 					<li>Player name: {props.data.name}</li>
 					<li>Power: {props.data.galactic_power}</li>
-					<li>Guild name: {props.data.guild_name}</li>
+					<li>Guild name: {props.data.guild_name}</li> 
 				</ul>
 			</Main>
 		</Layout>
