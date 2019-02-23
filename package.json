@@ -4,9 +4,9 @@
   "description": "bnd.by site, nextjs version",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start -p $PORT",
+    "start": "NODE_ENV=production node server.js",
     "heroku-postbuild": "npm run build",
     "export": "next export"
   },
@@ -14,6 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
+    "express": "^4.16.4",
+    "isomorphic-unfetch": "^3.0.0",
     "next": "^8.0.1",
     "next-images": "^1.0.4",
     "prop-types": "^15.7.2",
