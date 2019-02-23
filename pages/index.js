@@ -48,6 +48,11 @@ export default () => (
 							<a>Калькулятор</a>
 						</Link>
 					</li>
+					<li>
+						<Link href="/swgoh">
+							<a>SWGOH API</a>
+						</Link>
+					</li>
 				</ul>
 			</div>
 		</ASide>
