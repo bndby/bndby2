@@ -18,7 +18,7 @@ export default () => {
 	const [ex, setEx] = useState( 1 )
 
 	useEffect( () => {
-		fetch( 'http://www.nbrb.by/API/ExRates/Rates/145' )
+		fetch( 'https://www.nbrb.by/API/ExRates/Rates/145' )
 			.then( ( data ) => data.json() )
 			.then( ( data ) => {
 				setEx( data.Cur_OfficialRate )
