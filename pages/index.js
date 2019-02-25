@@ -8,17 +8,18 @@ import ASide from '../components/Layout/ASide'
 import Main from '../components/Layout/Main'
 import Section from '../components/Layout/Section'
 import Ancor from '../components/Layout/Ancor'
+import { withNamespaces } from '../i18n'
 
 /**
  * 
  */
-export default () => (
+const Index = () => (
 	<Layout>
 		<Head>
 			<title>Бондаренко Юрий</title>
 		</Head>
 		<ASide>
-			<h1>Бондаренко Юрий</h1>
+			<h1>{this.props.t( 'name' )}</h1>
 			<div className="aside__nav">
 				<Ancor id="skills">Навыки</Ancor>
 				<Ancor id="experience">Опыт работы</Ancor>
@@ -162,3 +163,5 @@ export default () => (
 		</Main>
 	</Layout>
 )
+
+export default withNamespaces( 'common' )( Index )
