@@ -1,4 +1,4 @@
-import NextI18Next from 'next-i18next'
+const NextI18Next = require( 'next-i18next' ).default
 
 const NextI18NextInstance = new NextI18Next({
 	defaultLanguage: 'en',
@@ -6,10 +6,4 @@ const NextI18NextInstance = new NextI18Next({
 	localeSubpaths: true
 })
 
-export default NextI18NextInstance
-
-/* Optionally, export class methods as named exports */
-export const {
-	appWithTranslation,
-	withNamespaces,
-} = NextI18NextInstance
+module.exports = NextI18NextInstance
