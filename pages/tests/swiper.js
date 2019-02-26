@@ -5,9 +5,9 @@ import React from 'react'
 import Swiper from 'react-id-swiper'
 import Head from 'next/head'
 import Link from 'next/link'
-import Layout from '../components/Layout'
-import ASide from '../components/Layout/ASide'
-import Main from '../components/Layout/Main'
+import Layout from '../../components/Layout'
+import ASide from '../../components/Layout/ASide'
+import Main from '../../components/Layout/Main'
 
 /**
  * 

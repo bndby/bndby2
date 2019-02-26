@@ -1,0 +1,102 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+    font-size: 20px;
+
+    @media (width <= 1600px) {
+        font-size: 18px;
+    }
+    
+    @media (width <= 1200px) {
+        font-size: 17px;
+    }
+
+    @media (width <= 960px) {
+        font-size: 16px;
+    }
+
+    @media (width <= 640px) {
+        font-size: 15px;
+    }
+
+	@media (width <= 480px) {
+		font-size: 14px;
+	}
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-size: 1rem;
+	line-height: 1.55;
+	color: #111;
+	background-color: #fff;
+}
+
+button {
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-size: 1rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 400;
+	margin-top: 0;
+	padding-top: 0.8rem;
+}
+
+h1 {
+    margin-top: 5rem;
+    font-size: 4rem;
+    font-weight: 300;
+}
+
+h2 {
+    margin-top: 3rem;
+    font-size: 2.5rem;
+    font-weight: 300;
+}
+
+h3 {
+    margin-top: 2rem;
+    font-size: 1.6rem;
+}
+
+.layout {
+    display: grid;
+    grid-template-areas: 'logo content navigation';
+    grid-template-columns: 1fr 2.5fr 1fr;
+    grid-template-rows: auto;
+    grid-gap: 4rem;
+    padding: 20px;
+
+    @media (width <= 640px) {
+        grid-template-areas: 'logo' 'navigation' 'content';
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        grid-gap: 1rem;
+        padding: 10px;
+    }
+}
+
+.layout__logo {
+    grid-area: logo;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.layout__content {
+    grid-area: content;
+}
+
+.layout__navigation {
+    grid-area: navigation;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

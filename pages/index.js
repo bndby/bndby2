@@ -4,12 +4,8 @@
 import React from 'react'
 import Head from 'next/head'
 import Layout from '../components/Layout'
-import ASide from '../components/Layout/ASide'
-import Main from '../components/Layout/Main'
-import Section from '../components/Layout/Section'
-import Ancor from '../components/Layout/Ancor'
 import { i18n, Link, withNamespaces } from '../i18n'
-import LanguageSelector from '../components/Layout/LanguageSelector'
+import LanguageSelector from '../components/LanguageSelector'
 
 /**
  * 
@@ -23,55 +19,18 @@ class Index extends React.Component {
 	}
 
 	render() {
+		const { t } = this.props
 
 		return (
 			<Layout>
 				<Head>
-					<title>{this.props.t( 'name' )}</title>
+					<title>{t( 'name' )}</title>
 				</Head>
-				<ASide>
-					<h1>{this.props.t( 'name' )}</h1>
-					<LanguageSelector />
-					<div className="aside__nav">
-						<Ancor id="skills">{this.props.t( 'skills' )}</Ancor>
-						<Ancor id="experience">{this.props.t( 'experience' )}</Ancor>
-						<Ancor id="education">{this.props.t( 'education' )}</Ancor>
-					</div>
-					<hr />
-					<div className="aside__addon">
-					Тесты:
-						<ul>
-							<li>
-								<Link href="/fancybox">
-									<a>Фотогалерея</a>
-								</Link>
-							</li>
-							<li>
-								<Link href="/swiper">
-									<a>Карусель</a>
-								</Link>
-							</li>
-							<li>
-								<Link href="/yamap">
-									<a>Яндекс карты</a>
-								</Link>
-							</li>
-							<li>
-								<Link href="/calc">
-									<a>Калькулятор</a>
-								</Link>
-							</li>
-							<li>
-								<Link href="/swgoh">
-									<a>SWGOH API</a>
-								</Link>
-							</li>
-						</ul>
-					</div>
-				</ASide>
-				<Main>
-					<Section id="skills">
-						<h2>{this.props.t( 'skills' )}</h2>
+
+					<h1>{t( 'cv' )}</h1>
+
+					<section id="skills">
+						<h2>{t( 'skills' )}</h2>
 						<ol>
 							<li>HTML, Markdown;</li>
 							<li>CSS, LESS, SCSS, Stylus, PostCSS;</li>
@@ -85,10 +44,10 @@ class Index extends React.Component {
 							<li>Gulp, Webpack, Git</li>
 							<li>Linux, Windows</li>
 						</ol>
-					</Section>
+					</section>
 
-					<Section id="experience">
-						<h2>{this.props.t( 'experience' )}</h2>
+					<section id="experience">
+						<h2>{t( 'experience' )}</h2>
 
 						<h3>BN Studio</h3>
 						<p>апрель 2017 — настоящее время</p>
@@ -162,17 +121,17 @@ class Index extends React.Component {
 							<li><a href="https://www.artlebedev.ru/everything/spb/site2/">Сайт города Санкт-Петербурга</a>;</li>
 							<li><a href="https://www.artlebedev.ru/everything/hp/site4/">Hewlett-Packard</a>.</li>
 						</ol>
-					</Section>
+					</section>
 
-					<Section id="education">
-						<h2>{this.props.t( 'education' )}</h2>
+					<section id="education">
+						<h2>{t( 'education' )}</h2>
 						<p>
 							<b>ВГУ им. Машерова</b>, 1999 — 2004<br />
 							Высшее, техническое.<br />
 							Специальности: математик-программист, преподаватель математики и информатики.
 						</p>
-					</Section>
-				</Main>
+					</section>
+
 			</Layout>
 		)
 	}
