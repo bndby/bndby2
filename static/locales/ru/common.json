@@ -1,3 +1,7 @@
 {
-    "name": "Бондаренко Юрий"
+    "name": "Бондаренко Юрий",
+    "language-selector": "EN",
+    "skills": "Навыки",
+    "experience": "Опыт работы",
+    "education": "Образование"
 }

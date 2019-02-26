@@ -9,6 +9,7 @@ import Main from '../components/Layout/Main'
 import Section from '../components/Layout/Section'
 import Ancor from '../components/Layout/Ancor'
 import { i18n, Link, withNamespaces } from '../i18n'
+import LanguageSelector from '../components/Layout/LanguageSelector'
 
 /**
  * 
@@ -17,22 +18,24 @@ class Index extends React.Component {
 
 	static async getInitialProps() {
 		return {
-			namespacesRequired: ['common'],
+			namespacesRequired: ['common']
 		}
 	}
 
 	render() {
+
 		return (
 			<Layout>
 				<Head>
-					<title>Бондаренко Юрий</title>
+					<title>{this.props.t( 'name' )}</title>
 				</Head>
 				<ASide>
 					<h1>{this.props.t( 'name' )}</h1>
+					<LanguageSelector />
 					<div className="aside__nav">
-						<Ancor id="skills">Навыки</Ancor>
-						<Ancor id="experience">Опыт работы</Ancor>
-						<Ancor id="education">Образование</Ancor>
+						<Ancor id="skills">{this.props.t( 'skills' )}</Ancor>
+						<Ancor id="experience">{this.props.t( 'experience' )}</Ancor>
+						<Ancor id="education">{this.props.t( 'education' )}</Ancor>
 					</div>
 					<hr />
 					<div className="aside__addon">
@@ -68,7 +71,7 @@ class Index extends React.Component {
 				</ASide>
 				<Main>
 					<Section id="skills">
-						<h2>Навыки</h2>
+						<h2>{this.props.t( 'skills' )}</h2>
 						<ol>
 							<li>HTML, Markdown;</li>
 							<li>CSS, LESS, SCSS, Stylus, PostCSS;</li>
@@ -85,7 +88,7 @@ class Index extends React.Component {
 					</Section>
 
 					<Section id="experience">
-						<h2>Опыт работы</h2>
+						<h2>{this.props.t( 'experience' )}</h2>
 
 						<h3>BN Studio</h3>
 						<p>апрель 2017 — настоящее время</p>
@@ -162,11 +165,11 @@ class Index extends React.Component {
 					</Section>
 
 					<Section id="education">
-						<h2>Образование</h2>
+						<h2>{this.props.t( 'education' )}</h2>
 						<p>
 							<b>ВГУ им. Машерова</b>, 1999 — 2004<br />
-						Высшее, техническое.<br />
-						Специальности: математик-программист, преподаватель математики и информатики.
+							Высшее, техническое.<br />
+							Специальности: математик-программист, преподаватель математики и информатики.
 						</p>
 					</Section>
 				</Main>
