@@ -19,11 +19,11 @@ const Layout = ( props ) => (
 			<Logo />
 			<LanguageSelector />
 		</div>
-		<div className="layout__content">
-			{props.children}
-		</div>
 		<div className="layout__navigation">
 			<Navigation />
+		</div>
+		<div className="layout__content">
+			{props.children}
 		</div>
 	</div>
 )

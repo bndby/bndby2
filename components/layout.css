@@ -77,6 +77,27 @@ dd {
     margin-bottom: 0.5rem;
 }
 
+a,
+a:link,
+.link {
+    color: #037;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: color( #037 saturation(-50%) );
+}
+
+a:hover,
+.link:hover {
+    cursor: pointer;
+    color: color( #037 tint(30%) );
+}
+
+a:active {
+    color: color( #037 saturation(50%) );
+}
+
 .layout {
     display: grid;
     grid-template-areas: 'logo content navigation';
