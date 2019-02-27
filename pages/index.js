@@ -47,9 +47,11 @@ class Index extends React.Component {
 					</section>
 
 					<section id="experience">
+
 						<h2>{t( 'experience' )}</h2>
 
 						<h3>BN Studio</h3>
+
 						{ i18n.language === 'ru' && <p>апрель 2017 — настоящее время</p> }
 						{ i18n.language === 'en' && <p>april 2017 — now</p> }
 
@@ -83,30 +85,67 @@ class Index extends React.Component {
 							</dd>
 						</dl>
 
-						<h3>Рекламное агентство «Клён»</h3>
-						<p>ноябрь 2009 — 2016</p>
+						<h3>
+							{ i18n.language === 'ru' && 'Рекламное агентство «Клён»' }
+							{ i18n.language === 'en' && 'Advertising agency "Klen"' }
+						</h3>
 
-						<p>Работал над созданием, развитием и поддержкой сайтов агентства. В свободное время писал сайты для клиентов агентства или удаленно занимался фрилансом. Для рекламного агентства создал и поддерживал сайты:</p>
+						{ i18n.language === 'ru' && <p>ноябрь 2009 — 2016</p> }
+						{ i18n.language === 'en' && <p>november 2009 — 2016</p> }
 
-						<ol>
-							<li><a href="http://klen.by/">Рекламное агентство «Клён»</a>, <time>июль 2015 года</time><br />Корпоративный сайт: Symphony CMS, XSLT</li>
-							<li><a href="http://skinali.by/">Каталог скиналей</a>, <time>сентябрь 2015 года</time><br />Фотокаталог: Symphony CMS, XSLT</li>
-						</ol>
+						{ i18n.language === 'ru' && <p>Работал над созданием, развитием и поддержкой сайтов агентства. В свободное время писал сайты для клиентов агентства или удаленно занимался фрилансом. Для рекламного агентства создал и поддерживал сайты:</p> }
+						{ i18n.language === 'en' && <p>I worked on the creation, development and support of agency sites. In my free time I wrote websites for clients of an agency or remotely freelancing. For an advertising agency created and maintained sites:</p> }
+
+						<dl>
+							<dt>
+								<a href="http://klen.by/">Рекламное агентство «Клён»</a>
+							</dt>
+							<dd>
+								<time>июль 2015 года</time>
+								<br />
+								Symphony CMS, XSLT
+							</dd>
+							<dt>
+								<a href="http://skinali.by/">Каталог скиналей</a>
+							</dt>
+							<dd>
+								<time>сентябрь 2015 года</time>
+								<br />
+								Symphony CMS, XSLT
+							</dd>
+						</dl>
 
 						<p>Фриланс-работы:</p>
 
-						<ol>
-							<li><a href="https://fitness.edu.au/">Australian Institute of Fitness</a>, <br />Образовательное учреждение: Symphony CMS, XSLT, UIKit</li>
-							<li><a href="http://ratur.by/">Буровая компания</a>, <br />Корпоративный сайт: Wordpress</li>
-							<li><a href="http://teplo-vitebsk.by/">Магазин отопительного оборудования</a>, <br />Интернет-магазин: Wordpress, WooCommerce</li>
-						</ol>
+						<dl>
+							<dt>
+								<a href="https://fitness.edu.au/">Australian Institute of Fitness</a>
+							</dt>
+							<dd>
+								Symphony CMS, XSLT, UIKit
+							</dd>
+							<dt>
+								<a href="http://ratur.by/">Буровая компания</a>
+							</dt>
+							<dd>
+								Wordpress
+							</dd>
+							<dt>
+								<a href="http://teplo-vitebsk.by/">Магазин отопительного оборудования</a>
+							</dt>
+							<dd>
+								Wordpress, WooCommerce
+							</dd>
+						</dl>
 
 						<h3>Creative People</h3>
-						<p>сентябрь 2011 — ноябрь 2012, ноябрь 2015 — май 2017</p>
+
+						{ i18n.language === 'ru' && <p>сентябрь 2011 — ноябрь 2012, ноябрь 2015 — май 2017</p> }
+						{ i18n.language === 'en' && <p>september 2011 — november 2012, november 2015 — may 2017</p> }
 
 						<p>Работал удаленно технологом в отделе поддержки. Занимался сопровождением сайтов клиентов:</p>
 
-						<ol>
+						<ul>
 							<li><a href="http://polyusgold.com/ru/">Полюс</a> — контент-менеджмент, Bitrix;</li>
 							<li><a href="http://stada.ru/">Штада</a> — контент-менеджмент, Bitrix;</li>
 							<li>Природа Amway — контент-менеджмент, Bitrix;</li>
@@ -115,28 +154,28 @@ class Index extends React.Component {
 							<li><a href="http://carpethouse.ru/">Carpet House</a> — поддержка сайта;</li>
 							<li>Водка Saimaa — поддержка сайта;</li>
 							<li>Braer — поддержка и доработка сайта.</li>
-						</ol>
+						</ul>
 
 						<p>Версткой шаблонов:</p>
 
-						<ol>
+						<ul>
 							<li><a href="http://www.at-consulting.ru/">AT Consulting</a> — верстка шаблонов;</li>
 							<li>DSMU — верстка шаблонов.</li>
-						</ol>
+						</ul>
 
 						<p>Кроме этого собрал два сайта на Symphony CMS:</p>
 
-						<ol>
+						<ul>
 							<li><a href="http://jenialubich.com/">Сайт певицы Жени Любич</a> — сборка сайта, Symphony CMS;</li>
 							<li>Ингруп СтС — сборка сайта, Symphony CMS.</li>
-						</ol>
+						</ul>
 
 						<h3>Студия Артемия Лебедева</h3>
 						<p>ноябрь 2006 — ноябрь 2009</p>
 
 						<p>Работал кодером в отделе поддержки. Занимался сопровождением сайтов клиентов на системах <a href="https://imprimatur.artlebedev.ru/">Imprimatur и Imprimatur II</a>:</p>
 
-						<ol>
+						<ul>
 							<li><a href="https://www.artlebedev.ru/everything/vbank/site2/">Банк Возрождение</a>;</li>
 							<li><a href="https://www.artlebedev.ru/everything/gazprom/gazfond-site2/">НПФ «Газфонд»</a>;</li>
 							<li><a href="https://www.artlebedev.ru/everything/caravan/">Караван</a>;</li>
@@ -145,16 +184,20 @@ class Index extends React.Component {
 							<li><a href="https://www.artlebedev.ru/everything/nomos/site/">Номос-банк</a>;</li>
 							<li><a href="https://www.artlebedev.ru/everything/spb/site2/">Сайт города Санкт-Петербурга</a>;</li>
 							<li><a href="https://www.artlebedev.ru/everything/hp/site4/">Hewlett-Packard</a>.</li>
-						</ol>
+						</ul>
 					</section>
 
 					<section id="education">
 						<h2>{t( 'education' )}</h2>
-						<p>
-							<b>ВГУ им. Машерова</b>, 1999 — 2004<br />
-							Высшее, техническое.<br />
-							Специальности: математик-программист, преподаватель математики и информатики.
-						</p>
+						<dl>
+							<dt>
+								<b>ВГУ им. Машерова</b>, 1999 — 2004
+							</dt>
+							<dd>
+								Высшее, техническое.<br />
+								Специальности: математик-программист, преподаватель математики и информатики.
+							</dd>
+						</dl>
 					</section>
 
 			</Layout>
