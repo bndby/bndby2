@@ -8,13 +8,18 @@ import React from 'react'
  * 
  */
 class LanguageSelector extends React.Component {
+	static async getInitialProps() {
+		return {
+			namespacesRequired: ['common']
+		}
+	}
 
 	render(){
 
 		return (
 			<div className="languageselector">
 				<button style={{
-					fontWeight: i18n.language === 'en' ? 'bold' : 'normal'
+					fontWeight: i18n.language !== 'ru' ? 'bold' : 'normal'
 				}} onClick={() => i18n.changeLanguage( 'en' )}>
 					Eng
 				</button>
@@ -26,6 +31,7 @@ class LanguageSelector extends React.Component {
 				<style jsx>{`
 					.languageselector {
 						display: flex;
+						margin-top: 1rem;
 					}
 
 					button {
@@ -36,10 +42,12 @@ class LanguageSelector extends React.Component {
 						padding: 0;
 						margin-right: 1rem;
 						cursor: pointer;
+						font-weight: bold;
 					}
 
 					button:last-child {
 						margin-right: 0;
+						font-weight: normal;
 					}
 				`}</style>
 			</div>

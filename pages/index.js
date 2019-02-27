@@ -24,7 +24,7 @@ class Index extends React.Component {
 		return (
 			<Layout>
 				<Head>
-					<title>{t( 'name' )}</title>
+					<title>{t( 'name' )} ({i18n.language})</title>
 				</Head>
 
 					<h1>{t( 'cv' )}</h1>
@@ -50,13 +50,38 @@ class Index extends React.Component {
 						<h2>{t( 'experience' )}</h2>
 
 						<h3>BN Studio</h3>
-						<p>апрель 2017 — настоящее время</p>
+						{ i18n.language === 'ru' && <p>апрель 2017 — настоящее время</p> }
+						{ i18n.language === 'en' && <p>april 2017 — now</p> }
 
-						<ol>
-							<li><a href="https://bnweb.studio">BN Studio</a>, <time>август 2018 года</time><br />Статичный HTML сайт: HTML, LESS, JS, Gulp, Cloudflare</li>
-							<li><a href="https://skirollers.ru/">Ski Rollers</a>, <time>июнь 2018 года</time><br />Простой сайт-визитка: Wordpress, LESS</li>
-							<li><a href="https://ahec-tax.co.il/" dir="rtl">ארצי, חיבה, אלמקייס, כהן — פתרונות מיסוי</a>, <time>октябрь 2017 года</time><br />Редизайн мультиязычного корпоративного сайта: Wordpress, LESS</li>
-						</ol>
+						<dl>
+							<dt>
+								<a href="https://bnweb.studio">BN Studio</a>
+							</dt>
+							<dd>
+								{ i18n.language === 'ru' && <time> август 2018 года</time> }
+								{ i18n.language === 'en' && <time> august 2018</time> }
+								<br />
+								HTML, LESS, JS, Gulp, Cloudflare
+							</dd>
+							<dt>
+								<a href="https://skirollers.ru/">Ski Rollers</a>
+							</dt>
+							<dd>
+								{ i18n.language === 'ru' && <time> июнь 2018 года</time> }
+								{ i18n.language === 'en' && <time> june 2018</time> }
+								<br />
+								Wordpress, HTML, LESS, JS
+							</dd>
+							<dt>
+								<a href="https://ahec-tax.co.il/" dir="rtl" lang="he">ארצי, חיבה, אלמקייס, כהן — פתרונות מיסוי</a>
+							</dt>
+							<dd>
+								{ i18n.language === 'ru' && <time> октябрь 2017 года</time> }
+								{ i18n.language === 'en' && <time> october 2017</time> }
+								<br />
+								Wordpress, HTML, LESS, JS, PHP
+							</dd>
+						</dl>
 
 						<h3>Рекламное агентство «Клён»</h3>
 						<p>ноябрь 2009 — 2016</p>

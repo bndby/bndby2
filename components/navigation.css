@@ -1,0 +1,42 @@
+.navigation {
+
+	& > ul {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+
+	& li {
+		margin-bottom: 0.5rem;
+	}
+}
+
+.navigation__email,
+.navigation__github,
+.navigation__telegram {
+	position: relative;
+	padding-left: 2rem;
+	line-height: 1;
+
+}
+
+.navigation__email::before,
+.navigation__github::before,
+.navigation__telegram::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 1.5rem;
+	height: 1.5rem;
+	background: url('/static/images/email.svg') center center no-repeat;
+	background-size: 95%;
+}
+
+.navigation__github::before {
+	background-image: url('/static/images/github.svg');
+}
+
+.navigation__telegram::before {
+	background-image: url('/static/images/telegram.svg');
+}

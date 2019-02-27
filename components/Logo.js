@@ -4,6 +4,8 @@
 import React from 'react'
 import { i18n, Link, withNamespaces } from '../i18n'
 
+import './logo.css'
+
 /**
  * 
  */
@@ -21,7 +23,7 @@ class Logo extends React.Component {
 			<div className="logo">
 				<Link href="/">
 					<a>
-						<img src="/static/images/logo.svg" alt={ t( 'name' ) } />
+						<img className="logo__image" src="/static/images/logo.svg" alt={ t( 'name' ) } />
 					</a>
 				</Link>
 			</div>
