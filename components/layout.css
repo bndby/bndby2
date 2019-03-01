@@ -73,6 +73,12 @@ h2 + h3 {
     margin-top: 0;
 }
 
+h3 + h4 {
+    margin-top: -1.5rem;
+    font-style: italic;
+    font-size: 0.85rem;
+}
+
 dd {
     margin-bottom: 0.5rem;
 }
@@ -98,10 +104,16 @@ a:active {
     color: color( #037 saturation(50%) );
 }
 
+time {
+    font-style: italic;
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
 .layout {
     display: grid;
     grid-template-areas: 'logo content navigation';
-    grid-template-columns: 1fr 2.5fr 1fr;
+    grid-template-columns: 0.75fr 2.75fr 1fr;
     grid-template-rows: auto;
     grid-gap: 4rem;
     padding: 20px;

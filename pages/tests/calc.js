@@ -2,10 +2,7 @@
  * 
  */
 import Head from 'next/head'
-import Link from 'next/link'
 import Layout from '../../components/Layout'
-import ASide from '../../components/Layout/ASide'
-import Main from '../../components/Layout/Main'
 import { useState, useEffect } from 'react'
 
 /**
@@ -57,32 +54,26 @@ export default () => {
 			<Head>
 				<title>Калькулятор</title>
 			</Head>
-			<ASide>
-				<Link href="/">
-					<a>Назад</a>
-				</Link>
-				<h1>Калькулятор</h1>
-			</ASide>
-			<Main>
-				<div>
-					<p>Курс: 1 USD = { exUSD } BYN<br />
+
+			<div>
+				<p>Курс: 1 USD = { exUSD } BYN<br />
 					Курс: 1 EUR = { exEUR } BYN</p>
-					<p>
+				<p>
 						BYN: <input type="text" value={ Math.round( byn * 100 ) / 100 } onChange={ changeBYN } />
-					</p>
-					<p>
+				</p>
+				<p>
 						USD: <input type="text" value={ Math.round( usd * 100 ) / 100 } onChange={ changeUSD } />
-					</p>
-					<p>
+				</p>
+				<p>
 						EUR: <input type="text" value={ Math.round( eur * 100 ) / 100 } onChange={ changeEUR } />
-					</p>
-					<style jsx>{`
-						input {
-							font-size: 1rem;
-						}
-					`}</style>
-				</div>
-			</Main>
+				</p>
+				<style jsx>{`
+					input {
+						font-size: 1rem;
+					}
+				`}</style>
+			</div>
+
 		</Layout>
 	)
 } 

@@ -52,8 +52,8 @@ class Index extends React.Component {
 
 						<h3>BN Studio</h3>
 
-						{ i18n.language === 'ru' && <p>апрель 2017 — настоящее время</p> }
-						{ i18n.language === 'en' && <p>april 2017 — now</p> }
+						{ i18n.language === 'ru' && <h4>апрель 2017 — настоящее время</h4> }
+						{ i18n.language === 'en' && <h4>april 2017 — now</h4> }
 
 						<dl>
 							<dt>
@@ -90,8 +90,8 @@ class Index extends React.Component {
 							{ i18n.language === 'en' && 'Advertising agency "Klen"' }
 						</h3>
 
-						{ i18n.language === 'ru' && <p>ноябрь 2009 — 2016</p> }
-						{ i18n.language === 'en' && <p>november 2009 — 2016</p> }
+						{ i18n.language === 'ru' && <h4>ноябрь 2009 — 2016</h4> }
+						{ i18n.language === 'en' && <h4>november 2009 — 2016</h4> }
 
 						{ i18n.language === 'ru' && <p>Работал над созданием, развитием и поддержкой сайтов агентства. В свободное время писал сайты для клиентов агентства или удаленно занимался фрилансом. Для рекламного агентства создал и поддерживал сайты:</p> }
 						{ i18n.language === 'en' && <p>I worked on the creation, development and support of agency sites. In my free time I wrote websites for clients of an agency or remotely freelancing. For an advertising agency created and maintained sites:</p> }
@@ -160,38 +160,46 @@ class Index extends React.Component {
 
 						<h3>Creative People</h3>
 
-						{ i18n.language === 'ru' && <p>сентябрь 2011 — ноябрь 2012, ноябрь 2015 — май 2017</p> }
-						{ i18n.language === 'en' && <p>september 2011 — november 2012, november 2015 — may 2017</p> }
+						{ i18n.language === 'ru' && <h4>сентябрь 2011 — ноябрь 2012,<br />ноябрь 2015 — май 2017</h4> }
+						{ i18n.language === 'en' && <h4>september 2011 — november 2012,<br />november 2015 — may 2017</h4> }
 
-						<p>Работал удаленно технологом в отделе поддержки. Занимался сопровождением сайтов клиентов:</p>
+						<p>
+							{ i18n.language === 'ru' && 'Работал удаленно технологом в отделе поддержки. Занимался сопровождением сайтов клиентов:' }
+							{ i18n.language === 'en' && 'Worked remotely as a technologist in the support department. Engaged in the maintenance of customer sites:' }
+						</p>
 
-						<dl>
-							<dt><a href="http://polyusgold.com/ru/">Полюс</a></dt>
-							<dd>контент-менеджмент, Bitrix;</dd>
-							<dt><a href="http://stada.ru/">Штада</a></dt>
-							<dd>контент-менеджмент, Bitrix;</dd>
-							<dt>Природа Amway</dt>
-							<dd>контент-менеджмент, Bitrix;</dd>
-							<dt>Фитнес клубы «Физика»</dt>
-							<dd>поддержка и доработка сайта, «Коробочка»;</dd>
-							<dt>Merz</dt>
-							<dd>поддержка и доработка сайта;</dd>
-							<dt><a href="http://carpethouse.ru/">Carpet House</a></dt>
-							<dd>поддержка сайта;</dd>
-							<dt>Водка Saimaa</dt>
-							<dd>поддержка сайта;</dd>
-							<dt>Braer</dt>
-							<dd>поддержка и доработка сайта.</dd>
-						</dl>
+						<ul>
+							<li><a href="http://polyusgold.com/ru/">
+								{ i18n.language === 'ru' && 'Полюс' }
+								{ i18n.language === 'en' && 'Polyus' }
+							</a></li>
+							<li><a href="http://stada.ru/">
+								{ i18n.language === 'ru' && 'Штада' }
+								{ i18n.language === 'en' && 'Stada' }
+							</a></li>
+							<li>
+								{ i18n.language === 'ru' && 'Природа Amway' }
+								{ i18n.language === 'en' && 'Amway' }
+							</li>
+							<li>
+								{ i18n.language === 'ru' && 'Фитнес клубы «Физика»' }
+								{ i18n.language === 'en' && 'Fitness club "Fizika"' }
+							</li>
+							<li>Merz</li>
+							<li><a href="http://carpethouse.ru/">Carpet House</a></li>
+							<li>Saimaa</li>
+							<li>Braer</li>
+						</ul>
 
-						<p>Версткой шаблонов:</p>
+						<p>
+							{ i18n.language === 'ru' && 'Версткой шаблонов:' }
+							{ i18n.language === 'en' && 'Frontend:' }
+						</p>
 
-						<dl>
-							<dt><a href="http://www.at-consulting.ru/">AT Consulting</a></dt>
-							<dd>верстка шаблонов;</dd>
-							<dt>DSMU</dt>
-							<dd>верстка шаблонов.</dd>
-						</dl>
+						<ul>
+							<li><a href="http://www.at-consulting.ru/">AT Consulting</a></li>
+							<li>DSMU</li>
+						</ul>
 
 						<p>Кроме этого собрал два сайта на Symphony CMS:</p>
 
@@ -203,7 +211,7 @@ class Index extends React.Component {
 						</dl>
 
 						<h3>Студия Артемия Лебедева</h3>
-						<p>ноябрь 2006 — ноябрь 2009</p>
+						<h4>ноябрь 2006 — ноябрь 2009</h4>
 
 						<p>Работал кодером в отделе поддержки. Занимался сопровождением сайтов клиентов на системах <a href="https://imprimatur.artlebedev.ru/">Imprimatur и Imprimatur II</a>:</p>
 

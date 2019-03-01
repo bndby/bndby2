@@ -2,16 +2,13 @@
  * 
  */
 import Head from 'next/head'
-import Link from 'next/link'
 import Layout from '../../components/Layout'
-import ASide from '../../components/Layout/ASide'
-import Main from '../../components/Layout/Main'
 import { useState, useEffect } from 'react'
 
 /**
  * 
  */
-const Swgoh = ( props ) => {
+const Swgoh = () => {
 
 	const me = '644892133'
 
@@ -30,15 +27,9 @@ const Swgoh = ( props ) => {
 			<Head>
 				<title>SWGOH</title>
 			</Head>
-			<ASide>
-				<Link href="/">
-					<a>Назад</a>
-				</Link>
-				<h1>SWGOH 644-892-133</h1>
-			</ASide>
-			<Main>
-				{data.name}
-			</Main>
+
+			{data.name}
+
 		</Layout>
 	)
 }

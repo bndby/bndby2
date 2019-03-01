@@ -2,10 +2,10 @@
  * 
  */
 import Head from 'next/head'
-import Link from 'next/link'
 import Layout from '../../components/Layout'
-import ASide from '../../components/Layout/ASide'
-import Main from '../../components/Layout/Main'
+import Highlight from 'react-highlight'
+
+import 'highlight.js/styles/vs.css'
 
 /**
  * 
@@ -15,17 +15,10 @@ export default () => (
 		<Head>
 			<title>Deploy A Next.js App on Heroku</title>
 		</Head>
-		<ASide>
-			<Link href="/">
-				<a>Назад</a>
-			</Link>
-			<h1>Deploy A Next.js App on Heroku</h1>
-		</ASide>
-		<Main>
-			<h2>1. Create a project</h2>
-			<p>Open your terminal and navigate to the location you would like to save the project then type the following in your terminal.</p>
-			<pre>
-				{`mkdir my-app
+
+		<h2>1. Create a project</h2>
+		<p>Open your terminal and navigate to the location you would like to save the project then type the following in your terminal.</p>
+		<Highlight language="bash">{`mkdir my-app
 cd my-app
 npm init -y
 npm install --save react react-dom next
@@ -33,74 +26,62 @@ touch .gitignore
 mkdir pages
 cd pages
 touch index.js
-cd ..`}
-			</pre>
+cd ..`}</Highlight>
 
-			<h2>2. Add Code to Index.js</h2>
-			<pre>
-				{`const Index = () => (
+		<h2>2. Add Code to Index.js</h2>
+		<Highlight language="javascript">{`const Index = () => (
 	<div>
 		<p>Hello World!</p>
 	</div>
 )
 export default Index`}
-			</pre>
+		</Highlight>
 
-			<h2>3. Add Code to .gitignore</h2>
-			<pre>
-				{`node_modules/
+		<h2>3. Add Code to .gitignore</h2>
+		<Highlight>{`node_modules/
 .next/
-*.log`}
-			</pre>
+*.log`}</Highlight>
 
-			<h2>4. Modify package.json</h2>
-			<pre>
-				{`"scripts": {
+		<h2>4. Modify package.json</h2>
+		<Highlight language="javascript">{`"scripts": {
 	"dev": "next",
 	"build": "next build",
 	"start": "next start -p $PORT",
 	"heroku-postbuild": "npm run build",
 	"test": "echo \\"Error: no test specified\\" && exit 1"
-},`}
-			</pre>
+},`}</Highlight>
 
-			<h2>5. Push to Github</h2>
-			<p>Create a new repository in your browser on Github. Then type the following in your root directory.</p>
-			<pre>{`git init
+		<h2>5. Push to Github</h2>
+		<p>Create a new repository in your browser on Github. Then type the following in your root directory.</p>
+		<Highlight language="bash">{`git init
 git add .
 git commit -m "First Commit"
 git remote add origin https://github.com/{username}/{repositoryname}
-git push origin master`}
-			</pre>
+git push origin master`}</Highlight>
 
-			<h2>6. Create Heroku App</h2>
-			<pre>
-	heroku create my-app
-			</pre>
+		<h2>6. Create Heroku App</h2>
+		<Highlight language="bash">{'heroku create my-app'}</Highlight>
 
-			<h2>7. Deploy on Heroku</h2>
-			<ol>
-				<li>Open your browser and sign into Heroku</li>
-				<li>Navigate to the “Dashboard”</li>
-				<li> III Select your newly created app</li>
-				<li> IV Click “Deploy”</li>
-				<li> V Under “Deployment Method” select “Github”</li>
-				<li> VI Add repository name (username/repositoryname)</li>
-				<li> VII Click “Search”</li>
-				<li> VIII Click “Connect”</li>
-				<li> IX Select Branch</li>
-				<li> X Click “Deploy Branch”</li>
-				<li>XI Click “View”</li>
-			</ol>
-			<style global jsx>{`
-				pre {
-					padding: 0.5rem 1rem;
-					background: #eee;
-					border: 1px solid #ddd;
-					font-size: 0.75rem;
-					overflow: auto;
-				}
-			`}</style>
-		</Main>
+		<h2>7. Deploy on Heroku</h2>
+		<ol>
+			<li>Open your browser and sign into Heroku</li>
+			<li>Navigate to the “Dashboard”</li>
+			<li>Select your newly created app</li>
+			<li>Click “Deploy”</li>
+			<li>Under “Deployment Method” select “Github”</li>
+			<li>Add repository name (username/repositoryname)</li>
+			<li>Click “Search”</li>
+			<li>Click “Connect”</li>
+			<li>Select Branch</li>
+			<li>Click “Deploy Branch”</li>
+			<li>Click “View”</li>
+		</ol>
+		<style global jsx>{`
+			pre {
+				font-size: 0.75rem;
+				overflow: auto;
+			}
+		`}</style>
+
 	</Layout>
 )
