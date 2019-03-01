@@ -127,23 +127,31 @@ class Index extends React.Component {
 							</dd>
 						</dl>
 
-						<p>Фриланс-работы:</p>
-
+						<p>
+							{ i18n.language === 'ru' && 'Фриланс-работы:' }
+							{ i18n.language === 'en' && 'Fleelance works:' }
+						</p>
 						<dl>
 							<dt>
 								<a href="https://fitness.edu.au/">Australian Institute of Fitness</a>
 							</dt>
 							<dd>
-								Symphony CMS, XSLT, UIKit
+								Symphony CMS, XSLT, HTML, CSS, JS, UIKit
 							</dd>
 							<dt>
-								<a href="http://ratur.by/">Буровая компания</a>
+								<a href="http://ratur.by/">
+									{ i18n.language === 'ru' && 'Буровая компания' }
+									{ i18n.language === 'en' && 'Drilling company' }
+								</a>
 							</dt>
 							<dd>
 								Wordpress
 							</dd>
 							<dt>
-								<a href="http://teplo-vitebsk.by/">Магазин отопительного оборудования</a>
+								<a href="http://teplo-vitebsk.by/">
+									{ i18n.language === 'ru' && 'Магазин отопительного оборудования' }
+									{ i18n.language === 'en' && 'Heating Equipment Store' }
+								</a>
 							</dt>
 							<dd>
 								Wordpress, WooCommerce
