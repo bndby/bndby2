@@ -98,18 +98,30 @@ class Index extends React.Component {
 
 						<dl>
 							<dt>
-								<a href="http://klen.by/">Рекламное агентство «Клён»</a>
+								<a href="http://klen.by/">
+									{ i18n.language === 'ru' && 'Рекламное агентство «Клён»' }
+									{ i18n.language === 'en' && 'Advertising agency Klen' }
+								</a>
 							</dt>
 							<dd>
-								<time>июль 2015 года</time>
+								<time>
+									{ i18n.language === 'ru' && 'июль 2015 года' }
+									{ i18n.language === 'en' && 'jule 2015' }
+								</time>
 								<br />
 								Symphony CMS, XSLT
 							</dd>
 							<dt>
-								<a href="http://skinali.by/">Каталог скиналей</a>
+								<a href="http://skinali.by/">
+									{ i18n.language === 'ru' && 'Каталог скиналей' }
+									{ i18n.language === 'en' && 'Skinali catalog' }
+								</a>
 							</dt>
 							<dd>
-								<time>сентябрь 2015 года</time>
+								<time>
+									{ i18n.language === 'ru' && 'сентябрь 2015 года' }
+									{ i18n.language === 'en' && 'september 2015' }
+								</time>
 								<br />
 								Symphony CMS, XSLT
 							</dd>
@@ -145,30 +157,42 @@ class Index extends React.Component {
 
 						<p>Работал удаленно технологом в отделе поддержки. Занимался сопровождением сайтов клиентов:</p>
 
-						<ul>
-							<li><a href="http://polyusgold.com/ru/">Полюс</a> — контент-менеджмент, Bitrix;</li>
-							<li><a href="http://stada.ru/">Штада</a> — контент-менеджмент, Bitrix;</li>
-							<li>Природа Amway — контент-менеджмент, Bitrix;</li>
-							<li>Фитнес клубы «Физика» — поддержка и доработка сайта, «Коробочка»;</li>
-							<li>Merz — поддержка и доработка сайта;</li>
-							<li><a href="http://carpethouse.ru/">Carpet House</a> — поддержка сайта;</li>
-							<li>Водка Saimaa — поддержка сайта;</li>
-							<li>Braer — поддержка и доработка сайта.</li>
-						</ul>
+						<dl>
+							<dt><a href="http://polyusgold.com/ru/">Полюс</a></dt>
+							<dd>контент-менеджмент, Bitrix;</dd>
+							<dt><a href="http://stada.ru/">Штада</a></dt>
+							<dd>контент-менеджмент, Bitrix;</dd>
+							<dt>Природа Amway</dt>
+							<dd>контент-менеджмент, Bitrix;</dd>
+							<dt>Фитнес клубы «Физика»</dt>
+							<dd>поддержка и доработка сайта, «Коробочка»;</dd>
+							<dt>Merz</dt>
+							<dd>поддержка и доработка сайта;</dd>
+							<dt><a href="http://carpethouse.ru/">Carpet House</a></dt>
+							<dd>поддержка сайта;</dd>
+							<dt>Водка Saimaa</dt>
+							<dd>поддержка сайта;</dd>
+							<dt>Braer</dt>
+							<dd>поддержка и доработка сайта.</dd>
+						</dl>
 
 						<p>Версткой шаблонов:</p>
 
-						<ul>
-							<li><a href="http://www.at-consulting.ru/">AT Consulting</a> — верстка шаблонов;</li>
-							<li>DSMU — верстка шаблонов.</li>
-						</ul>
+						<dl>
+							<dt><a href="http://www.at-consulting.ru/">AT Consulting</a></dt>
+							<dd>верстка шаблонов;</dd>
+							<dt>DSMU</dt>
+							<dd>верстка шаблонов.</dd>
+						</dl>
 
 						<p>Кроме этого собрал два сайта на Symphony CMS:</p>
 
-						<ul>
-							<li><a href="http://jenialubich.com/">Сайт певицы Жени Любич</a> — сборка сайта, Symphony CMS;</li>
-							<li>Ингруп СтС — сборка сайта, Symphony CMS.</li>
-						</ul>
+						<dl>
+							<dt><a href="http://jenialubich.com/">Сайт певицы Жени Любич</a></dt>
+							<dd>сборка сайта, Symphony CMS;</dd>
+							<dt>Ингруп СтС</dt>
+							<dd>сборка сайта, Symphony CMS.</dd>
+						</dl>
 
 						<h3>Студия Артемия Лебедева</h3>
 						<p>ноябрь 2006 — ноябрь 2009</p>
