@@ -25,6 +25,7 @@ class Index extends React.Component {
 			<Layout>
 				<Head>
 					<title>{t( 'name' )} ({i18n.language})</title>
+					<link rel="canonical" href="https://bnd.by/" />
 				</Head>
 
 					<h1>{t( 'cv' )}</h1>

@@ -26,6 +26,7 @@ const Swgoh = () => {
 		<Layout>
 			<Head>
 				<title>SWGOH</title>
+				<link rel="canonical" href="https://bnd.by/tests/swgoh" />
 			</Head>
 
 			{data.name}

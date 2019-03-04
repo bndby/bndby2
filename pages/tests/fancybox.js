@@ -67,6 +67,7 @@ class LightboxPage extends React.Component {
 			<Layout>
 				<Head>
 					<title>Fancybox test page</title>
+					<link rel="canonical" href="https://bnd.by/tests/fancybox" />
 				</Head>
 
 				<Gallery photos={photos} onClick={this.openLightbox} columns="5" />

@@ -26,6 +26,7 @@ class SwiperPage extends React.Component {
 			<Layout>
 				<Head>
 					<title>Swiper test page</title>
+					<link rel="canonical" href="https://bnd.by/tests/swiper" />
 				</Head>
 
 				<Swiper {...params}>

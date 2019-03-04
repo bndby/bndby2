@@ -22,6 +22,7 @@ class YandexMapPage extends React.Component {
 			<Layout>
 				<Head>
 					<title>YaMap test page</title>
+					<link rel="canonical" href="https://bnd.by/tests/yamap" />
 				</Head>
 
 				<YMaps>
