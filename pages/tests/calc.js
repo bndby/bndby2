@@ -53,7 +53,6 @@ export default () => {
 		<Layout>
 			<Head>
 				<title>Калькулятор</title>
-				<link rel="canonical" href="https://bnd.by/tests/calc" />
 			</Head>
 
 			<div>

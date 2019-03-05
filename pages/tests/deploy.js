@@ -14,7 +14,6 @@ export default () => (
 	<Layout>
 		<Head>
 			<title>Deploy A Next.js App on Heroku</title>
-			<link rel="canonical" href="https://bnd.by/tests/deploy" />
 		</Head>
 
 		<h2>1. Create a project</h2>

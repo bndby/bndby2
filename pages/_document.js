@@ -17,10 +17,15 @@ class MyDocument extends Document {
 	}
 
 	render() {
+		const lang = this.props.__NEXT_DATA__.props.initialLanguage
+		const page = this.props.__NEXT_DATA__.page
+		const canonical = `https://bnd.by${ lang === 'en' ? '' : '/' + lang }${ page }`
+
 		return (
-			<html>
+			<html lang={ lang }>
 				<Head>
 					<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+					<link rel="canonical" href={ canonical } />
 				</Head>
 				<body>
 					<Main />

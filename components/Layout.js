@@ -4,6 +4,7 @@
 import PropTypes from 'prop-types'
 import Logo from './Logo'
 import Navigation from './Navigation'
+import Footer from './Footer'
 import { withNamespaces } from '../i18n'
 import LanguageSelector from './LanguageSelector'
 
@@ -24,6 +25,8 @@ const Layout = ( props ) => (
 		</div>
 		<div className="layout__content">
 			{props.children}
+			<hr />
+			<Footer />
 		</div>
 	</div>
 )

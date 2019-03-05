@@ -5,7 +5,6 @@ import React from 'react'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import { i18n, Link, withNamespaces } from '../i18n'
-import LanguageSelector from '../components/LanguageSelector'
 
 /**
  * 
@@ -25,7 +24,6 @@ class Index extends React.Component {
 			<Layout>
 				<Head>
 					<title>{t( 'name' )} ({i18n.language})</title>
-					<link rel="canonical" href="https://bnd.by/" />
 				</Head>
 
 					<h1>{t( 'cv' )}</h1>
@@ -90,9 +88,10 @@ class Index extends React.Component {
 							{ i18n.language === 'ru' && 'Рекламное агентство «Клён»' }
 							{ i18n.language === 'en' && 'Advertising agency "Klen"' }
 						</h3>
-
-						{ i18n.language === 'ru' && <h4>ноябрь 2009 — 2016</h4> }
-						{ i18n.language === 'en' && <h4>november 2009 — 2016</h4> }
+						<h4>
+							{ i18n.language === 'ru' && 'ноябрь 2009 — 2016' }
+							{ i18n.language === 'en' && 'november 2009 — 2016' }
+						</h4>
 
 						{ i18n.language === 'ru' && <p>Работал над созданием, развитием и поддержкой сайтов агентства. В свободное время писал сайты для клиентов агентства или удаленно занимался фрилансом. Для рекламного агентства создал и поддерживал сайты:</p> }
 						{ i18n.language === 'en' && <p>I worked on the creation, development and support of agency sites. In my free time I wrote websites for clients of an agency or remotely freelancing. For an advertising agency created and maintained sites:</p> }
@@ -160,9 +159,10 @@ class Index extends React.Component {
 						</dl>
 
 						<h3>Creative People</h3>
-
-						{ i18n.language === 'ru' && <h4>сентябрь 2011 — ноябрь 2012,<br />ноябрь 2015 — май 2017</h4> }
-						{ i18n.language === 'en' && <h4>september 2011 — november 2012,<br />november 2015 — may 2017</h4> }
+						<h4>
+							{ i18n.language === 'ru' && 'сентябрь 2011 — ноябрь 2012,<br />ноябрь 2015 — май 2017' }
+							{ i18n.language === 'en' && 'september 2011 — november 2012,<br />november 2015 — may 2017' }
+						</h4>
 
 						<p>
 							{ i18n.language === 'ru' && 'Работал удаленно технологом в отделе поддержки. Занимался сопровождением сайтов клиентов:' }
