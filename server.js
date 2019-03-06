@@ -5,7 +5,7 @@ const nextI18NextMiddleware = require('next-i18next/middleware')
 const nextI18next = require('./i18n')
 
 const dev = process.env.NODE_ENV !== 'production'
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 9000
 const app = next({ dev })
 const handle = app.getRequestHandler()
 

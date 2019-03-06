@@ -29,7 +29,7 @@ export default () => {
 				setExEUR( data.Cur_OfficialRate )
 				setEUR( byn / exEUR )
 			})
-	}, [ exUSD, exEUR ] )
+	}, [ byn, exUSD, exEUR ] )
 
 	const changeBYN = ( event ) => {
 		setBYN( event.target.value )
