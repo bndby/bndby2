@@ -67,15 +67,15 @@ class Tests extends React.Component {
 		return (
 			<Layout>
 				<Head>
-					<title>{t( 'tests' )}</title>
+					<title>{ t( 'tests' ) }</title>
 				</Head>
 
-				<h1>{t( 'tests' )}</h1>
+				<h1>{ t( 'tests' ) }</h1>
 
 				<ul>
 					{
 						this.pages.map( ( page, index ) => (
-							<li key={index}>
+							<li key={ index }>
 								<Link href={ page.href }>
 									<a>
 										{ i18n.language === 'ru' && page.ru }

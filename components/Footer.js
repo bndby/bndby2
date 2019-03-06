@@ -4,6 +4,8 @@
 import React from 'react'
 import { i18n, Link, withNamespaces } from '../i18n'
 
+import './footer.css'
+
 /**
  * 
  */
@@ -21,6 +23,9 @@ class Footer extends React.Component {
 			<footer className="footer">
 				<Link href="/tests">
 					<a>{ t( 'tests' ) }</a>
+				</Link>
+				<Link href="/blog">
+					<a>{ t( 'blog' ) }</a>
 				</Link>
 			</footer>
 		)

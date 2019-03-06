@@ -1,7 +1,10 @@
-import Layout from '../components/Layout.js'
-import Link from 'next/link'
+import Head from 'next/head'
+import Layout from '../components/Layout'
+import { i18n, Link, withNamespaces } from '../i18n'
+import React from 'react'
+import PropTypes from 'prop-types'
 
-const PostLink = (props) => (
+const PostLink = ( props ) => (
 	<li>
 		<Link as={`/post/${props.slug}`} href={`/post?slug=${props.slug}`}>
 			<a>{props.title}</a>
@@ -9,13 +12,35 @@ const PostLink = (props) => (
 	</li>
 )
 
-const Blog = () => (
-	<Layout>
-		<h1>My Blog</h1>
-		<ul>
-			<PostLink slug="blog-slug" title="Blog post" />
-		</ul>
-	</Layout>
-)
+PostLink.propTypes = {
+	slug: PropTypes.string.isRequired,
+	title: PropTypes.string.isRequired
+}
 
-export default Blog
+class Blog extends React.Component {
+
+	static async getInitialProps() {
+		return {
+			namespacesRequired: ['common']
+		}
+	}
+
+	render(){
+
+		const { t } = this.props
+
+		return (
+			<Layout>
+				<Head>
+					<title>{ t( 'blog' ) }</title>
+				</Head>
+				<h1>{ t( 'blog' ) }</h1>
+				<ul>
+					<PostLink slug="blog-slug" title="Blog post" />
+				</ul>
+			</Layout>
+		)
+	}
+}
+
+export default withNamespaces( 'common' )( Blog )

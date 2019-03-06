@@ -1,0 +1,11 @@
+.footer {
+
+}
+
+.footer > a {
+    margin-right: 2rem;
+}
+
+.footer > a:last-child {
+    margin-right: 0;
+}
