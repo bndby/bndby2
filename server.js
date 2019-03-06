@@ -15,6 +15,12 @@ app.prepare()
 
 		server.use( nextI18NextMiddleware( nextI18next ) )
 
+		server.get('/post/:slug', (req, res) => {
+			const actualPage = '/blog'
+			const queryParams = { slug: req.params.slug } 
+			app.render(req, res, actualPage, queryParams)
+		})
+
 		server.get( '*', ( req, res ) => {
 			return handle(req, res)
 		})
