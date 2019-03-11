@@ -2,7 +2,8 @@
  * 
  */
 import React from 'react'
-import { i18n, Link, withNamespaces } from '../i18n'
+import PropTypes from 'prop-types'
+import { Link, withNamespaces } from '../i18n'
 
 import './footer.css'
 
@@ -35,4 +36,8 @@ class Footer extends React.Component {
 /**
  * 
  */
+Footer.propTypes = {
+	t: PropTypes.func
+}
+
 export default withNamespaces( 'common' )( Footer )

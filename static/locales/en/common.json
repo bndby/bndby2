@@ -6,5 +6,9 @@
     "education": "Education",
     "cv": "CV",
     "tests": "Tests",
-    "blog": "Blog"
+    "blog": "Blog",
+    "support": "Support",
+    "develop": "Develop",
+    "frontend": "Frontend",
+    "backend": "Backend"
 }

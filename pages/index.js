@@ -35,7 +35,7 @@ class Index extends React.Component {
 						<li>HTML, Markdown;</li>
 						<li>CSS, LESS, SCSS, Stylus, PostCSS;</li>
 						<li>JavaScript, JQuery;</li>
-						<li>ES6, Node.js, React, Next.js;</li>
+						<li>ES6/7/8, Node.js, React, Next.js, Angular;</li>
 						<li>XML, XSLT, XPath, SVG;</li>
 						<li>PHP, Parser;</li>
 						<li>MySQL;</li>
@@ -58,13 +58,23 @@ class Index extends React.Component {
 
 					<dl>
 						<dt>
+							<a href="https://www.nadlan.gov.il/"> אתר הנדל״ן הממשלתי </a>
+						</dt>
+						<dd>
+							{ i18n.language === 'ru' && <time> декабрь 2018 года</time> }
+							{ i18n.language === 'en' && <time> december 2018</time> }
+							<br />
+							{t( 'support' )}: HTML, CSS, AngularJS, Grunt
+						</dd>
+
+						<dt>
 							<a href="https://bnweb.studio">BN Studio</a>
 						</dt>
 						<dd>
 							{ i18n.language === 'ru' && <time> август 2018 года</time> }
 							{ i18n.language === 'en' && <time> august 2018</time> }
 							<br />
-								HTML, LESS, JS, Gulp, Cloudflare
+							{t( 'develop' )}: HTML, LESS, JS, Gulp, Cloudflare
 						</dd>
 						<dt>
 							<a href="https://skirollers.ru/">Ski Rollers</a>
@@ -73,7 +83,7 @@ class Index extends React.Component {
 							{ i18n.language === 'ru' && <time> июнь 2018 года</time> }
 							{ i18n.language === 'en' && <time> june 2018</time> }
 							<br />
-								Wordpress, HTML, LESS, JS
+							{t( 'develop' )}: Wordpress, HTML, LESS, JS
 						</dd>
 						<dt>
 							<a href="https://ahec-tax.co.il/" dir="rtl" lang="he">ארצי, חיבה, אלמקייס, כהן — פתרונות מיסוי</a>
@@ -82,7 +92,7 @@ class Index extends React.Component {
 							{ i18n.language === 'ru' && <time> октябрь 2017 года</time> }
 							{ i18n.language === 'en' && <time> october 2017</time> }
 							<br />
-								Wordpress, HTML, LESS, JS, PHP
+							{t( 'support' )}: Wordpress, HTML, LESS, JS, PHP
 						</dd>
 					</dl>
 
