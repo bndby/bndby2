@@ -24,7 +24,7 @@ class Index extends React.Component {
 		return (
 			<Layout>
 				<Head>
-					<title>{t( 'name' )} ({i18n.language})</title>
+					<title>{t( 'name' )}</title>
 				</Head>
 
 				<h1>{t( 'cv' )}</h1>
@@ -50,19 +50,16 @@ class Index extends React.Component {
 
 					<h2>{t( 'experience' )}</h2>
 
-					<h3>BN Studio</h3>
-					<h4>
-						{ i18n.language === 'ru' && 'апрель 2017 — настоящее время' }
-						{ i18n.language === 'en' && 'april 2017 — now' }
-					</h4>
+					
+					<h3><img src="/static/images/bnweb.svg" alt="BN Studio" /><br />BN Studio</h3>
+					<h4>{ t( 'April' ) } 2017  — { t( 'Now' ) }</h4>
 
 					<dl>
 						<dt>
 							<a href="https://www.nadlan.gov.il/"> אתר הנדל״ן הממשלתי </a>
 						</dt>
 						<dd>
-							{ i18n.language === 'ru' && <time> декабрь 2018 года</time> }
-							{ i18n.language === 'en' && <time> december 2018</time> }
+							<time>{ t( 'December' ) } 2018</time>
 							<br />
 							{t( 'support' )}: HTML, CSS, AngularJS, Grunt
 						</dd>
@@ -71,8 +68,7 @@ class Index extends React.Component {
 							<a href="https://bnweb.studio">BN Studio</a>
 						</dt>
 						<dd>
-							{ i18n.language === 'ru' && <time> август 2018 года</time> }
-							{ i18n.language === 'en' && <time> august 2018</time> }
+							<time>{ t( 'August' ) } 2018</time>
 							<br />
 							{t( 'develop' )}: HTML, LESS, JS, Gulp, Cloudflare
 						</dd>
@@ -80,8 +76,7 @@ class Index extends React.Component {
 							<a href="https://skirollers.ru/">Ski Rollers</a>
 						</dt>
 						<dd>
-							{ i18n.language === 'ru' && <time> июнь 2018 года</time> }
-							{ i18n.language === 'en' && <time> june 2018</time> }
+							<time>{ t( 'June' ) } 2018</time>
 							<br />
 							{t( 'develop' )}: Wordpress, HTML, LESS, JS
 						</dd>
@@ -89,21 +84,18 @@ class Index extends React.Component {
 							<a href="https://ahec-tax.co.il/" dir="rtl" lang="he">ארצי, חיבה, אלמקייס, כהן — פתרונות מיסוי</a>
 						</dt>
 						<dd>
-							{ i18n.language === 'ru' && <time> октябрь 2017 года</time> }
-							{ i18n.language === 'en' && <time> october 2017</time> }
+							<time>{ t( 'October' ) } 2017</time>
 							<br />
 							{t( 'support' )}: Wordpress, HTML, LESS, JS, PHP
 						</dd>
 					</dl>
 
 					<h3>
+						<img src="/static/images/klen.png" alt="Klen" /><br />
 						{ i18n.language === 'ru' && 'Рекламное агентство «Клён»' }
 						{ i18n.language === 'en' && 'Advertising agency "Klen"' }
 					</h3>
-					<h4>
-						{ i18n.language === 'ru' && 'ноябрь 2009 — 2016' }
-						{ i18n.language === 'en' && 'november 2009 — 2016' }
-					</h4>
+					<h4>{ t( 'November' ) } 2009 — 2016</h4>
 
 					{ i18n.language === 'ru' && <p>Работал над созданием, развитием и поддержкой сайтов агентства. В свободное время писал сайты для клиентов агентства или удаленно занимался фрилансом. Для рекламного агентства создал и поддерживал сайты:</p> }
 					{ i18n.language === 'en' && <p>I worked on the creation, development and support of agency sites. In my free time I wrote websites for clients of an agency or remotely freelancing. For an advertising agency created and maintained sites:</p> }
@@ -116,12 +108,9 @@ class Index extends React.Component {
 							</a>
 						</dt>
 						<dd>
-							<time>
-								{ i18n.language === 'ru' && 'июль 2015 года' }
-								{ i18n.language === 'en' && 'jule 2015' }
-							</time>
+							<time>{ t( 'Jule' ) } 2015</time>
 							<br />
-								Symphony CMS, XSLT
+							Symphony CMS, XSLT
 						</dd>
 						<dt>
 							<a href="http://skinali.by/">
@@ -130,12 +119,9 @@ class Index extends React.Component {
 							</a>
 						</dt>
 						<dd>
-							<time>
-								{ i18n.language === 'ru' && 'сентябрь 2015 года' }
-								{ i18n.language === 'en' && 'september 2015' }
-							</time>
+							<time>{ t( 'September' ) } 2015</time>
 							<br />
-								Symphony CMS, XSLT
+							Symphony CMS, XSLT
 						</dd>
 					</dl>
 
@@ -144,37 +130,29 @@ class Index extends React.Component {
 						{ i18n.language === 'en' && 'Fleelance works:' }
 					</p>
 					<dl>
-						<dt>
-							<a href="https://fitness.edu.au/">Australian Institute of Fitness</a>
-						</dt>
-						<dd>
-								Symphony CMS, XSLT, HTML, CSS, JS, UIKit
-						</dd>
+						<dt><a href="https://fitness.edu.au/">Australian Institute of Fitness</a></dt>
+						<dd>Symphony CMS, XSLT, HTML, CSS, JS, UIKit</dd>
+
 						<dt>
 							<a href="http://ratur.by/">
 								{ i18n.language === 'ru' && 'Буровая компания' }
 								{ i18n.language === 'en' && 'Drilling company' }
 							</a>
 						</dt>
-						<dd>
-								Wordpress
-						</dd>
+						<dd>Wordpress</dd>
+
 						<dt>
 							<a href="http://teplo-vitebsk.by/">
 								{ i18n.language === 'ru' && 'Магазин отопительного оборудования' }
 								{ i18n.language === 'en' && 'Heating Equipment Store' }
 							</a>
 						</dt>
-						<dd>
-								Wordpress, WooCommerce
-						</dd>
+						<dd>Wordpress, WooCommerce</dd>
+
 					</dl>
 
-					<h3>Creative People</h3>
-					<h4>
-						{ i18n.language === 'ru' && <>сентябрь 2011 — ноябрь 2012,<br />ноябрь 2015 — май 2017</> }
-						{ i18n.language === 'en' && <>september 2011 — november 2012,<br />november 2015 — may 2017</> }
-					</h4>
+					<h3><img src="/static/images/cpeople.svg" alt="Creative People" /><br />Creative People</h3>
+					<h4>{ t( 'September' ) } 2011 — { t( 'November' ) } 2012,<br />{ t( 'November' ) } 2015 — { t( 'May' ) } 2017</h4>
 
 					<p>
 						{ i18n.language === 'ru' && 'Работал удаленно технологом в отделе поддержки. Занимался сопровождением сайтов клиентов:' }
@@ -231,13 +209,11 @@ class Index extends React.Component {
 					</ul>
 
 					<h3>
+						<img src="/static/images/als.svg" alt="ALS" /><br />
 						{ i18n.language === 'ru' && 'Студия Артемия Лебедева' }
 						{ i18n.language === 'en' && 'Art Lebedev Studio' }
 					</h3>
-					<h4>
-						{ i18n.language === 'ru' && 'ноябрь 2006 — ноябрь 2009' }
-						{ i18n.language === 'en' && 'november 2006 — november 2009' }
-					</h4>
+					<h4>{ t( 'November' ) } 2006 — { t( 'November' ) } 2009</h4>
 
 					<p>
 						{ i18n.language === 'ru' && 'Работал кодером в отделе поддержки. Занимался сопровождением сайтов клиентов на системах ' }
@@ -274,9 +250,7 @@ class Index extends React.Component {
 							{ i18n.language === 'ru' && 'Сайт города Санкт-Петербурга' }
 							{ i18n.language === 'en' && 'St. Petersburg' }
 						</a>;</li>
-						<li><a href="https://www.artlebedev.ru/everything/hp/site4/">
-								Hewlett-Packard
-						</a>.</li>
+						<li><a href="https://www.artlebedev.ru/everything/hp/site4/">Hewlett-Packard</a>.</li>
 					</ul>
 				</section>
 
