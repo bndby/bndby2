@@ -4,6 +4,7 @@
 // ./pages/_document.js
 import Document, { Head, Main, NextScript } from 'next/document'
 import { GA_TRACKING_ID } from '../lib/gtag'
+import {default as Head2} from 'next/head'
 
 /**
  * 
@@ -39,8 +40,10 @@ class MyDocument extends Document {
 					/>
 
 					<meta name="viewport" content="initial-scale=1.0, width=device-width" />
-					<link rel="canonical" href={ canonical } />
 				</Head>
+				<Head2>
+					<link rel="canonical" href={ canonical } key="canonical" />
+				</Head2>
 				<body>
 					<Main />
 					<NextScript />

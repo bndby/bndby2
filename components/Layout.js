@@ -22,7 +22,7 @@ const Layout = ( props ) => (
 	<div className="layout">
 		<div className="layout__logo">
 			<Logo />
-			<LanguageSelector />
+			{ !props.nolang && <LanguageSelector /> }
 		</div>
 		<div className="layout__navigation">
 			<Navigation />

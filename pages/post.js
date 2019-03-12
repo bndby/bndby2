@@ -2,9 +2,19 @@ import Layout from '../components/Layout.js'
 import fetch from 'isomorphic-unfetch'
 import ReactMarkdown from 'react-markdown'
 import PropTypes from 'prop-types'
+import Head from 'next/head'
+import Link from 'next/link'
 
 const Post = ( props ) => (
-	<Layout>
+	<Layout nolang={ true }>
+		<Head>
+			<link rel="canonical" href={ `https://bnd.by/post/${props.slug}` } key="canonical" />
+		</Head>
+		<p>
+			<Link href="/blog">
+				<a>← Блог</a>
+			</Link>
+		</p>
 		<ReactMarkdown source={ props.post } />
 	</Layout>
 )
@@ -16,7 +26,7 @@ Post.getInitialProps = async function (context) {
 
 	return {
 		post,
-		namespacesRequired: ['common']
+		slug
 	}
 }
 

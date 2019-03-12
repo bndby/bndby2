@@ -4,6 +4,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link, withNamespaces } from '../i18n'
+import {default as Link2} from 'next/link'
 
 import './footer.css'
 
@@ -25,9 +26,9 @@ class Footer extends React.Component {
 				<Link href="/tests">
 					<a>{ t( 'tests' ) }</a>
 				</Link>
-				<Link href="/blog">
-					<a>{ t( 'blog' ) }</a>
-				</Link>
+				<Link2 href="/blog">
+					<a>Блог (RU)</a>
+				</Link2>
 			</footer>
 		)
 	}

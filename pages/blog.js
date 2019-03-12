@@ -2,8 +2,8 @@
  * 
  */
 import Head from 'next/head'
+import Link from 'next/link'
 import Layout from '../components/Layout'
-import { i18n, Link, withNamespaces } from '../i18n'
 import React from 'react'
 import PropTypes from 'prop-types'
 
@@ -14,11 +14,11 @@ const PostLink = ( props ) => (
 	<p>
 		{ 
 			props.date ?
-				<><time>{props.date}</time><br /></> :
+				<><time>{ props.date }</time><br /></> :
 				''
 		}
-		<Link as={`/post/${props.slug}`} href={`/post?slug=${props.slug}`}>
-			<a>{props.title}</a>
+		<Link as={`/post/${ props.slug }`} href={`/post?slug=${ props.slug }`}>
+			<a>{ props.title }</a>
 		</Link>
 		{
 			props.children ?
@@ -34,7 +34,8 @@ const PostLink = ( props ) => (
 PostLink.propTypes = {
 	slug: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
-	date: PropTypes.string
+	date: PropTypes.string,
+	children: PropTypes.node
 }
 
 /**
@@ -50,15 +51,13 @@ class Blog extends React.Component {
 
 	render(){
 
-		const { t } = this.props
-
 		return (
-			<Layout>
+			<Layout nolang={true}>
 				<Head>
-					<title>{ t( 'blog' ) }</title>
+					<title>Блог</title>
 				</Head>
 
-				<h1>{ t( 'blog' ) }</h1>
+				<h1>Блог</h1>
 
 				<PostLink slug="2019-03-12-cloudflare-datacenter" title="Датацентры Cloudflare" date="12.03.2019">
 					Как узнать, какой датацентр Cloudflare меня обслуживает?
@@ -76,4 +75,4 @@ Blog.propTypes = {
 /**
  * 
  */
-export default withNamespaces( 'common' )( Blog )
+export default Blog
