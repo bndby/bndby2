@@ -7,8 +7,12 @@ import Navigation from './Navigation'
 import Footer from './Footer'
 import { withNamespaces } from '../i18n'
 import LanguageSelector from './LanguageSelector'
+import Router from 'next/router'
+import * as gtag from '../lib/gtag'
 
 import './layout.css'
+
+Router.events.on('routeChangeComplete', url => gtag.pageview(url))
 
 /**
  * 

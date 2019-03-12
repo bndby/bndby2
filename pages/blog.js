@@ -60,8 +60,8 @@ class Blog extends React.Component {
 
 				<h1>{ t( 'blog' ) }</h1>
 
-				<PostLink slug="blog-slug" title="Blog post" date="11.03.2019">
-					Описание записи блога
+				<PostLink slug="2019-03-12-cloudflare-datacenter" title="Датацентры Cloudflare" date="12.03.2019">
+					Как узнать, какой датацентр Cloudflare меня обслуживает?
 				</PostLink>
 
 			</Layout>
