@@ -55,9 +55,15 @@ class Index extends React.Component {
 					<h4>{ t( 'April' ) } 2017  — { t( 'Now' ) }</h4>
 
 					<dl>
-						<dt>
-							<a href="https://www.nadlan.gov.il/"> אתר הנדל״ן הממשלתי </a>
-						</dt>
+
+						<dt><a href="https://nbogorad.com/">Natali Bogorad&#8217;s Design cafe</a></dt>
+						<dd>
+							<time>{ t( 'March' ) } 2019</time>
+							<br />
+							{t( 'development' )}: XSLT, PostCSS, CSSNext, ES6, Webpack, Gulp
+						</dd>
+
+						<dt><a href="https://www.nadlan.gov.il/"> אתר הנדל״ן הממשלתי </a></dt>
 						<dd>
 							<time>{ t( 'December' ) } 2018</time>
 							<br />
@@ -70,7 +76,7 @@ class Index extends React.Component {
 						<dd>
 							<time>{ t( 'August' ) } 2018</time>
 							<br />
-							{t( 'develop' )}: HTML, LESS, JS, Gulp, Cloudflare
+							{t( 'development' )}: HTML, LESS, JS, Gulp, Cloudflare
 						</dd>
 						<dt>
 							<a href="https://skirollers.ru/">Ski Rollers</a>
@@ -78,7 +84,7 @@ class Index extends React.Component {
 						<dd>
 							<time>{ t( 'June' ) } 2018</time>
 							<br />
-							{t( 'develop' )}: Wordpress, HTML, LESS, JS
+							{t( 'development' )}: Wordpress, HTML, LESS, JS
 						</dd>
 						<dt>
 							<a href="https://ahec-tax.co.il/" dir="rtl" lang="he">ארצי, חיבה, אלמקייס, כהן — פתרונות מיסוי</a>
