@@ -141,6 +141,14 @@ time {
 
 .layout__content {
     grid-area: content;
+
+    & p {
+        & img {
+            display: block;
+            width: 100%;
+            max-width: 40rem;
+        }
+    }
 }
 
 .layout__navigation {
