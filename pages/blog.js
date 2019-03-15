@@ -54,25 +54,34 @@ class Blog extends React.Component {
 		return (
 			<Layout nolang={true}>
 				<Head>
-					<title>Блог</title>
+					<title>Заметки</title>
 				</Head>
 
-				<h1>Блог</h1>
+				<h1>Заметки</h1>
 
+				{/* ========================= */}
 
 				<h2>Git</h2>
 
-				<PostLink slug="2019-03-13-todo-list-markdown" title="Список задач в markdown на Github" date="13.03.2019">С 28 апреля 2014 года в любых markdown-документах на Github можно создавать списки задач</PostLink>
+				<PostLink slug="2019-03-13-todo-list-markdown" title="Список задач в markdown на Github">С 28 апреля 2014 года в любых markdown-документах на Github можно создавать списки задач</PostLink>
 
-				<PostLink slug="2019-03-13-howto-date-jekyll" title="Как вывести дату поста в Jekyll шаблоне на Github Pages" date="13.03.2019">По умолчанию в Jekyll шаблонах на Github Pages можно форматировать только английские даты</PostLink>
+				<PostLink slug="2019-03-13-howto-date-jekyll" title="Как вывести дату поста в Jekyll шаблоне на Github Pages">По умолчанию в Jekyll шаблонах на Github Pages можно форматировать только английские даты</PostLink>
 
-				<PostLink slug="2019-03-13-howto-duplicate-git" title="Как сделать дубликат Git-репозитория" date="13.03.2019">Чтобы дублировать репозиторий без его «форка», вы можете запустить специальную команду clone, а затем запушиться в новый репозиторий</PostLink>
+				<PostLink slug="2019-03-13-howto-duplicate-git" title="Как сделать дубликат Git-репозитория">Чтобы дублировать репозиторий без его «форка», вы можете запустить специальную команду clone, а затем запушиться в новый репозиторий</PostLink>
 
-				<PostLink slug="2019-03-13-bitbucket-to-github" title="Как перейти с Bitbucket на GitHub" date="13.03.2019">С января 2019 года Гитхаб ввел бесплатные приватные репозитории.</PostLink>
+				<PostLink slug="2019-03-13-bitbucket-to-github" title="Как перейти с Bitbucket на GitHub">С января 2019 года Гитхаб ввел бесплатные приватные репозитории.</PostLink>
 
+				{/* ========================= */}
 
 				<h2>Cloudflare</h2>
-				<PostLink slug="2019-03-12-cloudflare-datacenter" title="Датацентры Cloudflare" date="12.03.2019">Как узнать, какой датацентр Cloudflare меня обслуживает?</PostLink>
+
+				<PostLink slug="2019-03-12-cloudflare-datacenter" title="Датацентры Cloudflare">Как узнать, какой датацентр Cloudflare меня обслуживает?</PostLink>
+
+				{/* ========================= */}
+
+				<h2>Книги</h2>
+
+				<PostLink slug="2019-03-15-rasskaz-sluzhanki" title="Рассказ Служанки, Маргарет Этвуд" date="15.03.2019">В дивном новом мире женщины не имеют права владеть собственностью, работать, любить, читать и писать. Они не могут бегать по утрам, устраивать пикники и вечеринки, им запрещено вторично выходить замуж. Им оставлена лишь одна функция</PostLink>
 
 			</Layout>
 		)
