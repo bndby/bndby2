@@ -61,6 +61,12 @@ class Blog extends React.Component {
 
 				{/* ========================= */}
 
+				<h2>Javascript</h2>
+
+				<PostLink slug="2019-03-15-js-mediaquery" title="Медиа запросы в Javascript">Медиа запросы в Javascript</PostLink>
+
+				{/* ========================= */}
+
 				<h2>Git</h2>
 
 				<PostLink slug="2019-03-13-todo-list-markdown" title="Список задач в markdown на Github">С 28 апреля 2014 года в любых markdown-документах на Github можно создавать списки задач</PostLink>
