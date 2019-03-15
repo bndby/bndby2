@@ -63,7 +63,7 @@ class Blog extends React.Component {
 
 				<h2>Javascript</h2>
 
-				<PostLink slug="2019-03-15-js-mediaquery" title="Медиа запросы в Javascript">Медиа запросы в Javascript</PostLink>
+				<PostLink slug="2019-03-15-js-mediaquery" title="Медиа запросы в Javascript" />
 
 				{/* ========================= */}
 

@@ -149,6 +149,11 @@ time {
             max-width: 40rem;
         }
     }
+
+    & pre {
+        font-size: 0.8rem;
+        white-space: pre-wrap;
+    }
 }
 
 .layout__navigation {

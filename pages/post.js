@@ -9,7 +9,7 @@ const Post = ( props ) => (
 	<Layout nolang={ true }>
 		<Head>
 			<link rel="canonical" href={ `https://bnd.by/post/${props.slug}` } key="canonical" />
-			<title>{ props.post.split( '\n', 1 )[0].split( '#', 2 )[1].trim() }</title>
+			<title>{ !!props.post && props.post.split( '\n', 1 )[0].split( '#', 2 )[1].trim() }</title>
 		</Head>
 		<p>
 			<Link href="/blog">
