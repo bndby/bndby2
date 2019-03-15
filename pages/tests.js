@@ -20,9 +20,14 @@ class Tests extends React.Component {
 	
 	pages = [
 		{
+			href: '/tests/hex-rgb',
+			ru: 'HEX to RGB, RGB to HEX',
+			en: 'HEX to RGB, RGB to HEX'
+		},
+		{
 			href: '/tests/calc',
-			ru: 'Калькулятор',
-			en: 'Calc'
+			ru: 'Калькулятор валют',
+			en: 'Exchange Calc'
 		},
 		{
 			href: '/tests/deploy',
