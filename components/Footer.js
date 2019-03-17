@@ -26,8 +26,11 @@ class Footer extends React.Component {
 				<Link href="/tests">
 					<a>{ t( 'tests' ) }</a>
 				</Link>
-				<Link2 href="/blog">
+				<Link2 href="/notes">
 					<a>Заметки (RU)</a>
+				</Link2>
+				<Link2 href="/books">
+					<a>Книги (RU)</a>
 				</Link2>
 			</footer>
 		)

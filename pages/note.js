@@ -23,7 +23,7 @@ const Post = ( props ) => (
 
 Post.getInitialProps = async function (context) {
 	const { slug } = context.query
-	const res = await fetch(`https://raw.githubusercontent.com/bndby/bndby2/master/pages/blog/${slug}.md`)
+	const res = await fetch(`https://raw.githubusercontent.com/bndby/bndby2/master/pages/notes/${slug}.md`)
 	const post = await res.text()
 
 	return {
@@ -33,7 +33,8 @@ Post.getInitialProps = async function (context) {
 }
 
 Post.propTypes = {
-	post: PropTypes.string
+	post: PropTypes.string,
+	slug: PropTypes.string
 }
 
 export default Post
