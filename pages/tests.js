@@ -33,36 +33,36 @@ class Tests extends React.Component {
 			href: '/tests/deploy',
 			ru: 'Deploy',
 			en: 'Deploy'
-		}
-		,
+		},
 		{
 			href: '/tests/fancybox',
 			ru: 'fancybox',
 			en: 'fancybox'
-		}
-		,
+		},
 		{
 			href: '/tests/md',
 			ru: 'Markdown',
 			en: 'Markdown'
-		}
-		,
+		},
 		{
 			href: '/tests/swgoh',
 			ru: 'swgoh',
 			en: 'swgoh'
-		}
-		,
+		},
 		{
 			href: '/tests/swiper',
 			ru: 'Swiper',
 			en: 'Swiper'
-		}
-		,
+		},
 		{
 			href: '/tests/yamap',
 			ru: 'YaMap',
 			en: 'YaMap'
+		},
+		{
+			href: '/tests/wp-api',
+			ru: 'WP API',
+			en: 'WP API'
 		}
 	]
 
