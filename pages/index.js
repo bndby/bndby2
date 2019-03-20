@@ -165,7 +165,7 @@ class Index extends React.Component {
 					</dl>
 
 					<h3><img src="/static/images/cpeople.svg" alt="Creative People" /><br />Creative People</h3>
-					<h4>{ t( 'September' ) } 2011 — { t( 'November' ) } 2012,<br />{ t( 'November' ) } 2015 — { t( 'May' ) } 2017</h4>
+					<h4>{ t( 'November' ) } 2015 — { t( 'May' ) } 2017,<br />{ t( 'September' ) } 2011 — { t( 'November' ) } 2012,</h4>
 
 					<p>
 						{ i18n.language === 'ru' && 'Работал удаленно технологом в отделе поддержки. Занимался сопровождением сайтов клиентов:' }
