@@ -12,19 +12,11 @@ import PropTypes from 'prop-types'
  */
 const BookLink = ( props ) => (
 	<p>
-		{ 
-			props.date ?
-				<><time>{ props.date }</time><br /></> :
-				''
-		}
+		{ props.date ? <><time>{ props.date }</time><br /></> : '' }
 		<Link as={`/books/${ props.slug }`} href={`/book?slug=${ props.slug }`}>
 			<a>{ props.title }</a>
 		</Link>
-		{
-			props.children ?
-				<><br />{ props.children }</> :
-				''
-		}
+		{ props.children ? <><br />{ props.children }</> : '' }
 	</p>
 )
 
@@ -58,6 +50,8 @@ class Books extends React.Component {
 				</Head>
 
 				<h1>Книги</h1>
+
+				<BookLink slug="2019-03-19-volny-gasyat-veter" title="" date="19.03.2019">О проблемах добра и зла, насильственного внедрения добра, «вертикальных прогрессов» и целях, которые ставит перед собой человечество и разум вообще, в конечном счете, о проблемах гуманизма и человечности.</BookLink>
 
 				<BookLink slug="2019-03-16-stepfordskie-zheny" title="Степфордские жены, Айра Левин" date="16.03.2019">Для Джоанны, ее мужа Уолтера и их детей переезд в живописный Степфорд — событие слишком чудесное, чтобы быть правдой. Но за идиллическим фасадом города скрывается страшная тайна, тайна настолько ужасная, что для каждого вновь прибывшего она открывается со своей стороны</BookLink>
 

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 import Layout from '../components/Layout.js'
 import fetch from 'isomorphic-unfetch'
