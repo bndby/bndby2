@@ -63,6 +63,13 @@ class Index extends React.Component {
 							{t( 'development' )}: XSLT, PostCSS, CSSNext, ES6, Webpack, Gulp
 						</dd>
 
+						<dt><a href="https://moscowseasons.com/">Moscow Seasons</a></dt>
+						<dd>
+							<time>{ t( 'Febrary' ) } 2019</time>
+							<br />
+							{t( 'support' )}: React, Stylus
+						</dd>
+
 						<dt><a href="https://www.nadlan.gov.il/"> אתר הנדל״ן הממשלתי </a></dt>
 						<dd>
 							<time>{ t( 'December' ) } 2018</time>
