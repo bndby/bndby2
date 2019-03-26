@@ -65,6 +65,8 @@ class Notes extends React.Component {
 
 				<NoteLink slug="2019-03-15-js-mediaquery" title="Медиа запросы в Javascript" />
 
+				<NoteLink slug="2019-03-26-swiper-es6" title="">Подключаем swiper как es6 модуль</NoteLink>
+
 				{/* ========================= */}
 
 				<h2>Git</h2>
