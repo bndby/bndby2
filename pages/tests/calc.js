@@ -32,21 +32,24 @@ export default () => {
 	}, [ byn, exUSD, exEUR ] )
 
 	const changeBYN = ( event ) => {
-		setBYN( event.target.value )
-		setUSD( event.target.value / exUSD )
-		setEUR( event.target.value / exEUR )
+		const input = parseFloat( event.target.value )
+		setBYN( input )
+		setUSD( input / exUSD )
+		setEUR( input / exEUR )
 	}
 
 	const changeUSD = ( event ) => {
-		setUSD( event.target.value )
-		setBYN( event.target.value * exUSD )
-		setEUR( event.target.value * exUSD / exEUR )
+		const input = parseFloat( event.target.value )
+		setUSD( input )
+		setBYN( input * exUSD )
+		setEUR( input * exUSD / exEUR )
 	}
 
 	const changeEUR = ( event ) => {
-		setEUR( event.target.value )
-		setBYN( event.target.value * exEUR )
-		setUSD( event.target.value * exEUR / exUSD )
+		const input = parseFloat( event.target.value )
+		setEUR( input )
+		setBYN( input * exEUR )
+		setUSD( input * exEUR / exUSD )
 	}
 
 	return (
