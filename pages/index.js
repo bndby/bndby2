@@ -35,7 +35,7 @@ class Index extends React.Component {
 						<li>HTML, Markdown;</li>
 						<li>CSS, LESS, SCSS, Stylus, PostCSS;</li>
 						<li>JavaScript, JQuery;</li>
-						<li>ES6/7/8, Node.js, React, Next.js, Angular;</li>
+						<li>ES6/7/8, Node.js, React, Next.js;</li>
 						<li>XML, XSLT, XPath, SVG;</li>
 						<li>PHP, Parser;</li>
 						<li>MySQL;</li>
