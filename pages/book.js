@@ -18,7 +18,7 @@ const Book = ( props ) => (
 			<title>{ !!props.book && props.book.split( '\n', 1 )[0].split( '#', 2 )[1].trim() }</title>
 		</Head>
 		<p>
-			<Link href="/blog">
+			<Link href="/books">
 				<a>← Блог</a>
 			</Link>
 		</p>

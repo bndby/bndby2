@@ -12,7 +12,7 @@ const Post = ( props ) => (
 			<title>{ !!props.post && props.post.split( '\n', 1 )[0].split( '#', 2 )[1].trim() }</title>
 		</Head>
 		<p>
-			<Link href="/blog">
+			<Link href="/notes">
 				<a>← Блог</a>
 			</Link>
 		</p>
