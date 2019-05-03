@@ -34,8 +34,8 @@ class Index extends React.Component {
 					<ol>
 						<li>HTML, Markdown;</li>
 						<li>CSS, LESS, SCSS, Stylus, PostCSS;</li>
-						<li>JavaScript, JQuery;</li>
-						<li>ES6/7/8, Node.js, React, Next.js, Angular;</li>
+						<li>JavaScript, ES6<sup>7<sup>8</sup></sup>, Node.js;</li>
+						<li>JQuery, React, Next.js;</li>
 						<li>XML, XSLT, XPath, SVG;</li>
 						<li>PHP, Parser;</li>
 						<li>MySQL;</li>
@@ -266,6 +266,15 @@ class Index extends React.Component {
 						<li><a href="https://www.artlebedev.ru/everything/hp/site4/">Hewlett-Packard</a>.</li>
 					</ul>
 				</section>
+
+
+				<section id="speaker">
+					<h2>{t( 'Speaker' )}</h2>
+					<ul>
+						<li><a href="https://communities.by/events/miniq-vitebsk-14/talks/684">{t( 'CSS-Practice' )}</a></li>
+					</ul>
+				</section>
+
 
 				<section id="education">
 					<h2>{t( 'education' )}</h2>
