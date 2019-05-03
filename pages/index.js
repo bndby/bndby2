@@ -32,8 +32,8 @@ class Index extends React.Component {
 				<section id="skills">
 					<h2>{t( 'skills' )}</h2>
 					<ol>
-						<li>HTML, Markdown;</li>
-						<li>CSS, LESS, SCSS, Stylus, PostCSS;</li>
+						<li>HTML, <small>Markdown</small>;</li>
+						<li>CSS, <small>LESS, SCSS, Stylus, PostCSS</small>;</li>
 						<li>JavaScript, ES6<sup>7<sup>8</sup></sup>, Node.js;</li>
 						<li>JQuery, React, Next.js;</li>
 						<li>XML, XSLT, XPath, SVG;</li>
