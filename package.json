@@ -31,7 +31,8 @@
     "react-markdown": "^4.0.6",
     "react-photo-gallery": "^6.3.1",
     "react-sticky-box": "^0.8.0",
-    "react-yandex-maps": "^3.0.2"
+    "react-yandex-maps": "^3.0.2",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

@@ -2,32 +2,33 @@
  * 
  */
 import Head from 'next/head'
-import Link from 'next/link'
+import fetch from 'isomorphic-unfetch'
 import Layout from '../components/Layout'
 import React from 'react'
 import PropTypes from 'prop-types'
+import * as Convert from 'xml-js'
 
-/**
- * 
- */
-const BookLink = ( props ) => (
-	<p>
-		{ props.date ? <><time>{ props.date }</time><br /></> : '' }
-		<Link as={`/books/${ props.slug }`} href={`/book?slug=${ props.slug }`}>
-			<a>{ props.title }</a>
-		</Link>
-		{ props.children ? <><br />{ props.children }</> : '' }
-	</p>
+const Book = ( props ) => (
+	<>
+		<h2>{props.title}</h2>
+		<p className="book" key={props.index}>
+			<img src={props.img} align="left" width="80" />
+			<i>{props.author}</i>
+			<br />
+			<small dangerouslySetInnerHTML={{
+				__html: props.desc
+			}} />
+			<br clear="all" />
+		</p>
+	</>
 )
 
-/**
- * 
- */
-BookLink.propTypes = {
-	slug: PropTypes.string.isRequired,
-	title: PropTypes.string.isRequired,
-	date: PropTypes.string,
-	children: PropTypes.node
+Book.propTypes = {
+	title: PropTypes.string,
+	index: PropTypes.number,
+	img: PropTypes.string,
+	author: PropTypes.string,
+	desc: PropTypes.string
 }
 
 /**
@@ -35,13 +36,55 @@ BookLink.propTypes = {
  */
 class Books extends React.Component {
 
+	
+
 	static async getInitialProps() {
+
+		const apiKey = 'EAPtbpgXDcJuonruUqHe1A'
+		const userId = '96877882'
+		const shelf = 'read'
+		const sort = 'date_read'
+
+		const apiPoint = `https://cors-anywhere.herokuapp.com/https://www.goodreads.com/review/list?v=2&id=${userId}&shelf=${shelf}&sort=${sort}&order=d&page=1&per_page=200&key=${apiKey}`
+
+
+		const res = await fetch( apiPoint, {
+			method: 'GET',
+			headers: {
+				'content-type': 'application/xml',
+				'access-control-allow-origin': '*'
+			},
+			credentials: 'omit'
+		})
+
+		const data = await res.text()
+
+		const json = Convert.xml2js(data, {
+			ignoreComment: true,
+			alwaysChildren: true
+		})
+
 		return {
-			namespacesRequired: ['common']
+			namespacesRequired: ['common'],
+			data: json
 		}
 	}
 
 	render(){
+		const books = this.props.data.elements[0].elements[2].elements
+		
+		let renderBooks = []
+		books.map( function( book, index ){
+			// console.log( book )
+			renderBooks.push(
+				<Book
+					key={index}
+					title={book.elements[1].elements[5].elements[0].text}
+					img={book.elements[1].elements[7].elements[0].text}
+					desc={book.elements[1].elements[20].elements[0].text}
+					author={book.elements[1].elements[21].elements[0].elements[1].elements[0].text}
+				/> )
+		})
 
 		return (
 			<Layout nolang={true}>
@@ -50,20 +93,15 @@ class Books extends React.Component {
 				</Head>
 
 				<h1>Книги</h1>
-
-				<BookLink slug="2019-04-01-doroga" title="Дорога" date="1.04.2019">После катастрофы Отец и Сын идут через выжженные земли, пересекая континент. Всю книгу пронизывают глубокие, ранящие в самое сердце вопросы. Есть ли смысл жить, если будущего — нет? Вообще нет. Есть ли смысл жить ради детей?</BookLink>
-
-				<BookLink slug="2019-03-26-vilyam-vilson" title="Вильям Вильсон" date="26.03.2019">Вильям Вильсон, сумасброд и раб дурных привычек, на протяжении своей жизни постоянно сталкивается со своим полным тёзкой, который еще и родился в один день с ним, но является его полной противоположностью по характеру</BookLink>
-
-				<BookLink slug="2019-03-19-volny-gasyat-veter" title="Волны гасят ветер" date="19.03.2019">О проблемах добра и зла, насильственного внедрения добра, «вертикальных прогрессов» и целях, которые ставит перед собой человечество и разум вообще, в конечном счете, о проблемах гуманизма и человечности.</BookLink>
-
-				<BookLink slug="2019-03-16-stepfordskie-zheny" title="Степфордские жены, Айра Левин" date="16.03.2019">Для Джоанны, ее мужа Уолтера и их детей переезд в живописный Степфорд — событие слишком чудесное, чтобы быть правдой. Но за идиллическим фасадом города скрывается страшная тайна, тайна настолько ужасная, что для каждого вновь прибывшего она открывается со своей стороны</BookLink>
-
-				<BookLink slug="2019-03-15-rasskaz-sluzhanki" title="Рассказ Служанки, Маргарет Этвуд" date="15.03.2019">В дивном новом мире женщины не имеют права владеть собственностью, работать, любить, читать и писать. Они не могут бегать по утрам, устраивать пикники и вечеринки, им запрещено вторично выходить замуж. Им оставлена лишь одна функция</BookLink>
+				{renderBooks}
 
 			</Layout>
 		)
 	}
+}
+
+Books.propTypes = {
+	data: PropTypes.object
 }
 
 /**

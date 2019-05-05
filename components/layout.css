@@ -150,6 +150,14 @@ time {
         }
     }
 
+    & p.book {
+        & img {
+            width: 80px;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+        }
+    }
+
     & pre {
         font-size: 0.8rem;
         white-space: pre-wrap;

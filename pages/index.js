@@ -106,7 +106,7 @@ class Index extends React.Component {
 					<h3>
 						<img src="/static/images/klen.png" alt="Klen" /><br />
 						{ i18n.language === 'ru' && 'Рекламное агентство «Клён»' }
-						{ i18n.language === 'en' && 'Advertising agency "Klen"' }
+						{ i18n.language === 'en' && 'Advertising agency «Klen»' }
 					</h3>
 					<h4>{ t( 'November' ) } 2009 — 2016</h4>
 
