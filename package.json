@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
+    "cacheable-response": "^1.6.5",
     "eslint": "^5.14.1",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-react-hooks": "^1.4.0",
