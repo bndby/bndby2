@@ -34,15 +34,15 @@ class Index extends React.Component {
 					<ol>
 						<li>HTML, <small>Markdown</small>;</li>
 						<li>CSS, <small>LESS, SCSS, Stylus, PostCSS</small>;</li>
-						<li>JavaScript, ES6<sup>7<sup>8</sup></sup>, Node.js;</li>
+						<li>JavaScript, <small>ES6+, Node.js</small>;</li>
 						<li>JQuery, React, Next.js;</li>
 						<li>XML, XSLT, XPath, SVG;</li>
 						<li>PHP, Parser;</li>
 						<li>MySQL;</li>
 						<li>WAI-ARIA;</li>
-						<li>Wordpress, Symphony CMS, Mediawiki, Tilda, Github Pages, Cloudflare.</li>
-						<li>Gulp, Webpack, Git</li>
-						<li>Linux, Windows</li>
+						<li><small>Wordpress, Symphony CMS, Mediawiki, Tilda, Github Pages, Cloudflare</small>;</li>
+						<li>Gulp, Webpack, Git;</li>
+						<li>Linux, Windows.</li>
 					</ol>
 				</section>
 
@@ -105,36 +105,32 @@ class Index extends React.Component {
 
 					<h3>
 						<img src="/static/images/klen.png" alt="Klen" /><br />
-						{ i18n.language === 'ru' && 'Рекламное агентство «Клён»' }
-						{ i18n.language === 'en' && 'Advertising agency «Klen»' }
+						{ t('Klen') }
 					</h3>
 					<h4>{ t( 'November' ) } 2009 — 2016</h4>
 
-					{ i18n.language === 'ru' && <p>Работал над созданием, развитием и поддержкой сайтов агентства. В свободное время писал сайты для клиентов агентства или удаленно занимался фрилансом. Для рекламного агентства создал и поддерживал сайты:</p> }
-					{ i18n.language === 'en' && <p>I worked on the creation, development and support of agency sites. In my free time I wrote websites for clients of an agency or remotely freelancing. For an advertising agency created and maintained sites:</p> }
+					<p>{ t('Klen-desc') }</p>
 
 					<dl>
 						<dt>
 							<a href="http://klen.by/">
-								{ i18n.language === 'ru' && 'Рекламное агентство «Клён»' }
-								{ i18n.language === 'en' && 'Advertising agency Klen' }
+								{ t('Klen') }
 							</a>
 						</dt>
 						<dd>
 							<time>{ t( 'Jule' ) } 2015</time>
 							<br />
-							Symphony CMS, XSLT
+							{t( 'development' )}: Symphony CMS, XSLT
 						</dd>
 						<dt>
 							<a href="http://skinali.by/">
-								{ i18n.language === 'ru' && 'Каталог скиналей' }
-								{ i18n.language === 'en' && 'Skinali catalog' }
+								{ t('Skinali-catalog') }
 							</a>
 						</dt>
 						<dd>
 							<time>{ t( 'September' ) } 2015</time>
 							<br />
-							Symphony CMS, XSLT
+							{t( 'development' )}: Symphony CMS, XSLT
 						</dd>
 					</dl>
 
@@ -144,7 +140,7 @@ class Index extends React.Component {
 					</p>
 					<dl>
 						<dt><a href="https://fitness.edu.au/">Australian Institute of Fitness</a></dt>
-						<dd>Symphony CMS, XSLT, HTML, CSS, JS, UIKit</dd>
+						<dd>{t( 'support' )}: Symphony CMS, XSLT, HTML, CSS, JS, UIKit</dd>
 
 						<dt>
 							<a href="http://ratur.by/">
@@ -152,7 +148,7 @@ class Index extends React.Component {
 								{ i18n.language === 'en' && 'Drilling company' }
 							</a>
 						</dt>
-						<dd>Wordpress</dd>
+						<dd>{t( 'development' )}: Wordpress</dd>
 
 						<dt>
 							<a href="http://teplo-vitebsk.by/">
@@ -160,7 +156,7 @@ class Index extends React.Component {
 								{ i18n.language === 'en' && 'Heating Equipment Store' }
 							</a>
 						</dt>
-						<dd>Wordpress, WooCommerce</dd>
+						<dd>{t( 'development' )}: Wordpress, WooCommerce</dd>
 
 					</dl>
 
