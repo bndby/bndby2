@@ -7,9 +7,6 @@ import Head from 'next/head'
 import Layout from '../components/Layout'
 import { i18n, withNamespaces } from '../i18n'
 import PropTypes from 'prop-types'
-import { Query } from 'react-apollo'
-import { format } from 'date-fns'
-import { isPreviewing, clearPreview } from 'apollo-link-prime'
 
 export const query = gql`
 	query {
