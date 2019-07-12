@@ -1,15 +1,15 @@
 /**
- * 
+ *
  */
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link, withNamespaces } from '../i18n'
-import {default as Link2} from 'next/link'
+import { default as Link2 } from 'next/link'
 
 import './footer.css'
 
 /**
- * 
+ *
  */
 class Footer extends React.Component {
 	static async getInitialProps() {
@@ -18,19 +18,16 @@ class Footer extends React.Component {
 		}
 	}
 
-	render(){
+	render() {
 		const { t } = this.props
 
 		return (
 			<footer className="footer">
 				<Link href="/tests">
-					<a>{ t( 'tests' ) }</a>
+					<a>{t('tests')}</a>
 				</Link>
 				<Link2 href="/notes">
 					<a>Заметки (RU)</a>
-				</Link2>
-				<Link2 href="/books">
-					<a>Книги (RU)</a>
 				</Link2>
 			</footer>
 		)
@@ -38,10 +35,10 @@ class Footer extends React.Component {
 }
 
 /**
- * 
+ *
  */
 Footer.propTypes = {
 	t: PropTypes.func
 }
 
-export default withNamespaces( 'common' )( Footer )
+export default withNamespaces('common')(Footer)

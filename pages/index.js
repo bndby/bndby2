@@ -406,6 +406,8 @@ class Index extends React.Component {
 							<a href="https://communities.by/events/miniq-vitebsk-14/talks/684">
 								{t('CSS-Practice')}
 							</a>
+							<br />
+							<time>{t('April')} 2019</time>
 						</li>
 					</ul>
 				</section>
