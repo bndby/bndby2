@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 import PropTypes from 'prop-types'
 import Logo from './Logo'
@@ -15,14 +15,14 @@ import './layout.css'
 Router.events.on('routeChangeComplete', url => gtag.pageview(url))
 
 /**
- * 
- * @param {*} props 
+ *
+ * @param {*} props
  */
-const Layout = ( props ) => (
+const Layout = props => (
 	<div className="layout">
 		<div className="layout__logo">
 			<Logo />
-			{ !props.nolang && <LanguageSelector /> }
+			{!props.nolang && <LanguageSelector />}
 		</div>
 		<div className="layout__navigation">
 			<Navigation />
@@ -36,11 +36,11 @@ const Layout = ( props ) => (
 )
 
 /**
- * 
+ *
  */
 Layout.propTypes = {
-	children: PropTypes.node
+	children: PropTypes.node,
+	nolang: PropTypes.string
 }
 
-export default withNamespaces( 'common' )( Layout )
-
+export default withNamespaces('common')(Layout)
