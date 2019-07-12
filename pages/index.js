@@ -70,7 +70,6 @@ class Index extends React.Component {
 					</h4>
 
 					<dl>
-						{/* PRODALIM */}
 						<dt>
 							<a href="https://prodalim.com/">Prodalim Group</a>
 						</dt>
@@ -80,7 +79,6 @@ class Index extends React.Component {
 							{t('development')}: PostCSS, ES6, Webpack, Gulp
 						</dd>
 
-						{/* BOGORAD */}
 						<dt>
 							<a href="https://nbogorad.com/">
 								Natali Bogorad&#8217;s Design cafe
@@ -93,7 +91,6 @@ class Index extends React.Component {
 							Gulp
 						</dd>
 
-						{/* MOSCOW SEASONS */}
 						<dt>
 							<a href="https://moscowseasons.com/">
 								Moscow Seasons

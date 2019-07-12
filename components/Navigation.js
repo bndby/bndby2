@@ -2,7 +2,6 @@
  *
  */
 import React from 'react'
-import { i18n, Link, withTranslation } from '../i18n'
 
 import './navigation.css'
 
@@ -10,15 +9,7 @@ import './navigation.css'
  *
  */
 class Navigation extends React.Component {
-	static async getInitialProps() {
-		return {
-			namespacesRequired: ['common']
-		}
-	}
-
 	render() {
-		const { t } = this.props
-
 		return (
 			<div className="navigation">
 				<ul>
@@ -55,4 +46,4 @@ class Navigation extends React.Component {
 /**
  *
  */
-export default withTranslation('common')(Navigation)
+export default Navigation
