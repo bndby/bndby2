@@ -2,30 +2,10 @@
  *
  */
 import React from 'react'
-import gql from 'graphql-tag'
 import Head from 'next/head'
 import Layout from '../components/Layout'
-import { i18n, withNamespaces } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 import PropTypes from 'prop-types'
-
-export const query = gql`
-	query {
-		allBook {
-			edges {
-				node {
-					_meta {
-						updatedAt
-					}
-					id
-					title
-					author
-					date
-					desc
-				}
-			}
-		}
-	}
-`
 
 /**
  *
@@ -447,4 +427,4 @@ Index.propTypes = {
 	t: PropTypes.func
 }
 
-export default withNamespaces('common')(Index)
+export default withTranslation('common')(Index)

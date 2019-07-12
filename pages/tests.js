@@ -1,23 +1,22 @@
 /**
- * 
+ *
  */
 import React from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Layout from '../components/Layout'
-import { i18n, Link, withNamespaces } from '../i18n'
+import { i18n, Link, withTranslation } from '../i18n'
 
 /**
- * 
+ *
  */
 class Tests extends React.Component {
-
 	static async getInitialProps() {
 		return {
 			namespacesRequired: ['common']
 		}
 	}
-	
+
 	pages = [
 		{
 			href: '/tests/hex-rgb',
@@ -50,11 +49,6 @@ class Tests extends React.Component {
 			en: 'swgoh'
 		},
 		{
-			href: '/tests/swiper',
-			ru: 'Swiper',
-			en: 'Swiper'
-		},
-		{
 			href: '/tests/yamap',
 			ru: 'YaMap',
 			en: 'YaMap'
@@ -72,37 +66,34 @@ class Tests extends React.Component {
 		return (
 			<Layout>
 				<Head>
-					<title>{ t( 'tests' ) }</title>
+					<title>{t('tests')}</title>
 				</Head>
 
-				<h1>{ t( 'tests' ) }</h1>
+				<h1>{t('tests')}</h1>
 
 				<ul>
-					{
-						this.pages.map( ( page, index ) => (
-							<li key={ index }>
-								<Link href={ page.href }>
-									<a>
-										{ i18n.language === 'ru' && page.ru }
-										{ i18n.language === 'en' && page.en }
-									</a>
-								</Link>
-							</li>
-						))
-					}
+					{this.pages.map((page, index) => (
+						<li key={index}>
+							<Link href={page.href}>
+								<a>
+									{i18n.language === 'ru' && page.ru}
+									{i18n.language === 'en' && page.en}
+								</a>
+							</Link>
+						</li>
+					))}
 				</ul>
-
 			</Layout>
 		)
 	}
 }
 
 /**
- * 
+ *
  */
 Tests.propTypes = {
 	children: PropTypes.node,
 	t: PropTypes.func
 }
 
-export default withNamespaces( 'common' )( Tests )
+export default withTranslation('common')(Tests)

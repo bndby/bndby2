@@ -1,12 +1,12 @@
 /**
- * 
+ *
  */
-import { i18n, withNamespaces } from '../i18n'
+import { i18n, withTranslation } from '../i18n'
 import React from 'react'
 import PropTypes from 'prop-types'
 
 /**
- * 
+ *
  */
 class LanguageSelector extends React.Component {
 	static async getInitialProps() {
@@ -15,12 +15,19 @@ class LanguageSelector extends React.Component {
 		}
 	}
 
-	render(){
+	render() {
 		const { t } = this.props
 
 		return (
 			<div className="languageselector">
-				<button className="link" onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ru' : 'en')}>
+				<button
+					className="link"
+					onClick={() =>
+						i18n.changeLanguage(
+							i18n.language === 'en' ? 'ru' : 'en'
+						)
+					}
+				>
 					{t('language-selector')}
 				</button>
 				<style jsx>{`
@@ -44,10 +51,10 @@ class LanguageSelector extends React.Component {
 }
 
 /**
- * 
+ *
  */
 LanguageSelector.propTypes = {
 	t: PropTypes.func
 }
 
-export default withNamespaces('common')( LanguageSelector )
+export default withTranslation('common')(LanguageSelector)

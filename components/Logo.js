@@ -1,13 +1,13 @@
 /**
- * 
+ *
  */
 import React from 'react'
-import { i18n, Link, withNamespaces } from '../i18n'
+import { i18n, Link, withTranslation } from '../i18n'
 
 import './logo.css'
 
 /**
- * 
+ *
  */
 class Logo extends React.Component {
 	static async getInitialProps() {
@@ -16,14 +16,18 @@ class Logo extends React.Component {
 		}
 	}
 
-	render(){
+	render() {
 		const { t } = this.props
 
 		return (
 			<div className="logo">
 				<Link href="/">
 					<a>
-						<img className="logo__image" src="/static/images/logo.svg" alt={ t( 'name' ) } />
+						<img
+							className="logo__image"
+							src="/static/images/logo.svg"
+							alt={t('name')}
+						/>
 					</a>
 				</Link>
 			</div>
@@ -32,6 +36,6 @@ class Logo extends React.Component {
 }
 
 /**
- * 
+ *
  */
-export default withNamespaces( 'common' )( Logo )
+export default withTranslation('common')(Logo)

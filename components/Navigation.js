@@ -2,7 +2,7 @@
  *
  */
 import React from 'react'
-import { i18n, Link, withNamespaces } from '../i18n'
+import { i18n, Link, withTranslation } from '../i18n'
 
 import './navigation.css'
 
@@ -55,4 +55,4 @@ class Navigation extends React.Component {
 /**
  *
  */
-export default withNamespaces('common')(Navigation)
+export default withTranslation('common')(Navigation)

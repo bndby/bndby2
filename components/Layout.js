@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import Logo from './Logo'
 import Navigation from './Navigation'
 import Footer from './Footer'
-import { withNamespaces } from '../i18n'
+import { withTranslation } from '../i18n'
 import LanguageSelector from './LanguageSelector'
 import Router from 'next/router'
 import * as gtag from '../lib/gtag'
@@ -43,4 +43,4 @@ Layout.propTypes = {
 	nolang: PropTypes.string
 }
 
-export default withNamespaces('common')(Layout)
+export default withTranslation('common')(Layout)

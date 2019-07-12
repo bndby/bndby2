@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link, withNamespaces } from '../i18n'
+import { Link, withTranslation } from '../i18n'
 import { default as Link2 } from 'next/link'
 
 import './footer.css'
@@ -41,4 +41,4 @@ Footer.propTypes = {
 	t: PropTypes.func
 }
 
-export default withNamespaces('common')(Footer)
+export default withTranslation('common')(Footer)

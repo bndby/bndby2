@@ -2,25 +2,22 @@ import React from 'react'
 import fetch from 'isomorphic-unfetch'
 import Layout from '../../components/Layout'
 import ReactMarkdown from 'react-markdown'
-import { i18n, withNamespaces } from '../../i18n'
+import { i18n, withTranslation } from '../../i18n'
 import PropTypes from 'prop-types'
 
 /**
- * 
- * @param {*} props 
+ *
+ * @param {*} props
  */
-const GraphQL = (props) => (
+const GraphQL = props => (
 	<Layout>
-
 		<h1>GraphQL</h1>
 
 		<ReactMarkdown source={props.pages[0].node.content} />
-		
 	</Layout>
 )
-  
-GraphQL.getInitialProps = async function( context ) {
 
+GraphQL.getInitialProps = async function(context) {
 	const locale = context.req ? context.req.locale : 'en'
 
 	const query = `query cvPage ($slug: String) {
@@ -42,11 +39,11 @@ GraphQL.getInitialProps = async function( context ) {
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
 			query: query,
-			'slug': 'cv'
-		}),
+			slug: 'cv'
+		})
 	})
 	const data = await res.json()
-  
+
 	return {
 		pages: data.data.allPage.edges,
 		namespacesRequired: ['common']
@@ -54,10 +51,10 @@ GraphQL.getInitialProps = async function( context ) {
 }
 
 /**
- * 
+ *
  */
 GraphQL.propTypes = {
 	pages: PropTypes.array
 }
 
-export default withNamespaces( 'common' )( GraphQL )
+export default withTranslation('common')(GraphQL)
