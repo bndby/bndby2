@@ -4219,7 +4219,7 @@ next-graphql-react@^3.0.2:
     "@babel/runtime" "^7.4.4"
     object-assign "^4.1.1"
 
-next-i18next@^0.45.1:
+next-i18next@^0.45.0:
   version "0.45.0"
   resolved "https://registry.yarnpkg.com/next-i18next/-/next-i18next-0.45.0.tgz#77139ef3f55d4f6616b331ee93e984d9d5f297f8"
   integrity sha512-XOmfneldOU4u7qGew4HHlyEYYaf89fGjQZfE+Amiaz9opuKD0E+OEYvnC5qIAuSmFc0jcjajCRl1LExNeFcn0g==
