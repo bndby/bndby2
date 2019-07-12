@@ -60,7 +60,7 @@ class Index extends React.Component {
 						<li>
 							JavaScript, <small>ES6+, Node.js</small>;
 						</li>
-						<li>JQuery, React, Next.js;</li>
+						<li>JQuery, React, Next.js, Angular 2+;</li>
 						<li>XML, XSLT, XPath, SVG;</li>
 						<li>PHP, Parser;</li>
 						<li>MySQL;</li>
@@ -90,6 +90,17 @@ class Index extends React.Component {
 					</h4>
 
 					<dl>
+						{/* PRODALIM */}
+						<dt>
+							<a href="https://prodalim.com/">Prodalim Group</a>
+						</dt>
+						<dd>
+							<time>{t('June')} 2019</time>
+							<br />
+							{t('development')}: PostCSS, ES6, Webpack, Gulp
+						</dd>
+
+						{/* BOGORAD */}
 						<dt>
 							<a href="https://nbogorad.com/">
 								Natali Bogorad&#8217;s Design cafe
@@ -98,10 +109,11 @@ class Index extends React.Component {
 						<dd>
 							<time>{t('March')} 2019</time>
 							<br />
-							{t('development')}: XSLT, PostCSS, CSSNext, ES6,
-							Webpack, Gulp
+							{t('development')}: XSLT, PostCSS, ES6, Webpack,
+							Gulp
 						</dd>
 
+						{/* MOSCOW SEASONS */}
 						<dt>
 							<a href="https://moscowseasons.com/">
 								Moscow Seasons
