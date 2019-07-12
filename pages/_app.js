@@ -4,7 +4,7 @@ import { appWithTranslation } from '../i18n'
 
 class Bndby2 extends App {
 	render() {
-		const { Component, pageProps } = this.props
+		const { Component, pageProps, graphql } = this.props
 		return (
 			<Container>
 				<Component {...pageProps} />
@@ -13,4 +13,4 @@ class Bndby2 extends App {
 	}
 }
 
-export default appWithTranslation(Bndby2)
+export default appWithTranslation( Bndby2 )

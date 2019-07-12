@@ -1,35 +1,46 @@
 {
-	"name": "bndby2",
-	"version": "1.1.0",
-	"description": "bnd.by site, nextjs version",
-	"main": "index.js",
-	"scripts": {
-		"dev": "node server.js",
-		"build": "next build",
-		"start": "NODE_ENV=production node server.js -p $PORT",
-		"heroku-postbuild": "npm run build",
-		"export": "next export"
-	},
-	"author": "bnd.by",
-	"license": "ISC",
-	"dependencies": {
-		"@zeit/next-css": "^1.0.1",
-		"express": "^4.17.1",
-		"isomorphic-unfetch": "^3.0.0",
-		"next": "^9.0.1",
-		"prop-types": "^15.7.2",
-		"react": "^16.8.6",
-		"react-dom": "^16.8.6",
-		"next-i18next": "^0.45.0"
-	},
-	"devDependencies": {
-		"babel-eslint": "^10.0.2",
-		"cacheable-response": "^1.6.12",
-		"eslint": "^6.0.1",
-		"eslint-plugin-react": "^7.14.2",
-		"eslint-plugin-react-hooks": "^1.6.1",
-		"postcss-color-function": "^4.1.0",
-		"postcss-import": "^12.0.1",
-		"postcss-preset-env": "^6.7.0"
-	}
+  "name": "bndby2",
+  "version": "1.0.0",
+  "description": "bnd.by site, nextjs version",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js -p $PORT",
+    "heroku-postbuild": "npm run build",
+    "export": "next export"
+  },
+  "author": "bnd.by",
+  "license": "ISC",
+  "dependencies": {
+    "@zeit/next-css": "^1.0.1",
+    "cross-fetch": "^3.0.1",
+    "express": "^4.16.4",
+    "graphql-react": "^8.1.1",
+    "isomorphic-unfetch": "^3.0.0",
+    "next": "^8.0.1",
+    "next-graphql-react": "^3.0.0",
+    "next-i18next": "^0.32.1",
+    "next-images": "^1.0.4",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-highlight": "^0.12.0",
+    "react-id-swiper": "^1.6.8",
+    "react-images": "^0.5.19",
+    "react-markdown": "^4.0.6",
+    "react-photo-gallery": "^6.3.1",
+    "react-sticky-box": "^0.8.0",
+    "react-yandex-maps": "^3.0.2",
+    "xml-js": "^1.6.11"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.14.1",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react-hooks": "^1.4.0",
+    "postcss-color-function": "^4.0.1",
+    "postcss-import": "^12.0.1",
+    "postcss-preset-env": "^6.5.0"
+  }
 }
