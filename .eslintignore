@@ -1,0 +1,4 @@
+src/**/__tests__/**
+/.git
+/.vscode
+node_modules

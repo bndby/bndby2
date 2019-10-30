@@ -1,46 +1,58 @@
 {
-  "name": "bndby2",
-  "version": "1.0.0",
-  "description": "bnd.by site, nextjs version",
-  "main": "index.js",
+  "name": "bndby3",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "node server.js",
+    "dev": "next dev",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js -p $PORT",
-    "heroku-postbuild": "npm run build",
-    "export": "next export"
+    "start": "next start",
+    "export": "next export",
+    "lint": "eslint './src/**/*.{ts,tsx}'",
+    "lint:fix": "eslint './src/**/*.{ts,tsx}' --fix",
+    "prettier": "prettier --write './src/**/*.{ts,tsx}'"
   },
-  "author": "bnd.by",
-  "license": "ISC",
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
-    "cross-fetch": "^3.0.1",
-    "express": "^4.16.4",
-    "graphql-react": "^8.1.1",
-    "isomorphic-unfetch": "^3.0.0",
-    "next": "^8.0.1",
-    "next-graphql-react": "^3.0.0",
-    "next-i18next": "^0.32.1",
-    "next-images": "^1.0.4",
-    "prop-types": "^15.7.2",
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1",
-    "react-highlight": "^0.12.0",
-    "react-id-swiper": "^1.6.8",
-    "react-images": "^0.5.19",
-    "react-markdown": "^4.0.6",
-    "react-photo-gallery": "^6.3.1",
-    "react-sticky-box": "^0.8.0",
-    "react-yandex-maps": "^3.0.2",
-    "xml-js": "^1.6.11"
+    "next": "9.1.1",
+    "react": "16.11.0",
+    "react-dom": "16.11.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.(ts|tsx)": [
+      "npm run lint:fix",
+      "git add"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.14.1",
-    "eslint-plugin-react": "^7.12.4",
-    "eslint-plugin-react-hooks": "^1.4.0",
-    "postcss-color-function": "^4.0.1",
+    "@types/node": "^12.11.5",
+    "@types/react": "^16.9.9",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-config-react": "^1.1.7",
+    "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.2",
+    "postcss-color-function": "^4.1.0",
     "postcss-import": "^12.0.1",
-    "postcss-preset-env": "^6.5.0"
+    "postcss-preset-env": "^6.7.0",
+    "prettier": "^1.18.2",
+    "typescript": "^3.6.4"
   }
 }
