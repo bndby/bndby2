@@ -1,11 +1,10 @@
 /**
  *
  */
-import Logo from "./Logo";
-import Navigation from "./Navigation";
+import Logo from './Logo';
+import Navigation from './Navigation';
 
-import "./layout.css";
-import Link from "next/link";
+import './layout.css';
 
 /**
  *
