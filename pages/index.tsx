@@ -45,6 +45,15 @@ const Home = () => (
 
       <dl>
         <dt>
+          <a href="https://geodata.co.il/">מערכת ניהול ועדת תמרור</a>
+        </dt>
+        <dd>
+          <time>July 2019</time>
+          <br />
+          Frontend development: Angular 7, Typescript, PrimeNG, REST API
+        </dd>
+
+        <dt>
           <a href="https://nbogorad.com/">Natali Bogorad&#8217;s Design cafe</a>
         </dt>
         <dd>
@@ -242,11 +251,14 @@ const Home = () => (
 
     <section id="speaker">
       <h2>Speaker</h2>
-      <ul>
-        <li>
-          <a href="https://communities.by/events/miniq-vitebsk-14/talks/684">CSS Practice</a>
-        </li>
-      </ul>
+      <h3>MiniQ #14</h3>
+      <h4>April 2019</h4>
+      <p>
+        <a href="https://communities.by/events/miniq-vitebsk-14/talks/684">CSS Practice</a>,{' '}
+        <a href="https://community-z.com/communities/vitebsk-miniq/albums/7">Photos</a>,{' '}
+        <a href="https://www.slideshare.net/vitebsk-miniq/css-142758766">Slides</a>,{' '}
+        <a href="https://github.com/bndby/doklad-css">Slides on Github</a>
+      </p>
     </section>
 
     <section id="education">
