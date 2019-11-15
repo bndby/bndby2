@@ -259,6 +259,13 @@ const Home = () => (
         <a href="https://www.slideshare.net/vitebsk-miniq/css-142758766">Slides</a>,{' '}
         <a href="https://github.com/bndby/doklad-css">Slides on Github</a>
       </p>
+      
+      <h3>MiniQ #20</h3>
+      <h4>November 2019</h4>
+      <p>
+        <a href="https://community-z.com/events/miniq-vitebsk-20/talks/1741">Forward to the Past</a>,{' '}
+        <a href="https://github.com/bndby/doklad-jamstack">Slides on Github</a>
+      </p>
     </section>
 
     <section id="education">
