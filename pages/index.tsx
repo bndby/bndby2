@@ -264,6 +264,8 @@ const Home = () => (
       <h4>November 2019</h4>
       <p>
         <a href="https://community-z.com/events/miniq-vitebsk-20/talks/1741">Forward to the Past</a>,{' '}
+        <a href="https://community-z.com/communities/vitebsk-miniq/albums/50">Photos</a>,{' '}
+        <a href="https://www.slideshare.net/vitebsk-miniq/ss-197345518">Slides</a>,{' '}
         <a href="https://github.com/bndby/doklad-jamstack">Slides on Github</a>
       </p>
     </section>
