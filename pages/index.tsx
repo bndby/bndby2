@@ -251,14 +251,6 @@ const Home = () => (
 
     <section id="speaker">
       <h2>Speaker</h2>
-      <h3>MiniQ #14</h3>
-      <h4>April 2019</h4>
-      <p>
-        <a href="https://communities.by/events/miniq-vitebsk-14/talks/684">CSS Practice</a>,{' '}
-        <a href="https://community-z.com/communities/vitebsk-miniq/albums/7">Photos</a>,{' '}
-        <a href="https://www.slideshare.net/vitebsk-miniq/css-142758766">Slides</a>,{' '}
-        <a href="https://github.com/bndby/doklad-css">Slides on Github</a>
-      </p>
       
       <h3>MiniQ #20</h3>
       <h4>November 2019</h4>
@@ -268,6 +260,16 @@ const Home = () => (
         <a href="https://www.slideshare.net/vitebsk-miniq/ss-197345518">Slides</a>,{' '}
         <a href="https://github.com/bndby/doklad-jamstack">Slides on Github</a>
       </p>
+      
+      <h3>MiniQ #14</h3>
+      <h4>April 2019</h4>
+      <p>
+        <a href="https://communities.by/events/miniq-vitebsk-14/talks/684">CSS Practice</a>,{' '}
+        <a href="https://community-z.com/communities/vitebsk-miniq/albums/7">Photos</a>,{' '}
+        <a href="https://www.slideshare.net/vitebsk-miniq/css-142758766">Slides</a>,{' '}
+        <a href="https://github.com/bndby/doklad-css">Slides on Github</a>
+      </p>
+      
     </section>
 
     <section id="education">
