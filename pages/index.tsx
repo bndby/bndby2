@@ -19,10 +19,9 @@ const Home = () => (
         <li>
           CSS, <small>LESS, SCSS, Stylus, PostCSS</small>;
         </li>
-        <li>
-          JavaScript, ES6+, <small>Typescript, Node.js</small>;
-        </li>
-        <li>JQuery, React, Next.js, Angular 2+;</li>
+        <li>JavaScript ES5/ES6+, Typescript;</li>
+        <li>React, Angular 2+;</li>
+        <li>React Native</li>
         <li>XML, XSLT, XPath, SVG;</li>
         <li>PHP, Parser;</li>
         <li>MySQL;</li>
@@ -31,6 +30,30 @@ const Home = () => (
         <li>Gulp, Webpack, Git</li>
         <li>Linux, Windows</li>
       </ol>
+    </section>
+
+    <section id="projects">
+      <h2>Open source projects</h2>
+
+      <h3>xsltdev</h3>
+      <p>
+        Documentation about web technologies: <a href="https://xsltdev.ru/">xsltdev.ru</a>
+      </p>
+      <p>
+        Github repositories: <a href="https://github.com/xsltdev">github.com/xsltdev</a>
+      </p>
+
+      <h3>Fuflomycin</h3>
+      <p>
+        Database with bad drugs in JSON format.{' '}
+        <a href="https://play.google.com/store/apps/details?id=com.fuflomycin_rn">
+          React native app
+        </a>
+        , <a href="https://t.me/FuflomycinBot">Telegram bot</a> for use this database.
+      </p>
+      <p>
+        Github repositories: <a href="https://github.com/fuflomycin">github.com/fuflomycin</a>
+      </p>
     </section>
 
     <section id="experience">
@@ -251,16 +274,16 @@ const Home = () => (
 
     <section id="speaker">
       <h2>Speaker</h2>
-      
+
       <h3>MiniQ #20</h3>
       <h4>November 2019</h4>
       <p>
-        <a href="https://community-z.com/events/miniq-vitebsk-20/talks/1741">Forward to the Past</a>,{' '}
-        <a href="https://community-z.com/communities/vitebsk-miniq/albums/50">Photos</a>,{' '}
+        <a href="https://community-z.com/events/miniq-vitebsk-20/talks/1741">Forward to the Past</a>
+        , <a href="https://community-z.com/communities/vitebsk-miniq/albums/50">Photos</a>,{' '}
         <a href="https://www.slideshare.net/vitebsk-miniq/ss-197345518">Slides</a>,{' '}
         <a href="https://github.com/bndby/doklad-jamstack">Slides on Github</a>
       </p>
-      
+
       <h3>MiniQ #14</h3>
       <h4>April 2019</h4>
       <p>
@@ -269,7 +292,6 @@ const Home = () => (
         <a href="https://www.slideshare.net/vitebsk-miniq/css-142758766">Slides</a>,{' '}
         <a href="https://github.com/bndby/doklad-css">Slides on Github</a>
       </p>
-      
     </section>
 
     <section id="education">
