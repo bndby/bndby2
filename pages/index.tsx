@@ -58,13 +58,20 @@ const Home = () => (
 
     <section id="experience">
       <h2>Experience</h2>
-
+      
+      <h3>
+        <img src="https://ru.wargaming.net/wgsw_public/logo_120.png" alt="Wargaming.net" />
+        <br />
+        Wargaming
+      </h3>
+      <h4>May 2020 — Now</h4>
+        
       <h3>
         <img src="/static/images/bnweb.svg" alt="BN Studio" />
         <br />
         BN Studio
       </h3>
-      <h4>April 2017 — Now</h4>
+      <h4>April 2017 — May 2020</h4>
 
       <dl>
         <dt>
