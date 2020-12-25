@@ -19,9 +19,9 @@ const Home = () => (
         <li>
           CSS, <small>LESS, SCSS, Stylus, PostCSS</small>;
         </li>
-        <li>JavaScript ES5/ES6+, Typescript;</li>
-        <li>React, Angular 2+;</li>
-        <li>React Native</li>
+        <li>JavaScript, Typescript;</li>
+        <li>React, Angular, Vue;</li>
+        <li>React Native, Gameface</li>
         <li>XML, XSLT, XPath, SVG;</li>
         <li>PHP, Parser;</li>
         <li>MySQL;</li>
