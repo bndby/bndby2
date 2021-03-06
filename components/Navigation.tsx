@@ -19,11 +19,6 @@ class Navigation extends React.Component {
             </a>
           </li>
           <li>
-            <a className="navigation__telegram" href="https://t.me/bndby">
-              @bndby
-            </a>
-          </li>
-          <li>
             <a className="navigation__github" href="https://github.com/bndby">
               /bndby
             </a>
