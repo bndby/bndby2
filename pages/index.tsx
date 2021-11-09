@@ -65,6 +65,8 @@ const Home = () => (
         Wargaming
       </h3>
       <h4>May 2020 — Now</h4>
+      
+      <p>Make interfaces with React, Vue, Coherent Gameface in World of Tank.</p>
         
       <h3>
         <img src="/static/images/bnweb.svg" alt="BN Studio" />
