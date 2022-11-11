@@ -37,7 +37,10 @@ const Home = () => (
 
       <h3>xsltdev</h3>
       <p>
-        Documentation about web technologies: <a href="https://xsltdev.ru/">xsltdev.ru</a>
+        Documentation about web technologies: <a href="https://xsltdev.ru/">XSLT and XPath</a>,{' '}
+        <a href="https://hcdev.ru/">HTML and CSS</a>, <a href="https://angdev.ru/">Angular</a>,{' '}
+        <a href="https://nodejsdev.ru/">Node.js</a>, <a href="https://py3dev.ru/">Python 3</a>,{' '}
+        <a href="https://reactdev.ru/">React</a>, <a href="https://scriptdev.ru/">Typescript</a>.
       </p>
       <p>
         Github repositories: <a href="https://github.com/xsltdev">github.com/xsltdev</a>
@@ -58,16 +61,25 @@ const Home = () => (
 
     <section id="experience">
       <h2>Experience</h2>
-      
+
       <h3>
-        <img src="https://ru.wargaming.net/wgsw_public/logo_120.png" alt="Wargaming.net" />
+        <img src="/lesta.jpg" alt="Lesta Games" width={50} />
+        <br />
+        Lesta
+      </h3>
+      <h4>August 2022 — Now</h4>
+
+      <p>Make interfaces with React, Python, Coherent Gameface in «Мир Танков».</p>
+
+      <h3>
+        <img src="/wg.jpg" alt="Wargaming.net" width={50} />
         <br />
         Wargaming
       </h3>
-      <h4>May 2020 — Now</h4>
-      
+      <h4>May 2020 — August 2022</h4>
+
       <p>Make interfaces with React, Vue, Coherent Gameface in World of Tank.</p>
-        
+
       <h3>
         <img src="/static/images/bnweb.svg" alt="BN Studio" />
         <br />
