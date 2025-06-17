@@ -1,27 +1,28 @@
 /**
  *
  */
-import React from "react";
-import Link from "next/link";
-
-import "./logo.css";
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 
 /**
  *
  */
-class Logo extends React.Component {
-  render() {
-    return (
-      <div className="logo">
-        <Link href="/">
-          <a>
-            <img className="logo__image" src="/static/images/logo.svg" />
-          </a>
-        </Link>
-      </div>
-    );
-  }
-}
+const Logo: React.FC = () => {
+  return (
+    <div className="logo">
+      <Link href="/">
+        <Image
+          className="logo__image"
+          src="/static/images/logo.svg"
+          alt="Logo"
+          width={100}
+          height={50}
+        />
+      </Link>
+    </div>
+  );
+};
 
 /**
  *

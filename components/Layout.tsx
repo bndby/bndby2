@@ -1,16 +1,19 @@
 /**
  *
  */
+import React from 'react';
 import Logo from './Logo';
 import Navigation from './Navigation';
 
-import './layout.css';
+interface LayoutProps {
+  children: React.ReactNode;
+}
 
 /**
  *
  * @param {*} props
  */
-const Layout = props => (
+const Layout: React.FC<LayoutProps> = ({ children }) => (
   <div className="layout">
     <div className="layout__logo">
       <Logo />
@@ -40,7 +43,7 @@ const Layout = props => (
       <Navigation />
     </div>
     <div className="layout__content">
-      {props.children}
+      {children}
       <hr />
     </div>
   </div>

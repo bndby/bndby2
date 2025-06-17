@@ -1,9 +1,8 @@
 .logo {
-
 }
 
 .logo__image {
-	display: block;
-	width: 5rem;
-	height: 5rem;
+  display: block;
+  width: 5rem;
+  height: 5rem;
 }

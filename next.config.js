@@ -1,3 +1,11 @@
-// next.config.js
-const withCSS = require('@zeit/next-css');
-module.exports = withCSS({});
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    unoptimized: true,
+  },
+  // Современные настройки для Next.js 15
+  poweredByHeader: false,
+  compress: true,
+};
+
+module.exports = nextConfig;

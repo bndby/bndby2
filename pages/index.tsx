@@ -1,8 +1,9 @@
 import React from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
 import Layout from '../components/Layout';
 
-const Home = () => (
+const Home: React.FC = () => (
   <Layout>
     <Head>
       <title>Bandarenka Yury</title>
@@ -63,7 +64,7 @@ const Home = () => (
       <h2>Experience</h2>
 
       <h3>
-        <img src="/lesta.jpg" alt="Lesta Games" width={50} />
+        <Image src="/lesta.jpg" alt="Lesta Games" width={50} height={50} />
         <br />
         Lesta
       </h3>
@@ -72,7 +73,7 @@ const Home = () => (
       <p>Make interfaces with React, Python, Coherent Gameface in «Мир Танков».</p>
 
       <h3>
-        <img src="/wg.jpg" alt="Wargaming.net" width={50} />
+        <Image src="/wg.jpg" alt="Wargaming.net" width={50} height={50} />
         <br />
         Wargaming
       </h3>
@@ -81,7 +82,7 @@ const Home = () => (
       <p>Make interfaces with React, Vue, Coherent Gameface in World of Tank.</p>
 
       <h3>
-        <img src="/static/images/bnweb.svg" alt="BN Studio" />
+        <Image src="/static/images/bnweb.svg" alt="BN Studio" width={50} height={50} />
         <br />
         BN Studio
       </h3>
@@ -153,7 +154,7 @@ const Home = () => (
       </dl>
 
       <h3>
-        <img src="/static/images/klen.png" alt="Klen" />
+        <Image src="/static/images/klen.png" alt="Klen" width={50} height={50} />
         <br />
         Advertising agency «Klen»
       </h3>
@@ -203,7 +204,7 @@ const Home = () => (
       </dl>
 
       <h3>
-        <img src="/static/images/cpeople.svg" alt="Creative People" />
+        <Image src="/static/images/cpeople.svg" alt="Creative People" width={50} height={50} />
         <br />
         Creative People
       </h3>
@@ -254,7 +255,7 @@ const Home = () => (
       </ul>
 
       <h3>
-        <img src="/static/images/als.svg" alt="ALS" />
+        <Image src="/static/images/als.svg" alt="ALS" width={50} height={50} />
         <br />
         Art Lebedev Studio
       </h3>
