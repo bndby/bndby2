@@ -11,16 +11,14 @@
 }
 
 .navigation__email,
-.navigation__github,
-.navigation__telegram {
+.navigation__github {
   position: relative;
   padding-left: 2rem;
   line-height: 1;
 }
 
 .navigation__email::before,
-.navigation__github::before,
-.navigation__telegram::before {
+.navigation__github::before {
   content: '';
   position: absolute;
   left: 0;
@@ -33,8 +31,4 @@
 
 .navigation__github::before {
   background-image: url('/static/images/github.svg');
-}
-
-.navigation__telegram::before {
-  background-image: url('/static/images/telegram.svg');
 }
