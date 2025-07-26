@@ -36,6 +36,18 @@ const Home: React.FC = () => (
     <section id="projects">
       <h2>Open source projects</h2>
 
+      <h3>use-server-sent-event</h3>
+      <p>
+        <a href="https://www.npmjs.com/package/use-server-sent-event">use-server-sent-event</a> is a
+        React hook for using Server-Sent Events.
+      </p>
+      <p>
+        Github repository:{' '}
+        <a href="https://github.com/bndby/use-server-sent-event">
+          github.com/bndby/use-server-sent-event
+        </a>
+      </p>
+
       <h3>xsltdev</h3>
       <p>
         Documentation about web technologies: <a href="https://xsltdev.ru/">XSLT and XPath</a>,{' '}
