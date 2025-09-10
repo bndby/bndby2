@@ -13,18 +13,20 @@ const Home: React.FC = () => (
       <h1>Bandarenka Yury</h1>
       <p>Senior Fullstack Developer</p>
       <div className="contact-info">
-        <p>
-          📧 Email: <a href="mailto:info@bnd.by">info@bnd.by</a>
-        </p>
-        <p>
-          📱 Phone: <a href="tel:+375297159066">+375 29 715-90-66</a>
-        </p>
-        <p>
-          🔗 LinkedIn: <a href="https://linkedin.com/in/bndby">linkedin.com/in/bndby</a>
-        </p>
-        <p>
-          🐙 GitHub: <a href="https://github.com/bndby">github.com/bndby</a>
-        </p>
+        <ul>
+          <li>
+            Email: <a href="mailto:info@bnd.by">info@bnd.by</a>
+          </li>
+          <li>
+            Phone: <a href="tel:+375297159066">+375 29 715-90-66</a>
+          </li>
+          <li>
+            LinkedIn: <a href="https://linkedin.com/in/bndby">linkedin.com/in/bndby</a>
+          </li>
+          <li>
+            GitHub: <a href="https://github.com/bndby">github.com/bndby</a>
+          </li>
+        </ul>
       </div>
     </header>
 
@@ -474,18 +476,74 @@ const Home: React.FC = () => (
       </div>
     </section>
 
+    <section id="languages">
+      <h2>Languages</h2>
+      <ul>
+        <li>
+          <strong>Russian:</strong> Native
+        </li>
+        <li>
+          <strong>English:</strong> Professional working proficiency
+        </li>
+        <li>
+          <strong>Belarusian:</strong> Native
+        </li>
+      </ul>
+    </section>
+
+    <section id="achievements">
+      <h2>Key Achievements</h2>
+      <ul>
+        <li>
+          <strong>Open Source Contributions:</strong> Created and maintained comprehensive
+          documentation network serving thousands of developers across 7 technology domains
+        </li>
+        <li>
+          <strong>Industry Speaking:</strong> Delivered technical presentations at professional
+          conferences, sharing expertise in modern web development practices
+        </li>
+        <li>
+          <strong>Published NPM Package:</strong> Developed and published React hook library used by
+          developers worldwide for real-time applications
+        </li>
+        <li>
+          <strong>Healthcare Impact:</strong> Built medical information system helping healthcare
+          professionals identify problematic pharmaceuticals
+        </li>
+        <li>
+          <strong>Gaming Industry Expertise:</strong> Successfully delivered UI solutions for major
+          gaming titles with millions of users
+        </li>
+        <li>
+          <strong>Cross-Platform Development:</strong> Led projects spanning web, mobile, and
+          desktop platforms using diverse technology stacks
+        </li>
+      </ul>
+    </section>
+
+    <section id="certifications">
+      <h2>Professional Development</h2>
+      <p>
+        <em>
+          Ready to pursue relevant industry certifications to stay current with emerging
+          technologies and best practices in full-stack development.
+        </em>
+      </p>
+    </section>
+
     <section id="education">
       <h2>Education</h2>
-      <dl>
-        <dt>
-          <b>VSU Masherova</b>, 1999 — 2004
-        </dt>
-        <dd>
-          Higher technical
-          <br />
-          Specialties: software mathematician, teacher of mathematics and computer science
-        </dd>
-      </dl>
+      <div className="education-item">
+        <h3>Bachelor's Degree in Mathematics & Computer Science</h3>
+        <h4>VSU Masherova • 1999 — 2004</h4>
+        <p>
+          <strong>Specializations:</strong> Software Mathematics, Computer Science Education
+        </p>
+        <p>
+          <strong>Relevant Coursework:</strong> Algorithms & Data Structures, Software Engineering,
+          Database Systems, Mathematical Analysis, Programming Fundamentals
+        </p>
+      </div>
     </section>
   </Layout>
 );
