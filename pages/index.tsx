@@ -82,7 +82,7 @@ const Home: React.FC = () => (
       </h3>
       <h4>August 2022 — Now</h4>
 
-      <p>Make interfaces with React, Python, Coherent Gameface in «Мир Танков».</p>
+      <p>Develop user interfaces using React, Python, and Coherent Gameface for "Мир танков".</p>
 
       <h3>
         <Image src="/wg.jpg" alt="Wargaming.net" width={50} height={50} />
@@ -91,7 +91,7 @@ const Home: React.FC = () => (
       </h3>
       <h4>May 2020 — August 2022</h4>
 
-      <p>Make interfaces with React, Vue, Coherent Gameface in World of Tank.</p>
+      <p>Developed user interfaces using React, Vue, and Coherent Gameface for World of Tanks.</p>
 
       <h3>
         <Image src="/static/images/bnweb.svg" alt="BN Studio" width={50} height={50} />
@@ -123,7 +123,7 @@ const Home: React.FC = () => (
           <a href="https://moscowseasons.com/">Moscow Seasons</a>
         </dt>
         <dd>
-          <time>Febrary 2019</time>
+          <time>February 2019</time>
           <br />
           Support: React, Stylus
         </dd>
@@ -173,9 +173,9 @@ const Home: React.FC = () => (
       <h4>November 2009 — 2016</h4>
 
       <p>
-        I worked on the creation, development and support of agency sites. In my free time I wrote
-        websites for clients of an agency or remotely freelancing. For an advertising agency created
-        and maintained sites:
+        Responsible for creating, developing, and maintaining agency websites. Additionally handled
+        client projects and freelance web development. For the advertising agency, created and
+        maintained sites:
       </p>
 
       <dl>
@@ -183,7 +183,7 @@ const Home: React.FC = () => (
           <a href="http://klen.by/">Advertising agency Klen</a>
         </dt>
         <dd>
-          <time>Jule 2015</time>
+          <time>July 2015</time>
           <br />
           Symphony CMS, XSLT
         </dd>
@@ -197,7 +197,7 @@ const Home: React.FC = () => (
         </dd>
       </dl>
 
-      <p>Fleelance works:</p>
+      <p>Freelance works:</p>
       <dl>
         <dt>
           <a href="https://fitness.edu.au/">Australian Institute of Fitness</a>
@@ -227,8 +227,8 @@ const Home: React.FC = () => (
       </h4>
 
       <p>
-        Worked remotely as a technologist in the support department. Engaged in the maintenance of
-        customer sites:
+        Worked remotely as a web developer in the support department. Responsible for maintaining
+        and supporting client websites:
       </p>
 
       <ul>
@@ -274,8 +274,9 @@ const Home: React.FC = () => (
       <h4>November 2006 — November 2009</h4>
 
       <p>
-        I worked as a coder in the support department. Engaged in the maintenance of client sites on
-        systems <a href="https://imprimatur.artlebedev.ru/">Imprimatur и Imprimatur II</a>:
+        Worked as a web developer in the support department. Responsible for maintaining client
+        websites on <a href="https://imprimatur.artlebedev.ru/">Imprimatur and Imprimatur II</a>{' '}
+        systems:
       </p>
 
       <ul>

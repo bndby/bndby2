@@ -10,22 +10,12 @@
     "deploy": "npm run build",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "prettier": "prettier --write './**/*.{ts,tsx,js,jsx,json,css,md}'",
-    "prepare": "husky"
+    "prettier": "prettier --write './**/*.{ts,tsx,js,jsx,json,css,md}'"
   },
   "dependencies": {
     "next": "15.3.3",
     "react": "19.1.0",
     "react-dom": "19.1.0"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{json,css,md}": [
-      "prettier --write"
-    ]
   },
   "browserslist": {
     "production": [
@@ -50,8 +40,6 @@
     "eslint-plugin-prettier": "^5.5.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.1.2",
     "postcss": "^8.4.0",
     "postcss-import": "^16.1.1",
     "postcss-preset-env": "^10.2.3",
