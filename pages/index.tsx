@@ -100,70 +100,73 @@ const Home: React.FC = () => (
       </h3>
       <h4>April 2017 — May 2020</h4>
 
-      <dl>
-        <dt>
-          <a href="https://geodata.co.il/">מערכת ניהול ועדת תמרור</a>
-        </dt>
-        <dd>
-          <time>July 2019</time>
-          <br />
-          Frontend development: Angular 7, Typescript, PrimeNG, REST API
-        </dd>
+      <details>
+        <summary>Studio Projects</summary>
+        <dl>
+          <dt>
+            <a href="https://geodata.co.il/">מערכת ניהול ועדת תמרור</a>
+          </dt>
+          <dd>
+            <time>July 2019</time>
+            <br />
+            Frontend development: Angular 7, Typescript, PrimeNG, REST API
+          </dd>
 
-        <dt>
-          <a href="https://nbogorad.com/">Natali Bogorad&#8217;s Design cafe</a>
-        </dt>
-        <dd>
-          <time>March 2019</time>
-          <br />
-          Development: XSLT, PostCSS, CSSNext, ES6, Webpack, Gulp
-        </dd>
+          <dt>
+            <a href="https://nbogorad.com/">Natali Bogorad&#8217;s Design cafe</a>
+          </dt>
+          <dd>
+            <time>March 2019</time>
+            <br />
+            Development: XSLT, PostCSS, CSSNext, ES6, Webpack, Gulp
+          </dd>
 
-        <dt>
-          <a href="https://moscowseasons.com/">Moscow Seasons</a>
-        </dt>
-        <dd>
-          <time>February 2019</time>
-          <br />
-          Support: React, Stylus
-        </dd>
+          <dt>
+            <a href="https://moscowseasons.com/">Moscow Seasons</a>
+          </dt>
+          <dd>
+            <time>February 2019</time>
+            <br />
+            Support: React, Stylus
+          </dd>
 
-        <dt>
-          <a href="https://www.nadlan.gov.il/"> אתר הנדל״ן הממשלתי </a>
-        </dt>
-        <dd>
-          <time>December 2018</time>
-          <br />
-          Support: HTML, CSS, AngularJS, Grunt
-        </dd>
+          <dt>
+            <a href="https://www.nadlan.gov.il/"> אתר הנדל״ן הממשלתי </a>
+          </dt>
+          <dd>
+            <time>December 2018</time>
+            <br />
+            Support: HTML, CSS, AngularJS, Grunt
+          </dd>
 
-        <dt>
-          <a href="https://bnweb.studio">BN Studio</a>
-        </dt>
-        <dd>
-          <time>August 2018</time>
-          <br />
-          Development: HTML, LESS, JS, Gulp, Cloudflare
-        </dd>
-        <dt>
-          <a href="https://skirollers.ru/">Ski Rollers</a>
-        </dt>
-        <dd>
-          <time>June 2018</time>
-          <br />
-          Development: Wordpress, HTML, LESS, JS
-        </dd>
-        <dt>
-          <a href="https://ahec-tax.co.il/" dir="rtl" lang="he">
-            ארצי, חיבה, אלמקייס, כהן — פתרונות מיסוי
-          </a>
-        </dt>
-        <dd>
-          <time>October 2017</time>
-          <br />
-          Support: Wordpress, HTML, LESS, JS, PHP
-        </dd>
-      </dl>
+          <dt>
+            <a href="https://bnweb.studio">BN Studio</a>
+          </dt>
+          <dd>
+            <time>August 2018</time>
+            <br />
+            Development: HTML, LESS, JS, Gulp, Cloudflare
+          </dd>
+          <dt>
+            <a href="https://skirollers.ru/">Ski Rollers</a>
+          </dt>
+          <dd>
+            <time>June 2018</time>
+            <br />
+            Development: Wordpress, HTML, LESS, JS
+          </dd>
+          <dt>
+            <a href="https://ahec-tax.co.il/" dir="rtl" lang="he">
+              ארצי, חיבה, אלמקייס, כהן — פתרונות מיסוי
+            </a>
+          </dt>
+          <dd>
+            <time>October 2017</time>
+            <br />
+            Support: Wordpress, HTML, LESS, JS, PHP
+          </dd>
+        </dl>
+      </details>
 
       <h3>
         <Image src="/static/images/klen.png" alt="Klen" width={50} height={50} />
@@ -174,46 +177,50 @@ const Home: React.FC = () => (
 
       <p>
         Responsible for creating, developing, and maintaining agency websites. Additionally handled
-        client projects and freelance web development. For the advertising agency, created and
-        maintained sites:
+        client projects and freelance web development.
       </p>
 
-      <dl>
-        <dt>
-          <a href="http://klen.by/">Advertising agency Klen</a>
-        </dt>
-        <dd>
-          <time>July 2015</time>
-          <br />
-          Symphony CMS, XSLT
-        </dd>
-        <dt>
-          <a href="http://skinali.by/">Skinali catalog</a>
-        </dt>
-        <dd>
-          <time>September 2015</time>
-          <br />
-          Symphony CMS, XSLT
-        </dd>
-      </dl>
+      <details>
+        <summary>Agency Projects</summary>
+        <dl>
+          <dt>
+            <a href="http://klen.by/">Advertising agency Klen</a>
+          </dt>
+          <dd>
+            <time>July 2015</time>
+            <br />
+            Symphony CMS, XSLT
+          </dd>
+          <dt>
+            <a href="http://skinali.by/">Skinali catalog</a>
+          </dt>
+          <dd>
+            <time>September 2015</time>
+            <br />
+            Symphony CMS, XSLT
+          </dd>
+        </dl>
+      </details>
 
-      <p>Freelance works:</p>
-      <dl>
-        <dt>
-          <a href="https://fitness.edu.au/">Australian Institute of Fitness</a>
-        </dt>
-        <dd>Symphony CMS, XSLT, HTML, CSS, JS, UIKit</dd>
+      <details>
+        <summary>Freelance Works</summary>
+        <dl>
+          <dt>
+            <a href="https://fitness.edu.au/">Australian Institute of Fitness</a>
+          </dt>
+          <dd>Symphony CMS, XSLT, HTML, CSS, JS, UIKit</dd>
 
-        <dt>
-          <a href="http://ratur.by/">Drilling company</a>
-        </dt>
-        <dd>Wordpress</dd>
+          <dt>
+            <a href="http://ratur.by/">Drilling company</a>
+          </dt>
+          <dd>Wordpress</dd>
 
-        <dt>
-          <a href="http://teplo-vitebsk.by/">Heating Equipment Store</a>
-        </dt>
-        <dd>Wordpress, WooCommerce</dd>
-      </dl>
+          <dt>
+            <a href="http://teplo-vitebsk.by/">Heating Equipment Store</a>
+          </dt>
+          <dd>Wordpress, WooCommerce</dd>
+        </dl>
+      </details>
 
       <h3>
         <Image src="/static/images/cpeople.svg" alt="Creative People" width={50} height={50} />
@@ -226,45 +233,44 @@ const Home: React.FC = () => (
         September 2011 — November 2012,
       </h4>
 
-      <p>
-        Worked remotely as a web developer in the support department. Responsible for maintaining
-        and supporting client websites:
-      </p>
+      <p>Worked remotely as a web developer in the support department.</p>
 
-      <ul>
-        <li>
-          <a href="http://polyusgold.com/ru/">Polyus</a>
-        </li>
-        <li>
-          <a href="http://stada.ru/">Stada</a>
-        </li>
-        <li>Amway</li>
-        <li>Fitness club "Fizika"</li>
-        <li>Merz</li>
-        <li>
-          <a href="http://carpethouse.ru/">Carpet House</a>
-        </li>
-        <li>Saimaa</li>
-        <li>Braer</li>
-      </ul>
+      <details>
+        <summary>Company Projects</summary>
+        <p>Responsible for maintaining and supporting client websites:</p>
+        <ul>
+          <li>
+            <a href="http://polyusgold.com/ru/">Polyus</a>
+          </li>
+          <li>
+            <a href="http://stada.ru/">Stada</a>
+          </li>
+          <li>Amway</li>
+          <li>Fitness club "Fizika"</li>
+          <li>Merz</li>
+          <li>
+            <a href="http://carpethouse.ru/">Carpet House</a>
+          </li>
+          <li>Saimaa</li>
+          <li>Braer</li>
+        </ul>
 
-      <p>Frontend:</p>
+        <p>Frontend:</p>
+        <ul>
+          <li>
+            <a href="http://www.at-consulting.ru/">AT Consulting</a>
+          </li>
+          <li>DSMU</li>
+        </ul>
 
-      <ul>
-        <li>
-          <a href="http://www.at-consulting.ru/">AT Consulting</a>
-        </li>
-        <li>DSMU</li>
-      </ul>
-
-      <p>Backend on Symphony CMS:</p>
-
-      <ul>
-        <li>
-          <a href="http://jenialubich.com/">Jenia Lubich</a>
-        </li>
-        <li>Ingroup STS</li>
-      </ul>
+        <p>Backend on Symphony CMS:</p>
+        <ul>
+          <li>
+            <a href="http://jenialubich.com/">Jenia Lubich</a>
+          </li>
+          <li>Ingroup STS</li>
+        </ul>
+      </details>
 
       <h3>
         <Image src="/static/images/als.svg" alt="ALS" width={50} height={50} />
@@ -273,38 +279,41 @@ const Home: React.FC = () => (
       </h3>
       <h4>November 2006 — November 2009</h4>
 
-      <p>
-        Worked as a web developer in the support department. Responsible for maintaining client
-        websites on <a href="https://imprimatur.artlebedev.ru/">Imprimatur and Imprimatur II</a>{' '}
-        systems:
-      </p>
+      <p>Worked as a web developer in the support department.</p>
 
-      <ul>
-        <li>
-          <a href="https://www.artlebedev.ru/everything/vbank/site2/">Vozrozhdenie</a>;
-        </li>
-        <li>
-          <a href="https://www.artlebedev.ru/everything/gazprom/gazfond-site2/">Gazfond</a>;
-        </li>
-        <li>
-          <a href="https://www.artlebedev.ru/everything/caravan/">Caravan</a>;
-        </li>
-        <li>
-          <a href="https://www.artlebedev.ru/everything/medicina/site2/">Medicina</a>;
-        </li>
-        <li>
-          <a href="https://www.artlebedev.ru/everything/imb/site2/">IMB</a>;
-        </li>
-        <li>
-          <a href="https://www.artlebedev.ru/everything/nomos/site/">Nomos</a>;
-        </li>
-        <li>
-          <a href="https://www.artlebedev.ru/everything/spb/site2/">St. Petersburg</a>;
-        </li>
-        <li>
-          <a href="https://www.artlebedev.ru/everything/hp/site4/">Hewlett-Packard</a>.
-        </li>
-      </ul>
+      <details>
+        <summary>Client Projects</summary>
+        <p>
+          Responsible for maintaining client websites on{' '}
+          <a href="https://imprimatur.artlebedev.ru/">Imprimatur and Imprimatur II</a> systems:
+        </p>
+        <ul>
+          <li>
+            <a href="https://www.artlebedev.ru/everything/vbank/site2/">Vozrozhdenie</a>;
+          </li>
+          <li>
+            <a href="https://www.artlebedev.ru/everything/gazprom/gazfond-site2/">Gazfond</a>;
+          </li>
+          <li>
+            <a href="https://www.artlebedev.ru/everything/caravan/">Caravan</a>;
+          </li>
+          <li>
+            <a href="https://www.artlebedev.ru/everything/medicina/site2/">Medicina</a>;
+          </li>
+          <li>
+            <a href="https://www.artlebedev.ru/everything/imb/site2/">IMB</a>;
+          </li>
+          <li>
+            <a href="https://www.artlebedev.ru/everything/nomos/site/">Nomos</a>;
+          </li>
+          <li>
+            <a href="https://www.artlebedev.ru/everything/spb/site2/">St. Petersburg</a>;
+          </li>
+          <li>
+            <a href="https://www.artlebedev.ru/everything/hp/site4/">Hewlett-Packard</a>.
+          </li>
+        </ul>
+      </details>
     </section>
 
     <section id="speaker">
