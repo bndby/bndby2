@@ -9,11 +9,7 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-/**
- *
- * @param {*} props
- */
-const Layout: React.FC<LayoutProps> = ({ children }) => (
+const Layout = ({ children }: LayoutProps) => (
   <div className="layout">
     <div className="layout__logo">
       <Logo />

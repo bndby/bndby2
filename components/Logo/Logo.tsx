@@ -8,7 +8,7 @@ import Image from 'next/image';
 /**
  *
  */
-const Logo: React.FC = () => {
+const Logo = () => {
   return (
     <div className="logo">
       <Link href="/">

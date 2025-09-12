@@ -3,7 +3,7 @@
  */
 import React from 'react';
 
-const Navigation: React.FC = () => {
+const Navigation = () => {
   return (
     <div className="navigation">
       <ul>
