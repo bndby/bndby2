@@ -1,9 +1,9 @@
 import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import Layout from '../components/layout/Layout';
+import Layout from '../components/Layout/Layout';
 
-const Home: React.FC = () => (
+const Home = () => (
   <Layout>
     <Head>
       <title>Bandarenka Yury</title>

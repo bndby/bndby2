@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app';
-import '../components/layout.css';
-import '../components/Logo/logo.css';
-import '../components/Navigation/navigation.css';
+import '../components/Layout/Layout.css';
+import '../components/Logo/Logo.css';
+import '../components/Navigation/Navigation.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;
