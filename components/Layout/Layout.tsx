@@ -17,10 +17,7 @@ const Layout = ({ children }: LayoutProps) => (
     <div className="layout__navigation">
       <Navigation />
     </div>
-    <div className="layout__content">
-      {children}
-      <hr />
-    </div>
+    <div className="layout__content">{children}</div>
   </div>
 );
 
