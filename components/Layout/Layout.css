@@ -96,22 +96,22 @@ dd {
 a,
 a:link,
 .link {
-  color: #037;
+  color: inherit;
   text-decoration: underline;
 }
 
 a:visited {
-  color: color(#037 saturation(-50%));
+  color: inherit;
 }
 
 a:hover,
 .link:hover {
   cursor: pointer;
-  color: color(#037 tint(30%));
+  text-decoration: underline;
 }
 
 a:active {
-  color: color(#037 saturation(50%));
+  color: inherit;
 }
 
 time {
@@ -178,4 +178,23 @@ time {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+summary {
+  cursor: pointer;
+  color: inherit;
+  transition: color 0.2s ease-in-out;
+  user-select: none;
+}
+
+details summary:hover {
+  text-decoration: underline;
+}
+
+details summary:hover::marker {
+  color: inherit;
+}
+
+details summary:focus-visible {
+  outline: 2px solid currentColor;
 }

@@ -87,7 +87,7 @@ const Home = () => (
       </ul>
 
       <details>
-        <summary>Studio Projects</summary>
+        <summary role="button">Studio Projects</summary>
         <dl>
           <dt>
             <a href="https://geodata.co.il/">מערכת ניהול ועדת תמרור</a>
@@ -167,7 +167,7 @@ const Home = () => (
       </ul>
 
       <details>
-        <summary>Agency Projects</summary>
+        <summary role="button">Agency Projects</summary>
         <dl>
           <dt>
             <a href="http://klen.by/">Advertising agency Klen</a>
@@ -189,7 +189,7 @@ const Home = () => (
       </details>
 
       <details>
-        <summary>Freelance Works</summary>
+        <summary role="button">Freelance Works</summary>
         <dl>
           <dt>
             <a href="https://fitness.edu.au/">Australian Institute of Fitness</a>
@@ -225,7 +225,7 @@ const Home = () => (
       </ul>
 
       <details>
-        <summary>Company Projects</summary>
+        <summary role="button">Company Projects</summary>
         <p>Responsible for maintaining and supporting client websites:</p>
         <ul>
           <li>
@@ -276,7 +276,7 @@ const Home = () => (
       </ul>
 
       <details>
-        <summary>Client Projects</summary>
+        <summary role="button">Client Projects</summary>
         <p>
           Responsible for maintaining client websites on{' '}
           <a href="https://imprimatur.artlebedev.ru/">Imprimatur and Imprimatur II</a> systems:
