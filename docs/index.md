@@ -3,15 +3,14 @@ title: Юрий Бондаренко
 hide:
     - toc
     - navigation
+    - footer
 ---
 
 # Юрий Бондаренко
 
-Опытный Fullstack разработчик с более чем 20-летним стажем в веб-разработке, специализирующийся на экосистеме React. Опыт разработки масштабных пользовательских интерфейсов для лидеров игровой индустрии, включая Lesta Games, Wargaming, Art Lebedev.
+Fullstack-разработчик с 20-летним стажем в веб-разработке, специализируюсь на экосистеме React.
 
 [:octicons-arrow-right-24: Подробнее о себе](./cv/index.md)
-
----
 
 ## Стафф
 
@@ -39,21 +38,24 @@ hide:
 
 <div class="grid cards" markdown>
 
--   :material-file-document-outline:{ .lg .middle } `use-server-sent-event`
+- :material-file-document-outline:{ .lg .middle } **use-server-sent-event**
 
     ***
 
-    npm пакет, предоставляющий простой и эффективный React hook для обработки Server-Sent Events (SSE)
+    NPM-пакет, предоставляющий простой и эффективный React hook для обработки Server-Sent Events (SSE)
 
-    [:octicons-arrow-right-24: NPM](https://www.npmjs.com/package/use-server-sent-event)
+    [:material-npm: NPM](https://www.npmjs.com/package/use-server-sent-event)
+    [:material-github: Github](https://github.com/bndby/use-server-sent-event)
 
--   :material-pill:{ .lg .middle } **Fuflomycin**
+- :material-pill:{ .lg .middle } **Фуфломицины**
 
     ***
 
-    Комплексная систему для отслеживания проблемных фармацевтических препаратов
+    Приложения для проверки псевдо-лекарств
 
-    [:octicons-arrow-right-24: Фуфломицины](https://fuflomycin.ru/)
+    [:octicons-arrow-right-24: PWA](https://fuflomycin.ru/)<br />
+    [:octicons-arrow-right-24: Android](https://play.google.com/store/apps/details?id=com.fuflomycin_rn&hl=ru)<br />
+    [:octicons-arrow-right-24: Github](https://github.com/fuflomycin)
 
 </div>
 

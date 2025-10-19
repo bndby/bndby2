@@ -59,8 +59,8 @@ slug: build-mcp-server
 
 Этот гайд предполагает, что вы знакомы с:
 
--   TypeScript
--   LLM, такими как Claude
+- TypeScript
+- LLM, такими как Claude
 
 ### Логирование в MCP‑серверах
 
@@ -68,10 +68,10 @@ slug: build-mcp-server
 
 **Для серверов на STDIO**: Никогда не пишите в стандартный вывод (stdout). Это включает:
 
--   `print()` в Python
--   `console.log()` в JavaScript
--   `fmt.Println()` в Go
--   Аналогичные функции stdout в других языках
+- `print()` в Python
+- `console.log()` в JavaScript
+- `fmt.Println()` в Go
+- Аналогичные функции stdout в других языках
 
 Запись в stdout повредит сообщения JSON‑RPC и сломает ваш сервер.
 
@@ -186,9 +186,7 @@ const server = new McpServer({
 
 ```ts
 // Вспомогательная функция для запросов к NWS API
-async function makeNWSRequest<T>(
-    url: string
-): Promise<T | null> {
+async function makeNWSRequest<T>(url: string): Promise<T | null> {
     const headers = {
         'User-Agent': USER_AGENT,
         Accept: 'application/geo+json',
@@ -197,9 +195,7 @@ async function makeNWSRequest<T>(
     try {
         const response = await fetch(url, { headers });
         if (!response.ok) {
-            throw new Error(
-                `HTTP error! status: ${response.status}`
-            );
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
         return (await response.json()) as T;
     } catch (error) {
@@ -270,15 +266,12 @@ server.tool(
         state: z
             .string()
             .length(2)
-            .describe(
-                'Two-letter state code (e.g. CA, NY)'
-            ),
+            .describe('Two-letter state code (e.g. CA, NY)'),
     },
     async ({ state }) => {
         const stateCode = state.toUpperCase();
         const alertsUrl = `${NWS_API_BASE}/alerts?area=${stateCode}`;
-        const alertsData =
-            await makeNWSRequest<AlertsResponse>(alertsUrl);
+        const alertsData = await makeNWSRequest<AlertsResponse>(alertsUrl);
 
         if (!alertsData) {
             return {
@@ -305,7 +298,7 @@ server.tool(
 
         const formattedAlerts = features.map(formatAlert);
         const alertsText = `Active alerts for ${stateCode}:\n\n${formattedAlerts.join(
-            '\n'
+            '\n',
         )}`;
 
         return {
@@ -316,7 +309,7 @@ server.tool(
                 },
             ],
         };
-    }
+    },
 );
 
 server.tool(
@@ -337,10 +330,9 @@ server.tool(
     async ({ latitude, longitude }) => {
         // Получаем данные по координатам точки
         const pointsUrl = `${NWS_API_BASE}/points/${latitude.toFixed(
-            4
+            4,
         )},${longitude.toFixed(4)}`;
-        const pointsData =
-            await makeNWSRequest<PointsResponse>(pointsUrl);
+        const pointsData = await makeNWSRequest<PointsResponse>(pointsUrl);
 
         if (!pointsData) {
             return {
@@ -367,9 +359,7 @@ server.tool(
 
         // Получаем данные прогноза
         const forecastData =
-            await makeNWSRequest<ForecastResponse>(
-                forecastUrl
-            );
+            await makeNWSRequest<ForecastResponse>(forecastUrl);
         if (!forecastData) {
             return {
                 content: [
@@ -381,8 +371,7 @@ server.tool(
             };
         }
 
-        const periods =
-            forecastData.properties?.periods || [];
+        const periods = forecastData.properties?.periods || [];
         if (periods.length === 0) {
             return {
                 content: [
@@ -395,26 +384,22 @@ server.tool(
         }
 
         // Форматируем периоды прогноза
-        const formattedForecast = periods.map(
-            (period: ForecastPeriod) =>
-                [
-                    `${period.name || 'Unknown'}:`,
-                    `Temperature: ${
-                        period.temperature || 'Unknown'
-                    }°${period.temperatureUnit || 'F'}`,
-                    `Wind: ${
-                        period.windSpeed || 'Unknown'
-                    } ${period.windDirection || ''}`,
-                    `${
-                        period.shortForecast ||
-                        'No forecast available'
-                    }`,
-                    '---',
-                ].join('\n')
+        const formattedForecast = periods.map((period: ForecastPeriod) =>
+            [
+                `${period.name || 'Unknown'}:`,
+                `Temperature: ${
+                    period.temperature || 'Unknown'
+                }°${period.temperatureUnit || 'F'}`,
+                `Wind: ${
+                    period.windSpeed || 'Unknown'
+                } ${period.windDirection || ''}`,
+                `${period.shortForecast || 'No forecast available'}`,
+                '---',
+            ].join('\n'),
         );
 
         const forecastText = `Forecast for ${latitude}, ${longitude}:\n\n${formattedForecast.join(
-            '\n'
+            '\n',
         )}`;
 
         return {
@@ -425,7 +410,7 @@ server.tool(
                 },
             ],
         };
-    }
+    },
 );
 ```
 
@@ -475,9 +460,7 @@ code $env:AppData\Claude\claude_desktop_config.json
     "mcpServers": {
         "weather": {
             "command": "node",
-            "args": [
-                "C:\\PATH\\TO\\PARENT\\FOLDER\\weather\\build\\index.js"
-            ]
+            "args": ["C:\\PATH\\TO\\PARENT\\FOLDER\\weather\\build\\index.js"]
         }
     }
 }
@@ -502,8 +485,8 @@ code $env:AppData\Claude\claude_desktop_config.json
 
 Если иконка настроек инструментов появилась, можно протестировать сервер, выполняя в Claude for Desktop команды:
 
--   What’s the weather in Sacramento?
--   What are the active weather alerts in Texas?
+- What’s the weather in Sacramento?
+- What are the active weather alerts in Texas?
 
 ![What’s the weather in Sacramento?](./build-mcp-server-1.png)
 

@@ -7,6 +7,9 @@ copyright: (☭) 1981
 theme:
     name: material
     custom_dir: overrides
+    logo: ./logo.png
+    favicon: ./logo.png
+    font: false
     language: ru
     palette:
         - media: '(prefers-color-scheme)'
@@ -36,6 +39,7 @@ theme:
         - navigation.top
         - navigation.footer
         - navigation.indexes
+        - navigation.path
         - content.tabs.link
         - content.code.copy
 
@@ -64,10 +68,11 @@ plugins:
               - nolightbox
 
 extra:
+    homepage: https://bnd.by
     generator: false
     social:
         - icon: fontawesome/brands/github
-          link: https://github.com/xsltdev
+          link: https://github.com/bndby
           name: GitHub
         - icon: fontawesome/regular/heart
           link: https://boosty.to/bndby
@@ -105,8 +110,7 @@ markdown_extensions:
                 format: !!python/name:pymdownx.superfences.fence_code_format
     - pymdownx.tabbed:
           alternate_style: true
-          slugify:
-              !!python/object/apply:pymdownx.slugs.slugify
+          slugify: !!python/object/apply:pymdownx.slugs.slugify
               kwds:
                   case: lower
     - pymdownx.arithmatex:
