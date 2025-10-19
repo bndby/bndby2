@@ -1,0 +1,114 @@
+site_name: Юрий Бондаренко
+site_url: https://bnd.by/
+site_description: Юрий Бондаренко - фулстек разработчик, архитектор, ментор
+site_author: bnd.by
+copyright: (☭) 1981
+
+theme:
+    name: material
+    custom_dir: overrides
+    language: ru
+    palette:
+        - media: '(prefers-color-scheme)'
+          primary: white
+          accent: pink
+          toggle:
+              icon: material/brightness-auto
+              name: Переключиться на светлую тему
+        - media: '(prefers-color-scheme: light)'
+          scheme: default
+          primary: white
+          accent: pink
+          toggle:
+              icon: material/toggle-switch-off-outline
+              name: Переключиться на тёмную тему
+        - media: '(prefers-color-scheme: dark)'
+          scheme: slate
+          primary: white
+          accent: pink
+          toggle:
+              icon: material/toggle-switch
+              name: Переключиться на системную тему
+    features:
+        - navigation.prune
+        - navigation.tabs
+        - navigation.tracking
+        - navigation.top
+        - navigation.footer
+        - navigation.indexes
+        - content.tabs.link
+        - content.code.copy
+
+plugins:
+    - awesome-pages
+    - search
+    - blog:
+          blog_dir: .
+          blog_toc: true
+          archive: false
+          categories_name: Доки
+          categories_url_format: 'docs/{slug}'
+          post_url_format: 'docs/{categories}/{slug}'
+          authors: false
+    - meta
+    - tags
+    - social
+    - minify:
+          minify_html: true
+          htmlmin_opts:
+              remove_comments: true
+          cache_safe: true
+    - glightbox:
+          auto_caption: true
+          skip_classes:
+              - nolightbox
+
+extra:
+    generator: false
+    social:
+        - icon: fontawesome/brands/github
+          link: https://github.com/xsltdev
+          name: GitHub
+        - icon: fontawesome/regular/heart
+          link: https://boosty.to/bndby
+          name: Boosty
+        - icon: fontawesome/brands/linkedin
+          link: https://www.linkedin.com/in/bndby/
+          name: LinkedIn
+
+markdown_extensions:
+    - admonition
+    - toc:
+          permalink: true
+    - attr_list
+    - pymdownx.extra
+    - pymdownx.critic
+    - pymdownx.caret
+    - pymdownx.keys
+    - pymdownx.mark
+    - pymdownx.tilde
+    - pymdownx.details
+    - pymdownx.emoji:
+          emoji_index: !!python/name:material.extensions.emoji.twemoji
+          emoji_generator: !!python/name:material.extensions.emoji.to_svg
+    - pymdownx.highlight:
+          anchor_linenums: true
+          linenums: true
+          line_spans: __span
+          pygments_lang_class: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences:
+          custom_fences:
+              - name: mermaid
+                class: mermaid
+                format: !!python/name:pymdownx.superfences.fence_code_format
+    - pymdownx.tabbed:
+          alternate_style: true
+          slugify:
+              !!python/object/apply:pymdownx.slugs.slugify
+              kwds:
+                  case: lower
+    - pymdownx.arithmatex:
+          generic: true
+    - pymdownx.smartsymbols

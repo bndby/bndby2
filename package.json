@@ -1,50 +1,22 @@
 {
-  "name": "bndby3",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "deploy": "npm run build",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
-    "prettier": "prettier --write './**/*.{ts,tsx,js,jsx,json,css,md}'"
-  },
-  "dependencies": {
-    "next": "15.3.3",
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.29.0",
-    "@types/node": "^24.0.3",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
-    "eslint": "^9.29.0",
-    "eslint-config-next": "15.3.3",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-prettier": "^5.5.0",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "postcss": "^8.4.0",
-    "postcss-import": "^16.1.1",
-    "postcss-preset-env": "^10.2.3",
-    "prettier": "^3.5.3",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.34.1"
-  }
+	"name": "bnd.by",
+	"version": "1.0.0",
+	"description": "Personal website",
+	"devDependencies": {
+		"@prettier/plugin-xml": "^3.4.2",
+		"prettier": "^3.6.2"
+	},
+	"scripts": {
+		"build": "mkdocs build",
+		"serve": "mkdocs serve --dirtyreload",
+		"upgrade": "pip3 install --upgrade -r ./requirements.txt"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/xsltdev/bnd.by.git"
+	},
+	"bugs": {
+		"url": "https://github.com/xsltdev/bnd.by/issues"
+	},
+	"homepage": "https://bnd.by/"
 }
