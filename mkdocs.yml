@@ -74,6 +74,9 @@ extra:
         - icon: fontawesome/brands/github
           link: https://github.com/bndby
           name: GitHub
+        - icon: simple/codementor
+          link: https://getmentor.dev/mentor/iuriy-bondarenko-4234
+          name: GetMentor
         - icon: fontawesome/regular/heart
           link: https://boosty.to/bndby
           name: Boosty

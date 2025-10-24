@@ -10,7 +10,7 @@ hide:
 
 Fullstack-разработчик с 20-летним стажем в веб-разработке, специализируюсь на экосистеме React.
 
-[:octicons-arrow-right-24: Подробнее о себе](./cv/index.md)
+[:fontawesome-brands-github:&nbsp;Github](https://github.com/bndby) &nbsp;&nbsp;&nbsp; [:simple-codementor:&nbsp;GetMentor](https://getmentor.dev/mentor/iuriy-bondarenko-4234) &nbsp;&nbsp;&nbsp; [:fontawesome-regular-heart:&nbsp;Boosty](https://boosty.to/bndby) &nbsp;&nbsp;&nbsp; [:fontawesome-brands-linkedin:&nbsp;Linkedin](https://www.linkedin.com/in/bndby/) &nbsp;&nbsp;&nbsp; [:octicons-arrow-right-24:&nbsp;Резюме](./cv/index.md)
 
 ## Стафф
 
@@ -44,7 +44,7 @@ Fullstack-разработчик с 20-летним стажем в веб-ра�
 
     NPM-пакет, предоставляющий простой и эффективный React hook для обработки Server-Sent Events (SSE)
 
-    [:material-npm: NPM](https://www.npmjs.com/package/use-server-sent-event)
+    [:material-npm: NPM](https://www.npmjs.com/package/use-server-sent-event)<br />
     [:material-github: Github](https://github.com/bndby/use-server-sent-event)
 
 - :material-pill:{ .lg .middle } **Фуфломицины**
