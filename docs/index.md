@@ -57,6 +57,16 @@ Fullstack-разработчик с 20-летним стажем в веб-ра�
     [:octicons-arrow-right-24: Android](https://play.google.com/store/apps/details?id=com.fuflomycin_rn&hl=ru)<br />
     [:octicons-arrow-right-24: Github](https://github.com/fuflomycin)
 
+- :material-duck:{ .lg .middle } **Duckov.ru**
+
+    ***
+
+    Русскоязычная база знаний по игре Escape from Duckov
+
+    [:octicons-arrow-right-24: Сайт](https://duckov.ru/)<br />
+    [:material-youtube: Youtube](https://www.youtube.com/@EscapeFromDuckov)<br />
+    [:simple-telegram: Tg канал](https://t.me/duckov_ru)
+
 </div>
 
 ## Переводы интересного
