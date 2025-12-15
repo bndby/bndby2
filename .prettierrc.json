@@ -8,7 +8,8 @@
 			"options": {
 				"parser": "markdown",
 				"useTabs": false,
-				"tabWidth": 4
+				"tabWidth": 4,
+				"lineWidth": 40
 			}
 		},
 		{
@@ -33,6 +34,13 @@
 				"parser": "html",
 				"useTabs": false,
 				"tabWidth": 2
+			}
+		},
+		{
+			"files": ".html",
+			"options": {
+				"parser": "html",
+				"lineWidth": 50
 			}
 		}
 	]

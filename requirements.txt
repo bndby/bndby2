@@ -17,6 +17,7 @@ mkdocs-glightbox
 mkdocs-material
 mkdocs-material-extensions
 mkdocs-minify-plugin
+mkdocs-video
 packaging
 paginate
 pathspec
