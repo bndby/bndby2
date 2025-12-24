@@ -120,3 +120,7 @@ markdown_extensions:
     - pymdownx.arithmatex:
           generic: true
     - pymdownx.smartsymbols
+
+extra_javascript:
+    - path: https://js-de.sentry-cdn.com/602cea0de01c346b92d2dee572bb60ac.min.js
+      crossorigin: anonymous
