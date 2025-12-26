@@ -67,6 +67,15 @@ Fullstack-разработчик с 20-летним стажем в веб-ра�
     [:material-youtube: Youtube](https://www.youtube.com/@EscapeFromDuckov)<br />
     [:simple-telegram: Tg канал](https://t.me/duckov_ru)
 
+- :fontawesome-solid-mobile:{ .lg .middle } **Opennext Cloudflare PWA**
+
+    ***
+
+    Приложение для демонстрации работы возможностей PWA-приложений на базе фреймворка OpenNext и воркеров Cloudflare
+
+    [:octicons-arrow-right-24: PWA](https://opennext-pwa.bnd.workers.dev/)<br />
+    [:octicons-arrow-right-24: Github](https://github.com/bndby/opennext-pwa)
+
 </div>
 
 ## Переводы интересного
