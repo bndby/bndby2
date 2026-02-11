@@ -22,11 +22,13 @@ hide:
 
 ### ![Lesta Games](./lesta.jpg){ width="28" height="28" class="nolightbox" align="absmiddle"} Lesta Games / <small>Август 2022 — настоящее время</small>
 
+<auto-tanks size="180"></auto-tanks><script type="module" src="./auto-tanks.js"></script>
+
 _Senior Frontend разработчик_
 
-- Разрабатывал и поддерживал пользовательские интерфейсы с использованием React, Python и Coherent Gameface для "Мир танков"
-- Сотрудничал с игровыми дизайнерами и backend разработчиками для реализации новых функций
-- Оптимизировал производительность UI для улучшения игрового опыта
+- Разрабатываю и поддерживаю пользовательские интерфейсы с использованием React, Python и Coherent Gameface для игры "Мир танков"
+- Сотрудничаю с дизайнерами и backend разработчиками для реализации новых функций
+- Оптимизирую производительность UI для улучшения игрового опыта
 
 ### ![Wargaming](./wg.jpg){ width="28" height="28" class="nolightbox" align="absmiddle"} Wargaming / <small>Май 2020 — Август 2022</small>
 
@@ -37,6 +39,8 @@ _Senior Frontend разработчик_
 - Улучшал пользовательский опыт через оптимизацию производительности и A/B тестирование
 
 ### ![BN Studio](./bnweb.svg){ width="28" height="28" class="nolightbox" align="absmiddle"} BN Studio / <small>Апрель 2017 — Май 2020</small>
+
+<auto-arkanoid size="220"></auto-arkanoid><script type="module" src="./auto-arkanoid.js"></script>
 
 _Full-Stack разработчик_
 

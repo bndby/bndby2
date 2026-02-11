@@ -8,6 +8,13 @@ hide:
 
 # Юрий Бондаренко
 
+<div style="float: right; display: flex; gap: 8px">
+  <auto-arkanoid size="180"></auto-arkanoid>
+  <auto-tanks size="180" background="#0b1220"></auto-tanks>
+  <script type="module" src="./auto-arkanoid.js"></script>
+  <script type="module" src="./auto-tanks.js"></script>
+</div>
+
 Fullstack-разработчик с 20-летним стажем в веб-разработке, специализируюсь на экосистеме React.
 
 [:fontawesome-brands-github:&nbsp;Github](https://github.com/bndby) &nbsp;&nbsp;&nbsp; [:simple-codementor:&nbsp;GetMentor](https://getmentor.dev/mentor/iuriy-bondarenko-4234) &nbsp;&nbsp;&nbsp; [:fontawesome-regular-heart:&nbsp;Boosty](https://boosty.to/bndby) &nbsp;&nbsp;&nbsp; [:fontawesome-brands-linkedin:&nbsp;Linkedin](https://www.linkedin.com/in/bndby/) &nbsp;&nbsp;&nbsp; [:octicons-arrow-right-24:&nbsp;Резюме](./cv/index.md)
