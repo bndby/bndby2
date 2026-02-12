@@ -30,13 +30,19 @@ _Senior Frontend разработчик_
 - Реализация новых продуктовых функций в связке с backend и дизайном
 - Оптимизация производительности интерфейса в игровом клиенте
 
+---
+
 ### ![Wargaming](./wg.jpg){ width="28" height="28" class="nolightbox" align="absmiddle"} Wargaming / <small>Май 2020 — Август 2022</small>
+
+<auto-tetris size="220"></auto-tetris><script type="module" src="./auto-tetris.js"></script>
 
 _Senior Frontend разработчик_
 
 - Разработка адаптивных интерфейсов для World of Tanks (React, Vue, Coherent Gameface)
 - Создание кроссплатформенных UI-компонентов для интеграции с игровым клиентом
 - Улучшение UX через оптимизацию и A/B-тестирование
+
+---
 
 ### ![BN Studio](./bnweb.svg){ width="28" height="28" class="nolightbox" align="absmiddle"} BN Studio / <small>Апрель 2017 — Май 2020</small>
 
@@ -48,7 +54,11 @@ _Full-Stack разработчик_
 - Реализация клиентских веб-проектов, включая e-commerce и гос-сегмент
 - Менторинг junior-разработчиков и развитие инженерных практик
 
+---
+
 ### Ранее: Клен, Creative People, Студия Артемия Лебедева / <small>2006 — 2017</small>
+
+<auto-invaders size="220"></auto-invaders><script type="module" src="./auto-invaders.js"></script>
 
 - Fullstack-разработка и поддержка корпоративных сайтов и сервисов
 - Работа с крупными клиентами, legacy-системами и production-нагрузкой
