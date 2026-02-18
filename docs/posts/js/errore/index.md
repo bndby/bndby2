@@ -128,7 +128,8 @@ err.id; // "123"
 **Сопоставление через `matchError`.** Оно исчерпывающее: компилятор выдаст ошибку, если забыть обработать один из случаев:
 
 ```ts
-// Исчерпывающее сопоставление: если пропустите кейс, компилятор сообщит об ошибке
+// Исчерпывающее сопоставление: если пропустите кейс,
+// компилятор сообщит об ошибке
 const message = errore.matchError(error, {
     NotFoundError: (e) => `User ${e.id} not found`,
     NetworkError: (e) => `Failed to reach ${e.url}`,
@@ -140,7 +141,8 @@ errore.matchError(error, {
     NetworkError: (e) => `...`,
     Error: (e) => `...`,
 });
-// Ошибка TS: в типе '{ NetworkError: ...; Error: ...; }' отсутствует свойство 'NotFoundError'
+// Ошибка TS: в типе '{ NetworkError: ...; Error: ...; }'
+// отсутствует свойство 'NotFoundError'
 ```
 
 **То же самое с `instanceof`.** TypeScript отслеживает, какие ошибки вы уже обработали. Пропустите одну — и код не скомпилируется:
@@ -184,7 +186,8 @@ try {
         console.warn('Rate limited');
         return null;
     }
-    throw e; // неизвестная ошибка, остаётся надеяться, что её кто-то поймает
+    throw e; // неизвестная ошибка, остаётся надеяться,
+    // что её кто-то поймает
 }
 const user = await getUser(id);
 if (user instanceof NotFoundError) {
