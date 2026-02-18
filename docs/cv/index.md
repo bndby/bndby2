@@ -85,3 +85,5 @@ _Full-Stack разработчик_
 **ВГУ им. П.М. Машерова** / <small>1999 — 2004</small>
 
 Прикладная математика, преподаватель математики и информатики
+
+<auto-dragon size="220"></auto-dragon><script type="module" src="./auto-dragon.js"></script>
