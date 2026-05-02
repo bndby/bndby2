@@ -9,7 +9,7 @@
 				"parser": "markdown",
 				"useTabs": false,
 				"tabWidth": 4,
-				"lineWidth": 40
+				"proseWrap": "never"
 			}
 		},
 		{

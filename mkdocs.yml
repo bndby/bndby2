@@ -42,6 +42,7 @@ theme:
         - navigation.path
         - content.tabs.link
         - content.code.copy
+        - content.tooltips
 
 plugins:
     - mkdocs-video
@@ -84,8 +85,12 @@ extra:
         - icon: fontawesome/brands/linkedin
           link: https://www.linkedin.com/in/bndby/
           name: LinkedIn
+    analytics:
+        provider: google
+        property: G-X25N427QYC
 
 markdown_extensions:
+    - abbr
     - admonition
     - toc:
           permalink: true
