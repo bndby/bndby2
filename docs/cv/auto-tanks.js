@@ -65,7 +65,9 @@ class AutoTanks extends HTMLElement {
 
 	getSizeFromAttribute() {
 		const rawSize = Number.parseInt(this.getAttribute('size') ?? '', 10);
-		const normalized = Number.isFinite(rawSize) ? rawSize : this.defaultSize;
+		const normalized = Number.isFinite(rawSize)
+			? rawSize
+			: this.defaultSize;
 		return Math.min(this.maxSize, Math.max(this.minSize, normalized));
 	}
 
@@ -107,7 +109,9 @@ class AutoTanks extends HTMLElement {
 		this.player = this.createTank('player', occupied, 3, 'player');
 		this.enemies = [];
 		for (let i = 0; i < this.enemiesCount; i += 1) {
-			this.enemies.push(this.createTank(`enemy-${i}`, occupied, 2, 'enemy'));
+			this.enemies.push(
+				this.createTank(`enemy-${i}`, occupied, 2, 'enemy'),
+			);
 		}
 	}
 
@@ -118,7 +122,11 @@ class AutoTanks extends HTMLElement {
 			const row = [];
 			for (let x = 0; x < gridSize; x += 1) {
 				let value = 0;
-				const border = x === 0 || y === 0 || x === gridSize - 1 || y === gridSize - 1;
+				const border =
+					x === 0 ||
+					y === 0 ||
+					x === gridSize - 1 ||
+					y === gridSize - 1;
 				if (border) {
 					value = 1;
 				} else if (x % 2 === 0 && y % 2 === 0 && Math.random() < 0.52) {
@@ -184,7 +192,10 @@ class AutoTanks extends HTMLElement {
 				y: (gy + 0.5) * this.cell,
 				dir: spawnZone.dir,
 				moveDecisionT: 0,
-				fireCooldown: this.randomRange(this.fireCooldownMin, this.fireCooldownMax),
+				fireCooldown: this.randomRange(
+					this.fireCooldownMin,
+					this.fireCooldownMax,
+				),
 				turnCooldown: 0,
 				color: id === 'player' ? '#38bdf8' : '#f97316',
 			};
@@ -193,7 +204,9 @@ class AutoTanks extends HTMLElement {
 		// Fallback deterministic placement.
 		const gx = 1 + (occupied.size % (this.gridSize - 2));
 		const spawnHeight = Math.max(1, spawnZone.maxY - spawnZone.minY + 1);
-		const gy = spawnZone.minY + (Math.floor(occupied.size / (this.gridSize - 2)) % spawnHeight);
+		const gy =
+			spawnZone.minY +
+			(Math.floor(occupied.size / (this.gridSize - 2)) % spawnHeight);
 		const key = `${gx}:${gy}`;
 		occupied.add(key);
 		this.clearArea(gx, gy, clearRadius);
@@ -206,7 +219,10 @@ class AutoTanks extends HTMLElement {
 			y: (gy + 0.5) * this.cell,
 			dir: spawnZone.dir,
 			moveDecisionT: 0,
-			fireCooldown: this.randomRange(this.fireCooldownMin, this.fireCooldownMax),
+			fireCooldown: this.randomRange(
+				this.fireCooldownMin,
+				this.fireCooldownMax,
+			),
 			turnCooldown: 0,
 			color: id === 'player' ? '#38bdf8' : '#f97316',
 		};
@@ -269,7 +285,12 @@ class AutoTanks extends HTMLElement {
 	}
 
 	rectsOverlap(a, b) {
-		return !(a.right <= b.left || a.left >= b.right || a.bottom <= b.top || a.top >= b.bottom);
+		return !(
+			a.right <= b.left ||
+			a.left >= b.right ||
+			a.bottom <= b.top ||
+			a.top >= b.bottom
+		);
 	}
 
 	wallCollisionForRect(rect) {
@@ -333,7 +354,8 @@ class AutoTanks extends HTMLElement {
 			if (v.y === 1 && dy <= 0) continue;
 			if (v.y === -1 && dy >= 0) continue;
 
-			if (!this.lineBlockedByWall(tank.x, tank.y, target.x, target.y)) return true;
+			if (!this.lineBlockedByWall(tank.x, tank.y, target.x, target.y))
+				return true;
 		}
 
 		// Opportunistic fire to clear wall in front.
@@ -391,7 +413,10 @@ class AutoTanks extends HTMLElement {
 				if (d < minDist) minDist = d;
 			}
 
-			candidates.push({ dir, score: minDist + Math.random() * this.cell * 2 });
+			candidates.push({
+				dir,
+				score: minDist + Math.random() * this.cell * 2,
+			});
 		}
 
 		if (candidates.length === 0) {
@@ -401,7 +426,10 @@ class AutoTanks extends HTMLElement {
 
 		candidates.sort((a, b) => a.score - b.score);
 		// Keep movement varied but still purposeful.
-		const idx = Math.min(candidates.length - 1, Math.floor(Math.random() * Math.min(2, candidates.length)));
+		const idx = Math.min(
+			candidates.length - 1,
+			Math.floor(Math.random() * Math.min(2, candidates.length)),
+		);
 		tank.dir = candidates[idx].dir;
 	}
 
@@ -425,7 +453,10 @@ class AutoTanks extends HTMLElement {
 
 		if (tank.fireCooldown <= 0 && this.shouldShoot(tank, opponents)) {
 			this.fireProjectile(tank);
-			tank.fireCooldown = this.randomRange(this.fireCooldownMin, this.fireCooldownMax);
+			tank.fireCooldown = this.randomRange(
+				this.fireCooldownMin,
+				this.fireCooldownMax,
+			);
 		}
 	}
 
@@ -435,7 +466,11 @@ class AutoTanks extends HTMLElement {
 		if (!this.inBounds(gx, gy)) return true;
 		if (this.walls[gy][gx] !== 1) return false;
 		this.walls[gy][gx] = 0;
-		this.explosions.push({ x: projectile.x, y: projectile.y, ttl: this.explosionTTL });
+		this.explosions.push({
+			x: projectile.x,
+			y: projectile.y,
+			ttl: this.explosionTTL,
+		});
 		return true;
 	}
 
@@ -443,15 +478,26 @@ class AutoTanks extends HTMLElement {
 		if (!tank.alive) return false;
 		if (tank.id === projectile.ownerId) return false;
 		const rect = this.tankRectAt(tank.x, tank.y);
-		const nearestX = Math.max(rect.left, Math.min(projectile.x, rect.right));
-		const nearestY = Math.max(rect.top, Math.min(projectile.y, rect.bottom));
+		const nearestX = Math.max(
+			rect.left,
+			Math.min(projectile.x, rect.right),
+		);
+		const nearestY = Math.max(
+			rect.top,
+			Math.min(projectile.y, rect.bottom),
+		);
 		const dx = projectile.x - nearestX;
 		const dy = projectile.y - nearestY;
 		if (dx * dx + dy * dy > projectile.r * projectile.r) return false;
 
 		tank.alive = false;
-		this.explosions.push({ x: tank.x, y: tank.y, ttl: this.explosionTTL * 2 });
-		if (projectile.ownerId === this.player.id && tank.id !== this.player.id) this.kills += 1;
+		this.explosions.push({
+			x: tank.x,
+			y: tank.y,
+			ttl: this.explosionTTL * 2,
+		});
+		if (projectile.ownerId === this.player.id && tank.id !== this.player.id)
+			this.kills += 1;
 		return true;
 	}
 
@@ -529,7 +575,8 @@ class AutoTanks extends HTMLElement {
 		this.respawnTimer = 1.2;
 
 		const occupied = new Set();
-		if (!this.player.alive) this.player = this.createTank('player', occupied, 3, 'player');
+		if (!this.player.alive)
+			this.player = this.createTank('player', occupied, 3, 'player');
 		for (let i = 0; i < this.enemies.length; i += 1) {
 			if (this.enemies[i].alive) {
 				const gx = Math.floor(this.enemies[i].x / this.cell);
@@ -537,16 +584,28 @@ class AutoTanks extends HTMLElement {
 				occupied.add(`${gx}:${gy}`);
 				continue;
 			}
-			this.enemies[i] = this.createTank(`enemy-${i}`, occupied, 2, 'enemy');
+			this.enemies[i] = this.createTank(
+				`enemy-${i}`,
+				occupied,
+				2,
+				'enemy',
+			);
 		}
 	}
 
 	update(dtMs) {
-		const dt = Math.max(0.001, Math.min(0.04, (dtMs / 1000) * this.timeScale));
+		const dt = Math.max(
+			0.001,
+			Math.min(0.04, (dtMs / 1000) * this.timeScale),
+		);
 
 		this.updateTankAI(this.player, this.enemies, dt);
 		for (const enemy of this.enemies) {
-			this.updateTankAI(enemy, [this.player, ...this.enemies.filter((x) => x.id !== enemy.id)], dt);
+			this.updateTankAI(
+				enemy,
+				[this.player, ...this.enemies.filter((x) => x.id !== enemy.id)],
+				dt,
+			);
 		}
 
 		this.updateProjectiles(dt);
@@ -579,7 +638,12 @@ class AutoTanks extends HTMLElement {
 				const px = x * this.cell;
 				const py = y * this.cell;
 				this.ctx.fillRect(px, py, this.cell, this.cell);
-				this.ctx.strokeRect(px + 0.5, py + 0.5, this.cell - 1, this.cell - 1);
+				this.ctx.strokeRect(
+					px + 0.5,
+					py + 0.5,
+					this.cell - 1,
+					this.cell - 1,
+				);
 			}
 		}
 	}
@@ -593,7 +657,12 @@ class AutoTanks extends HTMLElement {
 		const left = tank.x - this.halfTank;
 		const top = tank.y - this.halfTank;
 		this.ctx.fillRect(left, top, this.tankSize, this.tankSize);
-		this.ctx.strokeRect(left + 0.5, top + 0.5, this.tankSize - 1, this.tankSize - 1);
+		this.ctx.strokeRect(
+			left + 0.5,
+			top + 0.5,
+			this.tankSize - 1,
+			this.tankSize - 1,
+		);
 
 		this.ctx.fillStyle = tank.id === 'player' ? '#bae6fd' : '#fed7aa';
 		this.ctx.beginPath();
@@ -605,15 +674,25 @@ class AutoTanks extends HTMLElement {
 		this.ctx.lineWidth = Math.max(2, this.cell * 0.16);
 		this.ctx.beginPath();
 		this.ctx.moveTo(tank.x, tank.y);
-		this.ctx.lineTo(tank.x + v.x * this.barrelLen, tank.y + v.y * this.barrelLen);
+		this.ctx.lineTo(
+			tank.x + v.x * this.barrelLen,
+			tank.y + v.y * this.barrelLen,
+		);
 		this.ctx.stroke();
 	}
 
 	drawProjectiles() {
 		for (const projectile of this.projectiles) {
-			this.ctx.fillStyle = projectile.ownerId === this.player.id ? '#22d3ee' : '#facc15';
+			this.ctx.fillStyle =
+				projectile.ownerId === this.player.id ? '#22d3ee' : '#facc15';
 			this.ctx.beginPath();
-			this.ctx.arc(projectile.x, projectile.y, projectile.r, 0, Math.PI * 2);
+			this.ctx.arc(
+				projectile.x,
+				projectile.y,
+				projectile.r,
+				0,
+				Math.PI * 2,
+			);
 			this.ctx.fill();
 		}
 	}

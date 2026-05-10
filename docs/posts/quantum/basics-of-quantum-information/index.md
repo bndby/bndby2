@@ -61,8 +61,6 @@ slug: basics-of-quantum-information
 
 !["Изображение выдаваемого значка"](./badge.avif)
 
-<small>Источник: <https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information></small>
-
 ## Одиночные системы
 
 В следующем видео Джон Уотрус последовательно разбирает материал этого урока об одиночных системах. Также вы можете открыть [видео на YouTube](https://youtu.be/3-c4xJa7Flk?list=PLOFEBzvs-VvqKKMXX4vbi4EB1uaErFMSO) для этого урока в отдельном окне. [Скачать слайды](https://ibm.box.com/public/static/95va6f5vqru3mpsv9p5ivwcyxino4rk7.pdf) к этому уроку.
@@ -6611,3 +6609,5 @@ print("Доля выигранных игр:", TOTAL_SCORE / NUM_GAMES)
 ```
 
 Хотя здесь присутствует случайность, после 1000 запусков статистика вряд ли будет сильно отклоняться. Квантовая стратегия выигрывает примерно в 85% случаев, тогда как классическая стратегия не может выигрывать более чем примерно в 75% случаев.
+
+<small>Источник: <https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information></small>

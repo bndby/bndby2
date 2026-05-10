@@ -345,7 +345,12 @@ class AutoTetris extends HTMLElement {
 		return shape.map(([dx, dy]) => ({ x: x + dx, y: y + dy }));
 	}
 
-	isValidPosition(piece, rotation = piece.rotation, x = piece.x, y = piece.y) {
+	isValidPosition(
+		piece,
+		rotation = piece.rotation,
+		x = piece.x,
+		y = piece.y,
+	) {
 		const cells = this.getCells(piece, rotation, x, y);
 		for (const cell of cells) {
 			if (cell.x < 0 || cell.x >= this.cols) return false;
@@ -359,7 +364,8 @@ class AutoTetris extends HTMLElement {
 		if (!this.current) return false;
 		const nx = this.current.x + dx;
 		const ny = this.current.y + dy;
-		if (!this.isValidPosition(this.current, this.current.rotation, nx, ny)) return false;
+		if (!this.isValidPosition(this.current, this.current.rotation, nx, ny))
+			return false;
 		this.current.x = nx;
 		this.current.y = ny;
 		return true;
@@ -372,7 +378,15 @@ class AutoTetris extends HTMLElement {
 		const kicks = [0, -1, 1, -2, 2];
 		for (const kick of kicks) {
 			const nx = this.current.x + kick;
-			if (!this.isValidPosition(this.current, nextRotation, nx, this.current.y)) continue;
+			if (
+				!this.isValidPosition(
+					this.current,
+					nextRotation,
+					nx,
+					this.current.y,
+				)
+			)
+				continue;
 			this.current.rotation = nextRotation;
 			this.current.x = nx;
 			return true;
@@ -487,7 +501,13 @@ class AutoTetris extends HTMLElement {
 		const sim = this.grid.map((row) => row.slice());
 		const cells = this.getCells(piece, rotation, x, y);
 		for (const cell of cells) {
-			if (cell.y < 0 || cell.y >= this.totalRows || cell.x < 0 || cell.x >= this.cols) return null;
+			if (
+				cell.y < 0 ||
+				cell.y >= this.totalRows ||
+				cell.x < 0 ||
+				cell.x >= this.cols
+			)
+				return null;
 			sim[cell.y][cell.x] = piece.color;
 		}
 
@@ -606,7 +626,15 @@ class AutoTetris extends HTMLElement {
 	getGhostY() {
 		if (!this.current) return null;
 		let y = this.current.y;
-		while (this.isValidPosition(this.current, this.current.rotation, this.current.x, y + 1)) y += 1;
+		while (
+			this.isValidPosition(
+				this.current,
+				this.current.rotation,
+				this.current.x,
+				y + 1,
+			)
+		)
+			y += 1;
 		return y;
 	}
 
@@ -663,11 +691,13 @@ class AutoTetris extends HTMLElement {
 				this.current.x,
 				ghostY,
 			);
-			for (const cell of ghostCells) this.drawCell(cell.x, cell.y, '#94a3b8', 0.2);
+			for (const cell of ghostCells)
+				this.drawCell(cell.x, cell.y, '#94a3b8', 0.2);
 		}
 
 		const cells = this.getCells(this.current);
-		for (const cell of cells) this.drawCell(cell.x, cell.y, this.current.color, 1);
+		for (const cell of cells)
+			this.drawCell(cell.x, cell.y, this.current.color, 1);
 	}
 
 	drawPanel() {
@@ -687,20 +717,44 @@ class AutoTetris extends HTMLElement {
 
 		this.ctx.font = `${this.fontSub}px monospace`;
 		this.ctx.fillStyle = '#cbd5e1';
-		this.ctx.fillText(`Score ${this.score}`, panelX + 8, this.fontMain * 3 + 18);
-		this.ctx.fillText(`Lines ${this.lines}`, panelX + 8, this.fontMain * 4 + 20);
-		this.ctx.fillText(`Lvl ${this.level}`, panelX + 8, this.fontMain * 5 + 22);
-		this.ctx.fillText(`Pc ${this.pieces}`, panelX + 8, this.fontMain * 6 + 24);
-
+		this.ctx.fillText(
+			`Score ${this.score}`,
+			panelX + 8,
+			this.fontMain * 3 + 18,
+		);
+		this.ctx.fillText(
+			`Lines ${this.lines}`,
+			panelX + 8,
+			this.fontMain * 4 + 20,
+		);
+		this.ctx.fillText(
+			`Lvl ${this.level}`,
+			panelX + 8,
+			this.fontMain * 5 + 22,
+		);
+		this.ctx.fillText(
+			`Pc ${this.pieces}`,
+			panelX + 8,
+			this.fontMain * 6 + 24,
+		);
 	}
 
 	drawGameOver() {
 		if (!this.gameOver) return;
 		this.ctx.fillStyle = 'rgba(2, 6, 23, 0.7)';
-		this.ctx.fillRect(0, this.height * 0.42, this.boardWidth, this.cell * 3);
+		this.ctx.fillRect(
+			0,
+			this.height * 0.42,
+			this.boardWidth,
+			this.cell * 3,
+		);
 		this.ctx.fillStyle = '#f8fafc';
 		this.ctx.font = `${Math.max(13, Math.floor(this.cell * 0.92))}px monospace`;
-		this.ctx.fillText('RESTARTING...', Math.max(8, this.cell), this.height * 0.42 + this.cell * 1.8);
+		this.ctx.fillText(
+			'RESTARTING...',
+			Math.max(8, this.cell),
+			this.height * 0.42 + this.cell * 1.8,
+		);
 	}
 
 	draw() {

@@ -55,7 +55,9 @@ class AutoArkanoid extends HTMLElement {
 		// Читаем параметр size из атрибута:
 		// <auto-arkanoid size="360"></auto-arkanoid>
 		const rawSize = Number.parseInt(this.getAttribute('size') ?? '', 10);
-		const normalizedSize = Number.isFinite(rawSize) ? rawSize : this.defaultSize;
+		const normalizedSize = Number.isFinite(rawSize)
+			? rawSize
+			: this.defaultSize;
 		return Math.min(this.maxSize, Math.max(this.minSize, normalizedSize));
 	}
 

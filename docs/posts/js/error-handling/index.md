@@ -265,8 +265,7 @@ function useUserProfile(id: string) {
 
 Выбор зависит от размера команды и проекта: для соло-разработки хватит `to()` + Sentry, для enterprise — полноценный Result с доменными ошибками.[^10][^3]
 
-**Бонус:** готовый Result репозиторий — [neverthrow](https://www.npmjs.com/package/neverthrow) или мой gist с примерами выше. Пробуй на pet-проекте![^11][^12]
-<span style="display:none">[^13][^14]</span>
+**Бонус:** готовый Result репозиторий — [neverthrow](https://www.npmjs.com/package/neverthrow) или мой gist с примерами выше. Пробуй на pet-проекте![^11][^12] <span style="display:none">[^13][^14]</span>
 
 <div align="center">⁂</div>
 

@@ -53,18 +53,16 @@ https://example.com/.well-known/assetlinks.json
 
 ```json
 [
-  {
-    "relation": [
-      "delegate_permission/common.handle_all_urls"
-    ],
-    "target": {
-      "namespace": "android_app",
-      "package_name": "com.example.app",
-      "sha256_cert_fingerprints": [
-        "12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF"
-      ]
+    {
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.example.app",
+            "sha256_cert_fingerprints": [
+                "12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF"
+            ]
+        }
     }
-  }
 ]
 ```
 
@@ -139,7 +137,7 @@ https://example.com/.well-known/assetlinks.json
 
 ```json
 {
-  "display": "standalone"
+    "display": "standalone"
 }
 ```
 

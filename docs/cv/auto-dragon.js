@@ -58,7 +58,9 @@ class AutoDragon extends HTMLElement {
 
 	getSizeFromAttribute() {
 		const rawSize = Number.parseInt(this.getAttribute('size') ?? '', 10);
-		const normalized = Number.isFinite(rawSize) ? rawSize : this.defaultSize;
+		const normalized = Number.isFinite(rawSize)
+			? rawSize
+			: this.defaultSize;
 		return Math.min(this.maxSize, Math.max(this.minSize, normalized));
 	}
 
@@ -124,7 +126,11 @@ class AutoDragon extends HTMLElement {
 	}
 
 	getDifficulty() {
-		const progress = this.clamp(this.worldDistance / this.levelLength, 0, 1);
+		const progress = this.clamp(
+			this.worldDistance / this.levelLength,
+			0,
+			1,
+		);
 		return progress;
 	}
 
@@ -132,12 +138,24 @@ class AutoDragon extends HTMLElement {
 		const cavePadding = this.height * 0.08;
 		while (this.nextSegmentX < targetX) {
 			const difficulty = this.getDifficulty();
-			const width = this.randomRange(this.segmentWidthMin, this.segmentWidthMax);
-			const gapHeight = this.height * (0.4 - difficulty * 0.13) + this.randomRange(-4, 6);
+			const width = this.randomRange(
+				this.segmentWidthMin,
+				this.segmentWidthMax,
+			);
+			const gapHeight =
+				this.height * (0.4 - difficulty * 0.13) +
+				this.randomRange(-4, 6);
 			const minCenter = cavePadding + gapHeight * 0.5;
 			const maxCenter = this.height - cavePadding - gapHeight * 0.5;
-			const drift = this.randomRange(-this.height * 0.09, this.height * 0.09);
-			const center = this.clamp(this.lastGapCenter + drift, minCenter, maxCenter);
+			const drift = this.randomRange(
+				-this.height * 0.09,
+				this.height * 0.09,
+			);
+			const center = this.clamp(
+				this.lastGapCenter + drift,
+				minCenter,
+				maxCenter,
+			);
 			const top = center - gapHeight * 0.5;
 			const bottom = center + gapHeight * 0.5;
 
@@ -149,12 +167,18 @@ class AutoDragon extends HTMLElement {
 			});
 
 			// Выступы (горы) появляются внутри прохода: и сверху, и снизу.
-			if (difficulty > 0.1 && Math.random() < 0.42 && gapHeight > this.height * 0.22) {
+			if (
+				difficulty > 0.1 &&
+				Math.random() < 0.42 &&
+				gapHeight > this.height * 0.22
+			) {
 				const mountainW = width * this.randomRange(0.4, 0.9);
-				const mountainX = this.nextSegmentX + width * this.randomRange(0.05, 0.7);
+				const mountainX =
+					this.nextSegmentX + width * this.randomRange(0.05, 0.7);
 				const side = Math.random() < 0.5 ? 'bottom' : 'top';
 				const intrusion = gapHeight * this.randomRange(0.36, 0.62);
-				const tipY = side === 'bottom' ? bottom - intrusion : top + intrusion;
+				const tipY =
+					side === 'bottom' ? bottom - intrusion : top + intrusion;
 				this.mountains.push({
 					x: mountainX,
 					w: mountainW,
@@ -256,9 +280,15 @@ class AutoDragon extends HTMLElement {
 			const dx = mRight - this.dragonX;
 			if (dx < -8 || dx > this.width * 0.22) continue;
 			if (mountain.side === 'bottom') {
-				target = Math.min(target, mountain.tipY - this.dragonRadius * 1.9);
+				target = Math.min(
+					target,
+					mountain.tipY - this.dragonRadius * 1.9,
+				);
 			} else {
-				target = Math.max(target, mountain.tipY + this.dragonRadius * 1.9);
+				target = Math.max(
+					target,
+					mountain.tipY + this.dragonRadius * 1.9,
+				);
 			}
 		}
 
@@ -269,7 +299,11 @@ class AutoDragon extends HTMLElement {
 			target = this.clamp(target, minY, maxY);
 		}
 
-		this.targetY = this.clamp(target, this.dragonRadius + 6, this.height - this.dragonRadius - 6);
+		this.targetY = this.clamp(
+			target,
+			this.dragonRadius + 6,
+			this.height - this.dragonRadius - 6,
+		);
 
 		const error = this.targetY - this.dragonY;
 		const desiredAccel = this.clamp(
@@ -279,7 +313,11 @@ class AutoDragon extends HTMLElement {
 		);
 
 		this.dragonVY += desiredAccel * dt;
-		this.dragonVY = this.clamp(this.dragonVY, -this.dragonMaxSpeedY, this.dragonMaxSpeedY);
+		this.dragonVY = this.clamp(
+			this.dragonVY,
+			-this.dragonMaxSpeedY,
+			this.dragonMaxSpeedY,
+		);
 		this.dragonY += this.dragonVY * dt;
 
 		if (this.dragonY < this.dragonRadius + 2) {
@@ -316,30 +354,37 @@ class AutoDragon extends HTMLElement {
 			// Удар о низ: толкаем вверх.
 			this.dragonVY = Math.min(this.dragonVY, -recoveryImpulse);
 		} else {
-			this.dragonVY += (Math.random() < 0.5 ? -1 : 1) * recoveryImpulse * 0.7;
+			this.dragonVY +=
+				(Math.random() < 0.5 ? -1 : 1) * recoveryImpulse * 0.7;
 		}
 	}
 
 	checkCollisions() {
 		const segment = this.findSegmentAtX(this.dragonX);
 		if (segment) {
-			if (this.dragonY - this.dragonRadius < segment.top + 2) this.applyCollision(-1);
-			if (this.dragonY + this.dragonRadius > segment.bottom - 2) this.applyCollision(1);
+			if (this.dragonY - this.dragonRadius < segment.top + 2)
+				this.applyCollision(-1);
+			if (this.dragonY + this.dragonRadius > segment.bottom - 2)
+				this.applyCollision(1);
 		}
 
 		for (const mountain of this.mountains) {
 			if (this.dragonX + this.dragonRadius < mountain.x) continue;
-			if (this.dragonX - this.dragonRadius > mountain.x + mountain.w) continue;
+			if (this.dragonX - this.dragonRadius > mountain.x + mountain.w)
+				continue;
 
 			const lerp = this.getMountainLerpAt(mountain, this.dragonX);
 			if (lerp <= 0) continue;
 
 			if (mountain.side === 'bottom') {
-				const mountainY = this.height + (mountain.tipY - this.height) * lerp;
-				if (this.dragonY + this.dragonRadius > mountainY) this.applyCollision(1);
+				const mountainY =
+					this.height + (mountain.tipY - this.height) * lerp;
+				if (this.dragonY + this.dragonRadius > mountainY)
+					this.applyCollision(1);
 			} else {
 				const mountainY = mountain.tipY * lerp;
-				if (this.dragonY - this.dragonRadius < mountainY) this.applyCollision(-1);
+				if (this.dragonY - this.dragonRadius < mountainY)
+					this.applyCollision(-1);
 			}
 		}
 
@@ -376,7 +421,9 @@ class AutoDragon extends HTMLElement {
 
 		this.segments = this.segments.filter((s) => s.x + s.w > -4);
 		this.mountains = this.mountains.filter((m) => m.x + m.w > -4);
-		this.birds = this.birds.filter((b) => b.x + b.r > -4 && b.x - b.r < this.width + 12);
+		this.birds = this.birds.filter(
+			(b) => b.x + b.r > -4 && b.x - b.r < this.width + 12,
+		);
 		this.generateSegmentsUntil(this.width + this.segmentWidthMax * 2);
 	}
 
@@ -392,9 +439,12 @@ class AutoDragon extends HTMLElement {
 		this.wingPhase += dt * 12;
 		this.flamePhase += dt * 20;
 
-		if (this.collisionFlash > 0) this.collisionFlash = Math.max(0, this.collisionFlash - dt);
-		if (this.collisionCooldown > 0) this.collisionCooldown = Math.max(0, this.collisionCooldown - dt);
-		if (this.slowdownTimer > 0) this.slowdownTimer = Math.max(0, this.slowdownTimer - dt);
+		if (this.collisionFlash > 0)
+			this.collisionFlash = Math.max(0, this.collisionFlash - dt);
+		if (this.collisionCooldown > 0)
+			this.collisionCooldown = Math.max(0, this.collisionCooldown - dt);
+		if (this.slowdownTimer > 0)
+			this.slowdownTimer = Math.max(0, this.slowdownTimer - dt);
 
 		this.spawnBirdIfNeeded(dt);
 		this.updateAutopilot(dt);
@@ -423,7 +473,12 @@ class AutoDragon extends HTMLElement {
 		this.ctx.fillStyle = '#2e3f57';
 		for (const segment of this.segments) {
 			this.ctx.fillRect(segment.x, 0, segment.w + 1, segment.top);
-			this.ctx.fillRect(segment.x, segment.bottom, segment.w + 1, this.height - segment.bottom);
+			this.ctx.fillRect(
+				segment.x,
+				segment.bottom,
+				segment.w + 1,
+				this.height - segment.bottom,
+			);
 		}
 
 		this.ctx.fillStyle = '#3c536f';
@@ -483,13 +538,23 @@ class AutoDragon extends HTMLElement {
 		this.ctx.fillStyle = '#ef4444';
 		this.ctx.beginPath();
 		this.ctx.moveTo(-r * 0.3, -r * 0.1);
-		this.ctx.quadraticCurveTo(-r * 1.45, -r * 1.25 - wing, -r * 0.2, -r * 0.75);
+		this.ctx.quadraticCurveTo(
+			-r * 1.45,
+			-r * 1.25 - wing,
+			-r * 0.2,
+			-r * 0.75,
+		);
 		this.ctx.quadraticCurveTo(r * 0.26, -r * 0.45, -r * 0.3, -r * 0.1);
 		this.ctx.fill();
 
 		this.ctx.beginPath();
 		this.ctx.moveTo(-r * 0.3, r * 0.2);
-		this.ctx.quadraticCurveTo(-r * 1.45, r * 1.05 + wing * 0.7, -r * 0.3, r * 0.82);
+		this.ctx.quadraticCurveTo(
+			-r * 1.45,
+			r * 1.05 + wing * 0.7,
+			-r * 0.3,
+			r * 0.82,
+		);
 		this.ctx.quadraticCurveTo(r * 0.26, r * 0.45, -r * 0.3, r * 0.2);
 		this.ctx.fill();
 
@@ -537,7 +602,11 @@ class AutoDragon extends HTMLElement {
 	drawHud() {
 		const totalTime = this.elapsed + this.timePenalty;
 		const remaining = Math.max(0, this.levelLength - this.worldDistance);
-		const progress = this.clamp(this.worldDistance / this.levelLength, 0, 1);
+		const progress = this.clamp(
+			this.worldDistance / this.levelLength,
+			0,
+			1,
+		);
 
 		this.ctx.fillStyle = 'rgba(3, 8, 20, 0.45)';
 		this.ctx.fillRect(0, 0, this.width, 24);
@@ -572,11 +641,23 @@ class AutoDragon extends HTMLElement {
 		this.ctx.fillStyle = '#f8fafc';
 		this.ctx.textAlign = 'center';
 		this.ctx.font = `${Math.max(14, Math.round(this.size * 0.06))}px sans-serif`;
-		this.ctx.fillText('Уровень пройден!', this.width * 0.5, this.height * 0.42);
+		this.ctx.fillText(
+			'Уровень пройден!',
+			this.width * 0.5,
+			this.height * 0.42,
+		);
 
 		this.ctx.font = `${Math.max(11, Math.round(this.size * 0.04))}px monospace`;
-		this.ctx.fillText(`Время: ${result.toFixed(2)}s`, this.width * 0.5, this.height * 0.54);
-		this.ctx.fillText(`Лучшее: ${best.toFixed(2)}s`, this.width * 0.5, this.height * 0.63);
+		this.ctx.fillText(
+			`Время: ${result.toFixed(2)}s`,
+			this.width * 0.5,
+			this.height * 0.54,
+		);
+		this.ctx.fillText(
+			`Лучшее: ${best.toFixed(2)}s`,
+			this.width * 0.5,
+			this.height * 0.63,
+		);
 		this.ctx.textAlign = 'start';
 	}
 

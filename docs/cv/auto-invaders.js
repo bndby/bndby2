@@ -82,7 +82,10 @@ class AutoInvaders extends HTMLElement {
 		this.playerWidth = Math.max(20, Math.round(size * 0.08));
 		this.playerHeight = Math.max(10, Math.round(size * 0.03));
 		this.playerSpeed = size * 0.55;
-		this.playerY = this.playBottom - this.playerHeight - Math.max(8, Math.round(size * 0.03));
+		this.playerY =
+			this.playBottom -
+			this.playerHeight -
+			Math.max(8, Math.round(size * 0.03));
 
 		this.bulletRadius = Math.max(2, Math.round(size * 0.008));
 		this.playerBulletSpeed = size * 0.9;
@@ -144,9 +147,11 @@ class AutoInvaders extends HTMLElement {
 	createInvaders() {
 		const cols = 10;
 		const rows = 3;
-		const formationWidth = cols * this.invaderWidth + (cols - 1) * this.invaderGapX;
+		const formationWidth =
+			cols * this.invaderWidth + (cols - 1) * this.invaderGapX;
 		const startX = (this.width - formationWidth) * 0.5;
-		const startY = this.playTop + Math.max(10, Math.round(this.size * 0.045));
+		const startY =
+			this.playTop + Math.max(10, Math.round(this.size * 0.045));
 		const palette = ['#9ae6b4', '#67e8f9', '#fcd34d', '#fdba74', '#fda4af'];
 
 		const invaders = [];
@@ -173,8 +178,12 @@ class AutoInvaders extends HTMLElement {
 		const cols = 10;
 		const rows = 6;
 		const totalWidth = shieldCount * cols * shieldCell;
-		const gap = Math.max(8, Math.round((this.width - totalWidth) / (shieldCount + 1)));
-		const baselineY = this.playerY - Math.max(24, Math.round(this.size * 0.12));
+		const gap = Math.max(
+			8,
+			Math.round((this.width - totalWidth) / (shieldCount + 1)),
+		);
+		const baselineY =
+			this.playerY - Math.max(24, Math.round(this.size * 0.12));
 
 		const pattern = [
 			[0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -249,7 +258,10 @@ class AutoInvaders extends HTMLElement {
 		}
 
 		const margin = this.playerWidth * 0.5 + 4;
-		this.player.targetX = Math.max(margin, Math.min(this.width - margin, this.player.targetX));
+		this.player.targetX = Math.max(
+			margin,
+			Math.min(this.width - margin, this.player.targetX),
+		);
 		const delta = this.player.targetX - this.player.x;
 		const step = this.playerSpeed * dtSec;
 		if (Math.abs(delta) > step) {
@@ -262,10 +274,17 @@ class AutoInvaders extends HTMLElement {
 		this.player.hitCooldown = Math.max(0, this.player.hitCooldown - dtSec);
 
 		// Во время уклонения приоритет — выживание, а не огонь.
-		if (this.player.fireCooldown <= 0 && dodgeTargetX === null && this.shouldFire(target)) {
+		if (
+			this.player.fireCooldown <= 0 &&
+			dodgeTargetX === null &&
+			this.shouldFire(target)
+		) {
 			this.spawnPlayerBullet();
 			const baseCooldown = 0.22 - (this.wave - 1) * 0.01;
-			this.player.fireCooldown = Math.max(0.12, baseCooldown + Math.random() * 0.06);
+			this.player.fireCooldown = Math.max(
+				0.12,
+				baseCooldown + Math.random() * 0.06,
+			);
 		}
 	}
 
@@ -289,8 +308,11 @@ class AutoInvaders extends HTMLElement {
 	getDodgeTargetX() {
 		const playerHalf = this.playerWidth * 0.5;
 		const margin = playerHalf + 4;
-		const bulletDangerRadius = playerHalf + this.bulletRadius + Math.max(6, this.size * 0.02);
-		const bullets = this.bullets.filter((bullet) => bullet.type === 'enemy' && bullet.vy > 0);
+		const bulletDangerRadius =
+			playerHalf + this.bulletRadius + Math.max(6, this.size * 0.02);
+		const bullets = this.bullets.filter(
+			(bullet) => bullet.type === 'enemy' && bullet.vy > 0,
+		);
 		if (bullets.length === 0) return null;
 
 		let mostDangerous = null;
@@ -303,7 +325,9 @@ class AutoInvaders extends HTMLElement {
 			const dx = Math.abs(predictedX - this.player.x);
 			if (dx > bulletDangerRadius) continue;
 
-			const dangerScore = (1 - timeToPlayerY / 0.9) * 0.75 + (1 - dx / bulletDangerRadius) * 0.25;
+			const dangerScore =
+				(1 - timeToPlayerY / 0.9) * 0.75 +
+				(1 - dx / bulletDangerRadius) * 0.25;
 			if (!mostDangerous || dangerScore > mostDangerous.dangerScore) {
 				mostDangerous = { bullet, predictedX, dangerScore };
 			}
@@ -313,8 +337,14 @@ class AutoInvaders extends HTMLElement {
 
 		// Выбираем сторону с большим запасом и отступаем от траектории.
 		const dodgeDistance = this.playerWidth * 1.35 + this.bulletRadius * 2;
-		const goRightX = Math.min(this.width - margin, mostDangerous.predictedX + dodgeDistance);
-		const goLeftX = Math.max(margin, mostDangerous.predictedX - dodgeDistance);
+		const goRightX = Math.min(
+			this.width - margin,
+			mostDangerous.predictedX + dodgeDistance,
+		);
+		const goLeftX = Math.max(
+			margin,
+			mostDangerous.predictedX - dodgeDistance,
+		);
 		const leftClearance = goLeftX - margin;
 		const rightClearance = this.width - margin - goRightX;
 
@@ -325,10 +355,13 @@ class AutoInvaders extends HTMLElement {
 
 	shouldFire(target) {
 		if (!target) return false;
-		const existingPlayerBullets = this.bullets.filter((b) => b.type === 'player').length;
+		const existingPlayerBullets = this.bullets.filter(
+			(b) => b.type === 'player',
+		).length;
 		if (existingPlayerBullets >= 2) return false;
 		const targetX = target.x + this.invaderWidth * 0.5;
-		const aligned = Math.abs(targetX - this.player.x) <= this.playerWidth * 0.45;
+		const aligned =
+			Math.abs(targetX - this.player.x) <= this.playerWidth * 0.45;
 		return aligned || Math.random() < 0.12;
 	}
 
@@ -361,7 +394,9 @@ class AutoInvaders extends HTMLElement {
 		const byCol = new Map();
 		for (const invader of this.invaders) {
 			if (!invader.alive) continue;
-			const col = Math.round(invader.x / (this.invaderWidth + this.invaderGapX));
+			const col = Math.round(
+				invader.x / (this.invaderWidth + this.invaderGapX),
+			);
 			const current = byCol.get(col);
 			if (!current || invader.y > current.y) byCol.set(col, invader);
 		}
@@ -395,9 +430,13 @@ class AutoInvaders extends HTMLElement {
 		const bounds = this.getInvaderBounds();
 		if (bounds.right <= bounds.left) return;
 
-		const hitRight = bounds.right + this.invaderStepX >= this.width - this.padding;
+		const hitRight =
+			bounds.right + this.invaderStepX >= this.width - this.padding;
 		const hitLeft = bounds.left - this.invaderStepX <= this.padding;
-		if ((this.invaderDir > 0 && hitRight) || (this.invaderDir < 0 && hitLeft)) {
+		if (
+			(this.invaderDir > 0 && hitRight) ||
+			(this.invaderDir < 0 && hitLeft)
+		) {
 			this.invaderDir *= -1;
 			for (const invader of this.invaders) {
 				if (!invader.alive) continue;
@@ -454,7 +493,11 @@ class AutoInvaders extends HTMLElement {
 				if (dx * dx + dy * dy > rr * rr) continue;
 				alive[i] = false;
 				alive[j] = false;
-				this.explosions.push({ x: (a.x + b.x) * 0.5, y: (a.y + b.y) * 0.5, ttl: 0.16 });
+				this.explosions.push({
+					x: (a.x + b.x) * 0.5,
+					y: (a.y + b.y) * 0.5,
+					ttl: 0.16,
+				});
 				break;
 			}
 		}
@@ -546,7 +589,9 @@ class AutoInvaders extends HTMLElement {
 		for (const explosion of this.explosions) {
 			explosion.ttl -= dtSec;
 		}
-		this.explosions = this.explosions.filter((explosion) => explosion.ttl > 0);
+		this.explosions = this.explosions.filter(
+			(explosion) => explosion.ttl > 0,
+		);
 	}
 
 	update(dtMs) {
@@ -609,20 +654,32 @@ class AutoInvaders extends HTMLElement {
 			if (!invader.alive) continue;
 
 			this.ctx.fillStyle = invader.color;
-			this.ctx.fillRect(invader.x, invader.y, this.invaderWidth, this.invaderHeight);
+			this.ctx.fillRect(
+				invader.x,
+				invader.y,
+				this.invaderWidth,
+				this.invaderHeight,
+			);
 
 			// Упрощенный "пиксельный" силуэт с анимацией ног.
 			const eyeW = Math.max(2, Math.round(this.invaderWidth * 0.16));
-			const eyeY = invader.y + Math.max(2, Math.round(this.invaderHeight * 0.24));
+			const eyeY =
+				invader.y + Math.max(2, Math.round(this.invaderHeight * 0.24));
 			this.ctx.fillStyle = '#0b1220';
 			this.ctx.fillRect(invader.x + eyeW, eyeY, eyeW, eyeW);
-			this.ctx.fillRect(invader.x + this.invaderWidth - eyeW * 2, eyeY, eyeW, eyeW);
+			this.ctx.fillRect(
+				invader.x + this.invaderWidth - eyeW * 2,
+				eyeY,
+				eyeW,
+				eyeW,
+			);
 
 			this.ctx.fillStyle = invader.color;
 			const legY = invader.y + this.invaderHeight;
 			const legW = Math.max(2, Math.round(this.invaderWidth * 0.14));
 			const leftLegX = invader.x + (frame ? legW : 0);
-			const rightLegX = invader.x + this.invaderWidth - legW - (frame ? 0 : legW);
+			const rightLegX =
+				invader.x + this.invaderWidth - legW - (frame ? 0 : legW);
 			this.ctx.fillRect(leftLegX, legY, legW, legW);
 			this.ctx.fillRect(rightLegX, legY, legW, legW);
 		}
@@ -631,14 +688,21 @@ class AutoInvaders extends HTMLElement {
 	drawPlayer() {
 		const x = this.player.x - this.playerWidth * 0.5;
 		const y = this.playerY;
-		const blink = this.player.hitCooldown > 0 && Math.floor(performance.now() / 80) % 2 === 0;
+		const blink =
+			this.player.hitCooldown > 0 &&
+			Math.floor(performance.now() / 80) % 2 === 0;
 		if (blink) return;
 
 		this.ctx.fillStyle = '#34d399';
 		this.ctx.fillRect(x, y, this.playerWidth, this.playerHeight);
 		const turretW = Math.max(4, Math.round(this.playerWidth * 0.22));
 		const turretH = Math.max(5, Math.round(this.playerHeight * 0.8));
-		this.ctx.fillRect(this.player.x - turretW * 0.5, y - turretH, turretW, turretH);
+		this.ctx.fillRect(
+			this.player.x - turretW * 0.5,
+			y - turretH,
+			turretW,
+			turretH,
+		);
 	}
 
 	drawShields() {
@@ -654,7 +718,8 @@ class AutoInvaders extends HTMLElement {
 
 	drawBullets() {
 		for (const bullet of this.bullets) {
-			this.ctx.fillStyle = bullet.type === 'player' ? '#93c5fd' : '#fca5a5';
+			this.ctx.fillStyle =
+				bullet.type === 'player' ? '#93c5fd' : '#fca5a5';
 			this.ctx.beginPath();
 			this.ctx.arc(bullet.x, bullet.y, bullet.r, 0, Math.PI * 2);
 			this.ctx.fill();
@@ -681,7 +746,11 @@ class AutoInvaders extends HTMLElement {
 		this.ctx.fillRect(0, y, this.width, h);
 		this.ctx.fillStyle = '#f8fafc';
 		this.ctx.font = `${Math.max(12, Math.round(this.size * 0.043))}px monospace`;
-		this.ctx.fillText('GAME OVER  RESTARTING...', Math.max(8, this.size * 0.07), y + h * 0.62);
+		this.ctx.fillText(
+			'GAME OVER  RESTARTING...',
+			Math.max(8, this.size * 0.07),
+			y + h * 0.62,
+		);
 	}
 
 	draw() {
