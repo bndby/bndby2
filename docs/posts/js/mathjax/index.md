@@ -81,7 +81,7 @@ slug: mathjax
 
     Нестандартные имена функций можно задавать с помощью `\operatorname{foo}(x)` $\operatorname{foo}(x)$.
 
-11. Существует огромное количество **специальных символов и обозначений**, слишком много, чтобы перечислять здесь; см. краткий список [LATEX and AMS-LATEX Symbols](https://pic.plover.com/MISC/symbols.pdf) от Dr. Emre Sermutlu или полный перечень [The Comprehensive LATEX Symbol List](/docs/js/mathjax/symbols-a4.pdf) от Scott Pakin. Некоторые из самых распространённых:
+11. Существует огромное количество **специальных символов и обозначений**, слишком много, чтобы перечислять здесь; см. краткий список [LATEX and AMS-LATEX Symbols](https://pic.plover.com/MISC/symbols.pdf) от Dr. Emre Sermutlu или полный перечень [The Comprehensive LATEX Symbol List](https://www.ctan.org/tex-archive/info/symbols/comprehensive/symbols-a4.pdf) от Scott Pakin. Некоторые из самых распространённых:
     - `\lt` `\gt` `\le` `\ge` `\neq` $\lt$, $\gt$, $\le$, $\ge$, $\neq$. Можно использовать `\not`, чтобы перечеркнуть почти что угодно: `\not\lt` $\not\lt$, но часто выглядит плохо.
     - `\times` `\div` `\pm` `\mp` $\times$, $\div$, $\pm$, $\mp$. `\cdot` — центральная точка: $x \cdot y$
     - `\cup` `\cap` `\setminus` `\subset` `\subseteq` `\subsetneq` `\supset` `\in` `\notin` `\emptyset` `\varnothing` $\cup$, $\cap$, $\setminus$, $\subset$, $\subseteq$, $\subsetneq$, $\supset$, $\in$, $\notin$, $\emptyset$, $\varnothing$
