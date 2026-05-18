@@ -40,7 +40,9 @@ Prompt API в Chrome позволяет взаимодействовать с LL
 
 1. Установите [полифилл из npm](https://www.npmjs.com/package/prompt-api-polyfill):
 
+    ```sh
     npm install prompt-api-polyfill
+    ```
 
 2. Выберите облачный или локальный бэкенд:
     - **Облачный бэкенд:** пользовательские данные отправляются в облако для удаленной обработки, зато не нужно ждать доступности локальной модели. Вы отвечаете за возможные расходы согласно тарифам вашего облачного провайдера.
@@ -155,7 +157,8 @@ import { DEFAULT_MODELS } from './defaults.js';
 
 export default class CustomBackend extends PolyfillBackend {
     constructor(config) {
-        // config обычно берется из глобального объекта window, например window.CUSTOM_CONFIG
+        // config обычно берется из глобального объекта window,
+        // например window.CUSTOM_CONFIG
         super(config.modelName || DEFAULT_MODELS.custom.modelName);
     }
 
@@ -167,7 +170,8 @@ export default class CustomBackend extends PolyfillBackend {
     }
 
     // Инициализирует нижележащий SDK или API-клиент. Для локальных моделей
-    // используйте monitorTarget, чтобы сообщать полифиллу о прогрессе скачивания модели.
+    // используйте monitorTarget, чтобы сообщать полифиллу
+    // о прогрессе скачивания модели.
     createSession(options, sessionParams, monitorTarget) {
         // Вернуть инициализированную сессию или экземпляр клиента
     }
