@@ -2,10 +2,20 @@
 
 Для сборки справочника нужно [установить MKDocs](https://www.mkdocs.org/#installation), [расширения PyMdown](https://facelessuser.github.io/pymdown-extensions/installation/) и тему [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/):
 
+## Linux
+
 ```sh
-python -m venv venv
-source venv/bin/activate
+python -m venv .venv
+source .venv/bin/activate
 pip3 install -r ./requirements.txt
+```
+
+## Windows
+
+```sh
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r ./requirements.txt
 ```
 
 Сборка проекта:
@@ -17,5 +27,5 @@ mkdocs build
 Режим разработчика:
 
 ```sh
-mkdocs serve --dirtyreload
+mkdocs serve --livereload -o
 ```
