@@ -1,6 +1,6 @@
 ---
 date: 2026-07-06
-description: Подробный практический туториал по Web Components для начинающих: Custom Elements, Shadow DOM, атрибуты и свойства, lifecycle callbacks, кастомные события и сборка собственного dropdown-компонента.
+description: 'Подробный практический туториал по Web Components для начинающих: Custom Elements, Shadow DOM, атрибуты и свойства, lifecycle callbacks, кастомные события и сборка собственного dropdown-компонента.'
 tags:
     - js
     - webcomponents
@@ -204,7 +204,7 @@ class Button extends HTMLElement {
             this.dispatchEvent(
                 new CustomEvent('onClick', {
                     detail: 'Привет из Web Component',
-                })
+                }),
             );
         });
     }
@@ -404,7 +404,7 @@ class Dropdown extends HTMLElement {
                 this.dispatchEvent(
                     new CustomEvent('onChange', {
                         detail: key,
-                    })
+                    }),
                 );
 
                 this.render();
@@ -455,4 +455,4 @@ window.customElements.define('my-dropdown', Dropdown);
 
 ---
 
-Оригинальная статья: [Web Components Tutorial for Beginners \[2019\]](https://www.robinwieruch.de/web-components-tutorial/)
+Оригинальная статья: [Web Components Tutorial for Beginners](https://www.robinwieruch.de/web-components-tutorial/)
