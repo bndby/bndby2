@@ -1546,11 +1546,23 @@ assert.throws(() => {
 
 В зависимости от желаемого поведения вам нужно будет выбрать правильный параметр `overflow`, но значение по умолчанию `'constrain'` должно быть правильным в большинстве случаев.
 
-<!-- prettier-ignore-start -->
 ```javascript
-{{cookbook/adjustMonth.mjs}}
+const date = Temporal.PlainDate.from('2020-05-31');
+
+// Same date and time, but in February
+// (and use the last day if the date doesn't exist in February):
+
+const feb = date.with({ month: 2 });
+
+assert.equal(feb.toString(), '2020-02-29');
+
+// Same date and time, but in April
+// (and throw an exception if the date doesn't exist in April):
+
+assert.throws(() => {
+    date.with({ month: 4 }, { overflow: 'reject' });
+});
 ```
-<!-- prettier-ignore-end -->
 
 ### Следующее событие недели
 
@@ -2532,3 +2544,5 @@ assert(n.equals(NepaliPlainDate.from(n)), 'equals new instance of self');
 assert(!n.equals(withBuiltinCalendar), 'does not equal real PlainDate');
 assert.equal(n.toJSON(), '2024-06-24[u-ca=nepali]');
 ```
+
+<small>Источник: <https://tc39.es/proposal-temporal/docs/cookbook.html></small>
