@@ -17,4 +17,4 @@ jobs:
             - name: Install dependencies
               run: pip install -r requirements.txt
             - name: Deploy to GitHub Pages
-              run: mkdocs gh-deploy --force
+              run: properdocs gh-deploy --force
