@@ -1,13 +1,13 @@
-# Сборка справочника
+# Сборка документации
 
-Для сборки справочника нужно [установить MKDocs](https://www.mkdocs.org/#installation), [расширения PyMdown](https://facelessuser.github.io/pymdown-extensions/installation/) и тему [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/):
+Для сборки справочника используется [ProperDocs](https://properdocs.dev/).
 
 ## Linux
 
 ```sh
 python -m venv .venv
 source .venv/bin/activate
-pip3 install -r ./requirements.txt
+python -m pip install -r ./requirements.txt
 ```
 
 ## Windows
@@ -15,17 +15,19 @@ pip3 install -r ./requirements.txt
 ```sh
 python -m venv .venv
 .venv\Scripts\activate
-pip install -r ./requirements.txt
+python -m pip install -r ./requirements.txt
 ```
 
-Сборка проекта:
+Сборка проекта выполняется из корня репозитория:
 
 ```sh
-mkdocs build
+properdocs build
 ```
 
-Режим разработчика:
+Локальный сервер разработки с автоматической пересборкой:
 
 ```sh
-mkdocs serve --livereload -o
+properdocs serve
 ```
+
+После запуска сайт доступен по адресу [http://127.0.0.1:8000/](http://127.0.0.1:8000/).

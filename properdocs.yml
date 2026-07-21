@@ -5,11 +5,12 @@ site_author: bnd.by
 copyright: (☭) 1981
 
 theme:
-    name: material
+    name: materialx
     logo: ./logo.png
     favicon: ./logo.png
     font: false
     language: ru
+    topbar_style: primary
     palette:
         - media: '(prefers-color-scheme)'
           primary: white

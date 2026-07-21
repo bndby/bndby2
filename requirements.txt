@@ -10,11 +10,13 @@ Jinja2
 Markdown
 MarkupSafe
 mergedeep
-mkdocs
+# mkdocs
+properdocs
 mkdocs-awesome-pages-plugin
 mkdocs-get-deps
 mkdocs-glightbox
-mkdocs-material
+# mkdocs-material
+mkdocs-materialx
 mkdocs-material-extensions
 mkdocs-minify-plugin
 mkdocs-video
