@@ -1,0 +1,512 @@
+<!DOCTYPE html><html lang="ru" class="no-js"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Async React в React 19: как useTransition и useActionState помогают строить неблокирующие и предсказуемые интерфейсы."><meta name="author" content="bnd.by"><link href="https://bnd.by/docs/react/async-react-non-blocking-ui/" rel="canonical"><link href="../../js/whats-new-in-js/" rel="prev"><link href="../../ai/ai-api-v-brauzere/" rel="next"><link rel="icon" href="../../../logo.png"><meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-materialx-10.1.8"><title>Async React: создание неблокирующих UI с useTransition и useActionState - Юрий Бондаренко</title><link rel="stylesheet" href="../../../assets/stylesheets/main.314bbef5.min.css"><link rel="stylesheet" href="../../../assets/stylesheets/palette.a45159b5.min.css"><script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script><script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-X25N427QYC"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-X25N427QYC",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-X25N427QYC",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script><script>"undefined"!=typeof __md_analytics&&__md_analytics()</script><meta property="og:type" content="website"><meta property="og:title" content="Async React: создание неблокирующих UI с useTransition и useActionState - Юрий Бондаренко"><meta property="og:description" content="Async React в React 19: как useTransition и useActionState помогают строить неблокирующие и предсказуемые интерфейсы."><meta property="og:image" content="https://bnd.by/assets/images/social/docs/react/async-react-non-blocking-ui/index.png"><meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta content="https://bnd.by/docs/react/async-react-non-blocking-ui/" property="og:url"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:title" content="Async React: создание неблокирующих UI с useTransition и useActionState - Юрий Бондаренко"><meta property="twitter:description" content="Async React в React 19: как useTransition и useActionState помогают строить неблокирующие и предсказуемые интерфейсы."><meta property="twitter:image" content="https://bnd.by/assets/images/social/docs/react/async-react-non-blocking-ui/index.png"><link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head> <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="pink" data-mx-topbar="primary"> <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off"> <input class="md-toggle" data-md-toggle="toc" type="checkbox" id="__toc" autocomplete="off"> <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off"> <label class="md-overlay" for="__drawer"></label> <label class="md-overlay" for="__toc"></label> <div data-md-component="skip"> <a href="#async-react-ui-usetransition-useactionstate" class="md-skip"> Перейти к содержанию </a> </div> <div data-md-component="announce"> </div> <header class="md-header" data-md-component="header"> <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул"> <a href="https://bnd.by" title="Юрий Бондаренко" class="md-header__button md-logo" aria-label="Юрий Бондаренко" data-md-component="logo"> <img src="../../../logo.png" alt="logo"> </a> <label class="md-header__button md-icon" for="__drawer"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg> </label> <div class="md-header__title" data-md-component="header-title"> <div class="md-header__ellipsis"> <div class="md-header__topic"> <span class="md-ellipsis"> Юрий Бондаренко </span> </div> <div class="md-header__topic" data-md-component="header-topic"> <span class="md-ellipsis"> Async React: создание неблокирующих UI с useTransition и useActionState </span> </div> </div> </div> <form class="md-header__option" data-md-component="palette"> <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="pink" aria-label="Переключиться на светлую тему" type="radio" name="__palette" id="__palette_0"> <label class="md-header__button md-icon" title="Переключиться на светлую тему" for="__palette_1" hidden=""> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"></path></svg> </label> <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="pink" aria-label="Переключиться на тёмную тему" type="radio" name="__palette" id="__palette_1"> <label class="md-header__button md-icon" title="Переключиться на тёмную тему" for="__palette_2" hidden=""> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg> </label> <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="white" data-md-color-accent="pink" aria-label="Переключиться на системную тему" type="radio" name="__palette" id="__palette_2"> <label class="md-header__button md-icon" title="Переключиться на системную тему" for="__palette_0" hidden=""> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg> </label> </form> <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script> <label class="md-header__button md-icon" for="__search"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.25 2a8.25 8.25 0 0 1 6.34 13.53l5.69 5.69a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215l-5.69-5.69A8.25 8.25 0 1 1 10.25 2M3.5 10.25a6.75 6.75 0 1 0 13.5 0 6.75 6.75 0 0 0-13.5 0"></path></svg> </label> <div class="md-search" data-md-component="search" role="dialog"> <label class="md-search__overlay" for="__search"></label> <div class="md-search__inner" role="search"> <form class="md-search__form" name="search"> <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required=""> <label class="md-search__icon md-icon" for="__search"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.25 2a8.25 8.25 0 0 1 6.34 13.53l5.69 5.69a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215l-5.69-5.69A8.25 8.25 0 1 1 10.25 2M3.5 10.25a6.75 6.75 0 1 0 13.5 0 6.75 6.75 0 0 0-13.5 0"></path></svg> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg> </label> <nav class="md-search__options" aria-label="Поиск"> <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg> </button> </nav> </form> <div class="md-search__output"> <div class="md-search__scrollwrap" tabindex="0"> <div class="md-search-result" data-md-component="search-result"> <div class="md-search-result__meta"> Инициализация поиска </div> <ol class="md-search-result__list" role="presentation"></ol> </div> </div> </div> </div> </div> </nav> </header> <div class="md-container" data-md-component="container"> <nav class="md-tabs" aria-label="Вкладки" data-md-component="tabs"> <div class="md-grid"> <ul class="md-tabs__list"> <li class="md-tabs__item md-tabs__item--active"> <a href="../../.." class="md-tabs__link"> 🏠 </a> </li> <li class="md-tabs__item"> <a href="../../../cv/" class="md-tabs__link"> Резюме </a> </li> <li class="md-tabs__item"> <a href="../../ai/" class="md-tabs__link"> Доки </a> </li> </ul> </div> </nav> <main class="md-main" data-md-component="main"> <div class="md-main__inner md-grid"> <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden=""> <div class="md-sidebar__scrollwrap"> <div class="md-sidebar__inner"> <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Навигация" data-md-level="0"> <label class="md-nav__title" for="__drawer"> <a href="https://bnd.by" title="Юрий Бондаренко" class="md-nav__button md-logo" aria-label="Юрий Бондаренко" data-md-component="logo"> <img src="../../../logo.png" alt="logo"> </a> Юрий Бондаренко </label> <ul class="md-nav__list"> <li class="md-nav__item md-nav__item--active"> <a href="../../.." class="md-nav__link"> <span class="md-ellipsis"> 🏠 </span> </a> </li> <li class="md-nav__item md-nav__item--pruned md-nav__item--nested"> <a href="../../../cv/" class="md-nav__link"> <span class="md-ellipsis"> Резюме </span> <span class="md-nav__icon md-icon"></span> </a> </li> <li class="md-nav__item md-nav__item--pruned md-nav__item--nested"> <a href="../../ai/" class="md-nav__link"> <span class="md-ellipsis"> Доки </span> <span class="md-nav__icon md-icon"></span> </a> </li> </ul> </nav> </div> </div> </div> <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc"> <div class="md-sidebar__scrollwrap"> <div class="md-sidebar__inner"> <nav class="md-nav md-nav--secondary" aria-label="Содержание"> <label class="md-nav__title" for="__toc"> <span class="md-nav__icon md-icon"></span> Содержание </label> <ul class="md-nav__list" data-md-component="toc"> <li class="md-nav__item"> <a href="#_1" class="md-nav__link"> <span class="md-ellipsis"> В этой статье </span> </a> </li> <li class="md-nav__item"> <a href="#usetransition" class="md-nav__link"> <span class="md-ellipsis"> useTransition: приоритизация отзывчивости интерфейса </span> </a> <nav class="md-nav" aria-label="useTransition: приоритизация отзывчивости интерфейса"> <ul class="md-nav__list"> <li class="md-nav__item"> <a href="#ui" class="md-nav__link"> <span class="md-ellipsis"> Понимание параллельного выполнения и синхронизации UI </span> </a> </li> <li class="md-nav__item"> <a href="#_2" class="md-nav__link"> <span class="md-ellipsis"> Выход за пределы сетевых запросов </span> </a> </li> <li class="md-nav__item"> <a href="#state-await" class="md-nav__link"> <span class="md-ellipsis"> Критически важная оговорка: обработка state после await </span> </a> </li> <li class="md-nav__item"> <a href="#usetransition_1" class="md-nav__link"> <span class="md-ellipsis"> Преимущества миграции на useTransition </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item"> <a href="#useactionstate" class="md-nav__link"> <span class="md-ellipsis"> useActionState: последовательные и атомарные обновления </span> </a> <nav class="md-nav" aria-label="useActionState: последовательные и атомарные обновления"> <ul class="md-nav__list"> <li class="md-nav__item"> <a href="#action-transitions" class="md-nav__link"> <span class="md-ellipsis"> Выполнение action: transitions и формы </span> </a> </li> <li class="md-nav__item"> <a href="#action" class="md-nav__link"> <span class="md-ellipsis"> Очередь Action: последовательная согласованность </span> </a> </li> <li class="md-nav__item"> <a href="#useactionstate_1" class="md-nav__link"> <span class="md-ellipsis"> Преимущества миграции на useActionState </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item"> <a href="#_3" class="md-nav__link"> <span class="md-ellipsis"> Примите новые паттерны </span> </a> </li> <li class="md-nav__item"> <a href="#_4" class="md-nav__link"> <span class="md-ellipsis"> Связанные статьи </span> </a> </li> </ul> </nav> </div> </div> </div> <div class="md-content md-content--post" data-md-component="content"> <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation"> <div class="md-sidebar__scrollwrap"> <div class="md-sidebar__inner md-post"> <nav class="md-nav md-nav--primary"> <div class="md-post__back"> <div class="md-nav__title md-nav__container"> <a href="../../.." class="md-nav__link"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg> <span class="md-ellipsis"> На главную </span> </a> </div> </div> <ul class="md-post__meta md-nav__list"> <li class="md-nav__item md-nav__item--section"> <div class="md-post__title"> <span class="md-ellipsis"> Метаданные </span> </div> <nav class="md-nav"> <ul class="md-nav__list"> <li class="md-nav__item"> <div class="md-nav__link"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"></path></svg> <time datetime="2026-05-11 00:00:00+00:00" class="md-ellipsis">11 мая 2026 г.</time> </div> </li> <li class="md-nav__item"> <div class="md-nav__link"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3zm3 2 4 13 3-1-4-13zM5 5v13h3V5zM3 19v2h18v-2z"></path></svg> <span class="md-ellipsis"> В <a href="../">React</a></span> </div> </li> <li class="md-nav__item"> <div class="md-nav__link"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"></path></svg> <span class="md-ellipsis"> Читать 12 мин </span> </div> </li> </ul> </nav> </li> </ul> </nav> </div> </div> </div> <article class="md-content__inner md-typeset"> <div><h1 id="async-react-ui-usetransition-useactionstate">Async React: создание неблокирующих UI с useTransition и useActionState<a class="headerlink" href="#async-react-ui-usetransition-useactionstate" title="Permanent link">¶</a></h1> <p>React — мощная open-source JavaScript-библиотека для построения пользовательских интерфейсов (UI), особенно для одностраничных приложений, где данные со временем меняются. Разработанная и поддерживаемая Meta (ранее Facebook), она совершила революцию в веб-разработке, представив компонентную архитектуру.</p> <h2 id="_1">В этой статье<a class="headerlink" href="#_1" title="Permanent link">¶</a></h2> <ul> <li><code>useTransition</code>: приоритизация отзывчивости интерфейса</li> <li><code>useActionState</code>: последовательные и атомарные обновления</li> <li>Принятие новых паттернов</li> </ul> <p>Вместо того чтобы рассматривать сайт как единый документ, React позволяет разработчикам разбивать интерфейс на небольшие изолированные части кода — компоненты, которыми можно управлять независимо и переиспользовать по всему приложению.</p> <p>Последняя версия технологии, React 19, вводит набор новых хуков, созданных для упрощения асинхронных операций и работы с формами, уходя от ручного отслеживания состояния (например, прокидывания <code>isLoading</code> через пропсы) к более декларативным паттернам. Эти новые паттерны позволяют фреймворку нативно обрабатывать состояния "pending" и жизненный цикл форм, уменьшая объем шаблонного кода и сохраняя отзывчивость UI. Этот сдвиг критически важен для современных data-intensive приложений, где важно давать пользователю стабильную обратную связь, но вручную это часто сложно поддерживать.</p> <p>В экосистеме React 19 "Action" — это специальный технический термин, обозначающий асинхронную функцию, переданную в transition.</p> <p>В этом гайде мы рассмотрим ключевые хуки, которые обеспечивают эти паттерны:</p> <ul> <li><code>useTransition</code>: теперь нативно поддерживает async-функции, позволяя оборачивать любую асинхронную action в transition, чтобы управлять pending-состояниями без блокировки UI.</li> <li><code>useActionState</code>: упрощает async-жизненный цикл, объединяя управление состоянием, результаты данных и автоматический pending-статус в один целостный хук.</li> </ul> <p>Пока <code>useTransition</code> позволяет UI оставаться отзывчивым во время ожидания, <code>useActionState</code> гарантирует, что сложные обновления данных остаются атомарными и последовательными.</p> <h2 id="usetransition">useTransition: приоритизация отзывчивости интерфейса<a class="headerlink" href="#usetransition" title="Permanent link">¶</a></h2> <p>В React 18 <code>useTransition</code> в основном использовался для сохранения отзывчивости UI за счет пометки синхронных обновлений состояния (например, фильтрации списка) как не срочных. Для глубокого разбора исходного поведения <code>useTransition</code> в React 18, связанного с concurrent rendering и приоритизацией UI, очень рекомендую официальную документацию: <a href="https://react.dev/reference/react/useTransition">Official React 18 Transition Documentation</a>.</p> <p>В React 19 <code>useTransition</code> расширен и нативно поддерживает Async Actions.</p> <p>Раньше, если вы пытались использовать async-функцию внутри <code>startTransition</code>, состояние "pending" завершалось в момент первого <code>await</code>. В React 19 <code>isPending</code> теперь остается <code>true</code> на протяжении всей асинхронной операции. Это делает <code>useTransition</code> основным инструментом для управления индикаторами "занятости" по всему приложению.</p> <p>Чтобы понять изменения в React 19, сравним стандартный функционал поиска по товарам. Ниже сопоставлены традиционный подход — с ручным отслеживанием состояния — и новый паттерн Async Action с <code>useTransition</code>. Обратите внимание, как современный подход заменяет "state soup" нативно управляемым жизненным циклом.</p> <hr> <p>🚀 Рабочий пример: полный код и live-демо со сравнением традиционного подхода и паттернов React 19: <a href="https://codesandbox.io/p/sandbox/hwh49r?file=%2Fsrc%2FUseTransitionExample.js%3A19%2C34">Filtering Results using useTransition</a></p> <p>До (до React 19)</p> <div class="language-text highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span>
+<span class="normal"><a href="#__codelineno-0-24">24</a></span>
+<span class="normal"><a href="#__codelineno-0-25">25</a></span>
+<span class="normal"><a href="#__codelineno-0-26">26</a></span>
+<span class="normal"><a href="#__codelineno-0-27">27</a></span>
+<span class="normal"><a href="#__codelineno-0-28">28</a></span>
+<span class="normal"><a href="#__codelineno-0-29">29</a></span>
+<span class="normal"><a href="#__codelineno-0-30">30</a></span>
+<span class="normal"><a href="#__codelineno-0-31">31</a></span>
+<span class="normal"><a href="#__codelineno-0-32">32</a></span>
+<span class="normal"><a href="#__codelineno-0-33">33</a></span>
+<span class="normal"><a href="#__codelineno-0-34">34</a></span>
+<span class="normal"><a href="#__codelineno-0-35">35</a></span>
+<span class="normal"><a href="#__codelineno-0-36">36</a></span>
+<span class="normal"><a href="#__codelineno-0-37">37</a></span>
+<span class="normal"><a href="#__codelineno-0-38">38</a></span>
+<span class="normal"><a href="#__codelineno-0-39">39</a></span>
+<span class="normal"><a href="#__codelineno-0-40">40</a></span>
+<span class="normal"><a href="#__codelineno-0-41">41</a></span>
+<span class="normal"><a href="#__codelineno-0-42">42</a></span>
+<span class="normal"><a href="#__codelineno-0-43">43</a></span>
+<span class="normal"><a href="#__codelineno-0-44">44</a></span>
+<span class="normal"><a href="#__codelineno-0-45">45</a></span>
+<span class="normal"><a href="#__codelineno-0-46">46</a></span>
+<span class="normal"><a href="#__codelineno-0-47">47</a></span>
+<span class="normal"><a href="#__codelineno-0-48">48</a></span>
+<span class="normal"><a href="#__codelineno-0-49">49</a></span>
+<span class="normal"><a href="#__codelineno-0-50">50</a></span>
+<span class="normal"><a href="#__codelineno-0-51">51</a></span>
+<span class="normal"><a href="#__codelineno-0-52">52</a></span>
+<span class="normal"><a href="#__codelineno-0-53">53</a></span>
+<span class="normal"><a href="#__codelineno-0-54">54</a></span>
+<span class="normal"><a href="#__codelineno-0-55">55</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a> const [searchTerm, setSearchTerm] = useState("");
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>  const [filteredProducts, setFilteredProducts] = useState(products);
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>  // MANUAL LOADING STATE PATTERN:
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a>  // Problem: Need separate state to track loading status manually
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>  const [isLoading, setIsLoading] = useState(false);
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a>  const getFilteredProducts = async (term) =&gt; {
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a>    // MANUAL LOADING STATE MANAGEMENT:
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a>    // Problem: Must manually set loading to true before async operation
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a>    setIsLoading(true);
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a>    try {
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a>      const data = await fetchFilteredProducts(term);
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>      setFilteredProducts(data);
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>    } catch (error) {
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a>      console.error("Search failed", error);
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a>    } finally {
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a>      // MANUAL LOADING STATE CLEANUP:
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a>      // Problem: Must remember to manually set loading to false after operation
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a>      // Problem: Risk of forgetting to reset loading state in complex try/catch logic
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a>      setIsLoading(false);
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a>    }
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a>  };
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a>  const handleSearchChange = (e) =&gt; {
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a>    const value = e.target.value;
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a>    setSearchTerm(value);
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a>    getFilteredProducts(value);
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a>  };
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a>  return (
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a>    &lt;div&gt;
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a>      &lt;h3&gt;Traditional Method&lt;/h3&gt;
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a>      &lt;div&gt;
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a>        &lt;input
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a>          type="text"
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a>          placeholder="Search products..."
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a>          value={searchTerm}
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a>          onChange={handleSearchChange}
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a>        /&gt;
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43"></a>        {/* MANUAL LOADING STATE DISPLAY: */}
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44"></a>        {/* Problem: Uses manually managed loading state which adds boilerplate */}
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45"></a>        {isLoading &amp;&amp; &lt;p&gt;Searching Catalog...&lt;/p&gt;}
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46"></a>        {!isLoading &amp;&amp; (
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a>          &lt;ul&gt;
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48"></a>            {filteredProducts.map((product) =&gt; (
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a>              &lt;li key={product.id}&gt;{product.name}&lt;/li&gt;
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50"></a>            ))}
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51"></a>          &lt;/ul&gt;
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52"></a>        )}
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53"></a>      &lt;/div&gt;
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54"></a>    &lt;/div&gt;
+</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55"></a>  );
+</span></code></pre></div></td></tr></tbody></table></div> <p>После (<code>useTransition</code>)</p> <div class="language-text highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span>
+<span class="normal"><a href="#__codelineno-1-17">17</a></span>
+<span class="normal"><a href="#__codelineno-1-18">18</a></span>
+<span class="normal"><a href="#__codelineno-1-19">19</a></span>
+<span class="normal"><a href="#__codelineno-1-20">20</a></span>
+<span class="normal"><a href="#__codelineno-1-21">21</a></span>
+<span class="normal"><a href="#__codelineno-1-22">22</a></span>
+<span class="normal"><a href="#__codelineno-1-23">23</a></span>
+<span class="normal"><a href="#__codelineno-1-24">24</a></span>
+<span class="normal"><a href="#__codelineno-1-25">25</a></span>
+<span class="normal"><a href="#__codelineno-1-26">26</a></span>
+<span class="normal"><a href="#__codelineno-1-27">27</a></span>
+<span class="normal"><a href="#__codelineno-1-28">28</a></span>
+<span class="normal"><a href="#__codelineno-1-29">29</a></span>
+<span class="normal"><a href="#__codelineno-1-30">30</a></span>
+<span class="normal"><a href="#__codelineno-1-31">31</a></span>
+<span class="normal"><a href="#__codelineno-1-32">32</a></span>
+<span class="normal"><a href="#__codelineno-1-33">33</a></span>
+<span class="normal"><a href="#__codelineno-1-34">34</a></span>
+<span class="normal"><a href="#__codelineno-1-35">35</a></span>
+<span class="normal"><a href="#__codelineno-1-36">36</a></span>
+<span class="normal"><a href="#__codelineno-1-37">37</a></span>
+<span class="normal"><a href="#__codelineno-1-38">38</a></span>
+<span class="normal"><a href="#__codelineno-1-39">39</a></span>
+<span class="normal"><a href="#__codelineno-1-40">40</a></span>
+<span class="normal"><a href="#__codelineno-1-41">41</a></span>
+<span class="normal"><a href="#__codelineno-1-42">42</a></span>
+<span class="normal"><a href="#__codelineno-1-43">43</a></span>
+<span class="normal"><a href="#__codelineno-1-44">44</a></span>
+<span class="normal"><a href="#__codelineno-1-45">45</a></span>
+<span class="normal"><a href="#__codelineno-1-46">46</a></span>
+<span class="normal"><a href="#__codelineno-1-47">47</a></span>
+<span class="normal"><a href="#__codelineno-1-48">48</a></span>
+<span class="normal"><a href="#__codelineno-1-49">49</a></span>
+<span class="normal"><a href="#__codelineno-1-50">50</a></span>
+<span class="normal"><a href="#__codelineno-1-51">51</a></span>
+<span class="normal"><a href="#__codelineno-1-52">52</a></span>
+<span class="normal"><a href="#__codelineno-1-53">53</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a>const [searchTerm, setSearchTerm] = useState("");
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a>  const [filteredProducts, setFilteredProducts] = useState(products);
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>  // REACT 19 AUTOMATIC PENDING STATE:
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a>  // Benefit: isPending is automatically managed by React, eliminating the need for manual 'isLoading' state.
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a>  const [isPending, startTransition] = useTransition();
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a>  const handleSearchChange = (e) =&gt; {
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a>    const value = e.target.value;
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a>    setSearchTerm(value);
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a>    // REACT 19 ASYNC TRANSITION PATTERN:
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a>    // Benefit: startTransition now supports async functions natively.
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a>    // Benefit: isPending automatically becomes true when the async operation begins.
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a>    startTransition(async () =&gt; {
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a>      try {
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a>        const data = await fetchFilteredProducts(value);
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a>        setFilteredProducts(data);
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a>      } catch (error) {
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a>        console.error("Search failed", error);
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a>      }
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a>      // AUTOMATIC PENDING STATE CLEANUP:
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a>      // Benefit: isPending automatically becomes false when the promise resolves.
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a>      // Benefit: State updates inside the transition are bundled and prioritized correctly.
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a>    });
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a>  };
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29"></a>  return (
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30"></a>    &lt;div&gt;
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31"></a>      &lt;h3&gt;useTransition Example&lt;/h3&gt;
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32"></a>      &lt;div&gt;
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33"></a>        &lt;input
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34"></a>          type="text"
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35"></a>          placeholder="Search products..."
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36"></a>          value={searchTerm}
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37"></a>          onChange={handleSearchChange}
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38"></a>        /&gt;
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39"></a>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40"></a>        {/* AUTOMATIC PENDING STATE DISPLAY: */}
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41"></a>        {/* Benefit: Uses the built-in isPending state to show feedback without extra boilerplate. */}
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42"></a>        {isPending &amp;&amp; &lt;p&gt;Searching Catalog...&lt;/p&gt;}
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43"></a>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44"></a>        {!isPending &amp;&amp; (
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45"></a>          &lt;ul&gt;
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46"></a>            {filteredProducts.map((product) =&gt; (
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47"></a>              &lt;li key={product.id}&gt;{product.name}&lt;/li&gt;
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48"></a>            ))}
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49"></a>          &lt;/ul&gt;
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50"></a>        )}
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51"></a>      &lt;/div&gt;
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52"></a>    &lt;/div&gt;
+</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53"></a>  );
+</span></code></pre></div></td></tr></tbody></table></div> <p>В целом, для стандартных вызовов <code>useQuery</code> или <code>useMutation</code> в библиотеках вроде Apollo Client или TanStack Query (React Query), <code>useTransition</code> избыточен, потому что эти библиотеки уже нативно управляют асинхронным жизненным циклом и предоставляют собственные состояния <code>isLoading</code> или <code>isPending</code>.</p> <p>Императивные клиентские вызовы: когда вы используете <code>client.mutate()</code> или <code>client.query()</code> напрямую внутри функции (вне стандартного жизненного цикла хуков).</p> <p>Последовательные мутации: если вам нужно выполнить три разные мутации подряд, <code>useTransition</code> может дать единое состояние <code>isPending</code>, покрывающее всю последовательность.</p> <p>Ручные обновления кэша: когда после мутации вы выполняете сложную логику локального обновления Apollo Cache, оборачивание этой логики в transition помогает сохранить интерактивность UI во время пересчета кэша.</p> <h3 id="ui">Понимание параллельного выполнения и синхронизации UI<a class="headerlink" href="#ui" title="Permanent link">¶</a></h3> <p>Важно понимать, как <code>useTransition</code> управляет конкурентностью, когда одновременно происходит несколько обновлений. Если вы запускаете несколько transition подряд в быстром темпе, React выполняет их параллельно, а не ждет завершения предыдущего async-запроса. На протяжении всей этой последовательности <code>isPending</code> остается общим — он будет <code>true</code>, пока не завершится самая последняя action в цепочке.</p> <p>Однако при том, что <code>isPending</code> отслеживает общую длительность, React нативно не гарантирует последовательную согласованность этих transition. Они работают параллельно, поэтому встроенного механизма, гарантирующего, что порядок результатов совпадает с порядком запросов, нет.</p> <p>В примере Product List, если вы быстро печатаете "ap", React отправляет два отдельных запроса: для "a" и для "ap". Если запрос для "ap" вернется за 500 мс, а более ранний запрос для "a" задержится и займет 5 секунд, состояние UI обновится последним именно медленным запросом "a". В результате на экране окажутся результаты для "a", хотя вашим последним намерением был "ap". Такое поведение может приводить к багам устаревших данных, где старые результаты перезаписывают новые.</p> <h3 id="_2">Выход за пределы сетевых запросов<a class="headerlink" href="#_2" title="Permanent link">¶</a></h3> <p>Распространенное заблуждение — что transition нужны только для сетевых запросов. На практике <code>useTransition</code> может давать обратную связь для любой Promise-based операции на клиенте:</p> <ul> <li>Обработка изображений: оборачивание операций Canvas API (например, изменение размера аватара пользователя или применение фильтра) в transition, чтобы UI не подтормаживал при тяжелой пиксельной обработке.</li> <li>Обработка файлов: чтение больших файлов через FileReader API или генерация PDF на клиенте. <code>isPending</code> дает мгновенную обратную связь, пока браузер "перемалывает" данные файла.</li> <li>Web Workers: сохранение отзывчивости UI, пока воркер обрабатывает тяжелый CSV или считает сложную физику.</li> <li>Локальное хранилище: управление жизненным циклом сложного дискового I/O, например при синхронизации локальной базы данных.</li> </ul> <hr> <p>🛠️ Live-демо: как <code>useTransition</code> обрабатывает не-сетевые задачи, например сохранение состояния редактора в browser indexDB: <a href="https://codesandbox.io/p/sandbox/29p62r">Managing Non-Network Async Actions with useTransition</a></p> <hr> <h3 id="state-await">Критически важная оговорка: обработка state после await<a class="headerlink" href="#state-await" title="Permanent link">¶</a></h3> <p>Обновления состояния, происходящие после <code>await</code> внутри <code>startTransition</code>, теряют свой неблокирующий статус. Чтобы сохранить контекст transition, нужно обернуть конкретные post-await обновления в дополнительный <code>startTransition</code>. Команда React ожидает автоматизировать это поведение в будущих релизах, чтобы вся async-цепочка оставалась в контексте.</p> <h3 id="usetransition_1">Преимущества миграции на useTransition<a class="headerlink" href="#usetransition_1" title="Permanent link">¶</a></h3> <p>Переход на <code>useTransition</code> заменяет ручной "state soup" нативно управляемым жизненным циклом. Использование этого хука дает несколько архитектурных преимуществ по сравнению с традиционными паттернами <code>isLoading</code>:</p> <ul> <li>Убирает ручное состояние загрузки: больше не нужен <code>useState</code> для отслеживания loading-статусов.</li> <li>Упрощает асинхронные операции: прямую поддержку async-функций внутри transition.</li> <li>Улучшает пользовательский опыт: UI остается отзывчивым при тяжелых async-операциях (диск, воркеры или сеть).</li> <li>Уменьшает объем шаблонного кода: для распространенных async-паттернов требуется заметно меньше кода.</li> </ul> <p>Хотя <code>useTransition</code> — идеальный инструмент для "fire-and-forget" сценариев или простых обновлений, где нужно только отслеживать pending-жизненный цикл, у него есть пределы. Если вашей асинхронной action нужно вернуть в UI конкретные данные — например, ошибки валидации на сервере, payload успешного ответа или результат вычисления — более надежным выбором становится <code>useActionState</code>. Он строится на фундаменте transition, интегрируя управление состоянием прямо в исполнение action.</p> <h2 id="useactionstate">useActionState: последовательные и атомарные обновления<a class="headerlink" href="#useactionstate" title="Permanent link">¶</a></h2> <p>В React 19 <code>useActionState</code> — это хук, который принимает Action-функцию и начальное состояние, а возвращает текущее состояние этой action (данные, возвращенные функцией) и "обернутую" версию action, которую можно вызывать. По сути, он объединяет управление состоянием, обработку ошибок и pending-статус в одной строке кода.</p> <div class="language-text highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>const [state, formAction, isPending] = useActionState(fn, initialState);
+</span></code></pre></div></td></tr></tbody></table></div> <p>Хук <code>useActionState</code> возвращает массив из трех частей, который дает полный контроль над данными и жизненным циклом Action. Переменная <code>state</code> содержит текущее значение, возвращенное вашей async-функцией (начинается с <code>initialState</code> и обновляется каждый раз, когда action завершается). <code>formAction</code> — это "обернутая" версия вашей функции, которую вы передаете в атрибут <code>action</code> формы или вызываете через <code>startTransition</code>; именно она захватывает выполнение и управляет фоновой работой.</p> <p>Наконец, <code>isPending</code> — встроенный boolean-флаг, который React переключает автоматически. Он остается <code>true</code> с момента запуска action до обработки финального обновления состояния, что позволяет показывать индикаторы загрузки без какой-либо ручной state-логики.</p> <h3 id="action-transitions">Выполнение action: transitions и формы<a class="headerlink" href="#action-transitions" title="Permanent link">¶</a></h3> <p>При использовании <code>useActionState</code> важно понимать, как именно запускать возвращаемую action-функцию. Чтобы раскрыть всю силу управления жизненным циклом в React 19, action-функция должна вызываться внутри контекста Transition. Это происходит автоматически, если вы передаете функцию напрямую в атрибут <code>action</code> формы.</p> <p>Однако, если вы запускаете action вне формы (например, из <code>button onClick</code> или любого event handler), нужно обернуть вызов в <code>startTransition</code>. Если этого не сделать, React не будет отслеживать pending-состояние, а UI не получит автоматические преимущества обратной связи, которые дает хук.</p> <hr> <p>💡 Рабочий пример: как React 19 заменяет ручную координацию состояния и "залипшие спиннеры" атомарным жизненным циклом — в сравнительном демо кнопки "Like": <a href="https://codesandbox.io/p/sandbox/xtzz26">Basic Example for useActionState</a></p> <hr> <p>Чтобы понять сдвиг в React 19, сравним функцию переключения "Like". Ниже сопоставлены традиционный паттерн — требующий ручной синхронизации состояния и управления жизненным циклом — и новый Action-паттерн с <code>useActionState</code>. Обратите внимание, как современный подход заменяет "ручную координацию" нативно управляемым жизненным циклом.</p> <p>До (до React 19)</p> <div class="language-text highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span>
+<span class="normal"><a href="#__codelineno-3-13">13</a></span>
+<span class="normal"><a href="#__codelineno-3-14">14</a></span>
+<span class="normal"><a href="#__codelineno-3-15">15</a></span>
+<span class="normal"><a href="#__codelineno-3-16">16</a></span>
+<span class="normal"><a href="#__codelineno-3-17">17</a></span>
+<span class="normal"><a href="#__codelineno-3-18">18</a></span>
+<span class="normal"><a href="#__codelineno-3-19">19</a></span>
+<span class="normal"><a href="#__codelineno-3-20">20</a></span>
+<span class="normal"><a href="#__codelineno-3-21">21</a></span>
+<span class="normal"><a href="#__codelineno-3-22">22</a></span>
+<span class="normal"><a href="#__codelineno-3-23">23</a></span>
+<span class="normal"><a href="#__codelineno-3-24">24</a></span>
+<span class="normal"><a href="#__codelineno-3-25">25</a></span>
+<span class="normal"><a href="#__codelineno-3-26">26</a></span>
+<span class="normal"><a href="#__codelineno-3-27">27</a></span>
+<span class="normal"><a href="#__codelineno-3-28">28</a></span>
+<span class="normal"><a href="#__codelineno-3-29">29</a></span>
+<span class="normal"><a href="#__codelineno-3-30">30</a></span>
+<span class="normal"><a href="#__codelineno-3-31">31</a></span>
+<span class="normal"><a href="#__codelineno-3-32">32</a></span>
+<span class="normal"><a href="#__codelineno-3-33">33</a></span>
+<span class="normal"><a href="#__codelineno-3-34">34</a></span>
+<span class="normal"><a href="#__codelineno-3-35">35</a></span>
+<span class="normal"><a href="#__codelineno-3-36">36</a></span>
+<span class="normal"><a href="#__codelineno-3-37">37</a></span>
+<span class="normal"><a href="#__codelineno-3-38">38</a></span>
+<span class="normal"><a href="#__codelineno-3-39">39</a></span>
+<span class="normal"><a href="#__codelineno-3-40">40</a></span>
+<span class="normal"><a href="#__codelineno-3-41">41</a></span>
+<span class="normal"><a href="#__codelineno-3-42">42</a></span>
+<span class="normal"><a href="#__codelineno-3-43">43</a></span>
+<span class="normal"><a href="#__codelineno-3-44">44</a></span>
+<span class="normal"><a href="#__codelineno-3-45">45</a></span>
+<span class="normal"><a href="#__codelineno-3-46">46</a></span>
+<span class="normal"><a href="#__codelineno-3-47">47</a></span>
+<span class="normal"><a href="#__codelineno-3-48">48</a></span>
+<span class="normal"><a href="#__codelineno-3-49">49</a></span>
+<span class="normal"><a href="#__codelineno-3-50">50</a></span>
+<span class="normal"><a href="#__codelineno-3-51">51</a></span>
+<span class="normal"><a href="#__codelineno-3-52">52</a></span>
+<span class="normal"><a href="#__codelineno-3-53">53</a></span>
+<span class="normal"><a href="#__codelineno-3-54">54</a></span>
+<span class="normal"><a href="#__codelineno-3-55">55</a></span>
+<span class="normal"><a href="#__codelineno-3-56">56</a></span>
+<span class="normal"><a href="#__codelineno-3-57">57</a></span>
+<span class="normal"><a href="#__codelineno-3-58">58</a></span>
+<span class="normal"><a href="#__codelineno-3-59">59</a></span>
+<span class="normal"><a href="#__codelineno-3-60">60</a></span>
+<span class="normal"><a href="#__codelineno-3-61">61</a></span>
+<span class="normal"><a href="#__codelineno-3-62">62</a></span>
+<span class="normal"><a href="#__codelineno-3-63">63</a></span>
+<span class="normal"><a href="#__codelineno-3-64">64</a></span>
+<span class="normal"><a href="#__codelineno-3-65">65</a></span>
+<span class="normal"><a href="#__codelineno-3-66">66</a></span>
+<span class="normal"><a href="#__codelineno-3-67">67</a></span>
+<span class="normal"><a href="#__codelineno-3-68">68</a></span>
+<span class="normal"><a href="#__codelineno-3-69">69</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a>  // MANUAL STATE PATTERN:
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>  // Problem: Requires 5 separate states to track a single logical "Like" operation.
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a>  // Problem: High risk of these variables getting out of sync with each other.
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a>  const [isLiked, setIsLiked] = useState(false);
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a>  const [likeCount, setLikeCount] = useState(120);
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a>  const [message, setMessage] = useState("");
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a>  const [isPending, setIsPending] = useState(false);
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a>  const [isError, setIsError] = useState(false);
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a>  const handleToggleLike = async () =&gt; {
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a>    // MANUAL LIFECYCLE MANAGEMENT:
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a>    // Problem: You must remember to reset every state variable manually before starting.
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a>    // Problem: If you forget to clear 'isError', the UI might show an old error during a new attempt.
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a>    setIsPending(true);
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a>    setMessage("");
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16"></a>    setIsError(false);
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17"></a>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18"></a>    try {
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19"></a>      const newStatus = await toggleLikeInDB(postId, isLiked);
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20"></a>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21"></a>      // MANUAL STATE SYNCHRONIZATION:
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22"></a>      // Problem: These are separate renders. If one fails, the UI becomes inconsistent.
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23"></a>      // Problem: This is boilerplate logic that must be duplicated for every similar feature.
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24"></a>      setIsLiked(newStatus);
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25"></a>      setLikeCount((prev) =&gt; (newStatus ? prev + 1 : prev - 1));
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26"></a>      setMessage(newStatus ? "Liked!" : "Unliked.");
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27"></a>    } catch (e) {
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28"></a>      // MANUAL ERROR HANDLING:
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29"></a>      // Problem: Requires explicit boilerplate to catch and transform errors into state.
+</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30"></a>      setIsError(true);
+</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31"></a>      setMessage("Error: " + e.message);
+</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32"></a>    } finally {
+</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33"></a>      // MANUAL LIFECYCLE CLEANUP:
+</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34"></a>      // Problem: You MUST remember the 'finally' block, or the button stays disabled forever.
+</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35"></a>      // Problem: This "stuck loader" bug is one of the most common issues in traditional React.
+</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36"></a>      setIsPending(false);
+</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37"></a>    }
+</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38"></a>  };
+</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39"></a>
+</span><span id="__span-3-40"><a id="__codelineno-3-40" name="__codelineno-3-40"></a>  return (
+</span><span id="__span-3-41"><a id="__codelineno-3-41" name="__codelineno-3-41"></a>    &lt;div&gt;
+</span><span id="__span-3-42"><a id="__codelineno-3-42" name="__codelineno-3-42"></a>      &lt;div style={{ margin: "30px" }}&gt;Traditional Way&lt;/div&gt;
+</span><span id="__span-3-43"><a id="__codelineno-3-43" name="__codelineno-3-43"></a>      &lt;div
+</span><span id="__span-3-44"><a id="__codelineno-3-44" name="__codelineno-3-44"></a>        style={{
+</span><span id="__span-3-45"><a id="__codelineno-3-45" name="__codelineno-3-45"></a>          padding: "15px",
+</span><span id="__span-3-46"><a id="__codelineno-3-46" name="__codelineno-3-46"></a>          border: "1px solid #333",
+</span><span id="__span-3-47"><a id="__codelineno-3-47" name="__codelineno-3-47"></a>          borderRadius: "8px",
+</span><span id="__span-3-48"><a id="__codelineno-3-48" name="__codelineno-3-48"></a>          minWidth: "250px",
+</span><span id="__span-3-49"><a id="__codelineno-3-49" name="__codelineno-3-49"></a>        }}
+</span><span id="__span-3-50"><a id="__codelineno-3-50" name="__codelineno-3-50"></a>      &gt;
+</span><span id="__span-3-51"><a id="__codelineno-3-51" name="__codelineno-3-51"></a>        &lt;h4&gt;Post Id: 1&lt;/h4&gt;
+</span><span id="__span-3-52"><a id="__codelineno-3-52" name="__codelineno-3-52"></a>        &lt;p&gt;Likes: {likeCount}&lt;/p&gt;
+</span><span id="__span-3-53"><a id="__codelineno-3-53" name="__codelineno-3-53"></a>
+</span><span id="__span-3-54"><a id="__codelineno-3-54" name="__codelineno-3-54"></a>        {/* MANUAL PENDING UI: */}
+</span><span id="__span-3-55"><a id="__codelineno-3-55" name="__codelineno-3-55"></a>        {/* Problem: The disabled state depends on a manual boolean, not the actual transition lifecycle. */}
+</span><span id="__span-3-56"><a id="__codelineno-3-56" name="__codelineno-3-56"></a>        &lt;button onClick={handleToggleLike} disabled={isPending}&gt;
+</span><span id="__span-3-57"><a id="__codelineno-3-57" name="__codelineno-3-57"></a>          {isPending ? "Updating..." : isLiked ? "❤️ Unlike" : "🤍 Like"}
+</span><span id="__span-3-58"><a id="__codelineno-3-58" name="__codelineno-3-58"></a>        &lt;/button&gt;
+</span><span id="__span-3-59"><a id="__codelineno-3-59" name="__codelineno-3-59"></a>
+</span><span id="__span-3-60"><a id="__codelineno-3-60" name="__codelineno-3-60"></a>        {/* MANUAL FEEDBACK DISPLAY: */}
+</span><span id="__span-3-61"><a id="__codelineno-3-61" name="__codelineno-3-61"></a>        {/* Problem: Success and Error logic is handled via fragile string/boolean checks. */}
+</span><span id="__span-3-62"><a id="__codelineno-3-62" name="__codelineno-3-62"></a>        {message &amp;&amp; (
+</span><span id="__span-3-63"><a id="__codelineno-3-63" name="__codelineno-3-63"></a>          &lt;p style={{ color: isError ? "red" : "green", marginTop: "10px" }}&gt;
+</span><span id="__span-3-64"><a id="__codelineno-3-64" name="__codelineno-3-64"></a>            {message}
+</span><span id="__span-3-65"><a id="__codelineno-3-65" name="__codelineno-3-65"></a>          &lt;/p&gt;
+</span><span id="__span-3-66"><a id="__codelineno-3-66" name="__codelineno-3-66"></a>        )}
+</span><span id="__span-3-67"><a id="__codelineno-3-67" name="__codelineno-3-67"></a>      &lt;/div&gt;
+</span><span id="__span-3-68"><a id="__codelineno-3-68" name="__codelineno-3-68"></a>    &lt;/div&gt;
+</span><span id="__span-3-69"><a id="__codelineno-3-69" name="__codelineno-3-69"></a>  );
+</span></code></pre></div></td></tr></tbody></table></div> <p>После (<code>useActionState</code>)</p> <div class="language-text highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span>
+<span class="normal"><a href="#__codelineno-4-19">19</a></span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span>
+<span class="normal"><a href="#__codelineno-4-21">21</a></span>
+<span class="normal"><a href="#__codelineno-4-22">22</a></span>
+<span class="normal"><a href="#__codelineno-4-23">23</a></span>
+<span class="normal"><a href="#__codelineno-4-24">24</a></span>
+<span class="normal"><a href="#__codelineno-4-25">25</a></span>
+<span class="normal"><a href="#__codelineno-4-26">26</a></span>
+<span class="normal"><a href="#__codelineno-4-27">27</a></span>
+<span class="normal"><a href="#__codelineno-4-28">28</a></span>
+<span class="normal"><a href="#__codelineno-4-29">29</a></span>
+<span class="normal"><a href="#__codelineno-4-30">30</a></span>
+<span class="normal"><a href="#__codelineno-4-31">31</a></span>
+<span class="normal"><a href="#__codelineno-4-32">32</a></span>
+<span class="normal"><a href="#__codelineno-4-33">33</a></span>
+<span class="normal"><a href="#__codelineno-4-34">34</a></span>
+<span class="normal"><a href="#__codelineno-4-35">35</a></span>
+<span class="normal"><a href="#__codelineno-4-36">36</a></span>
+<span class="normal"><a href="#__codelineno-4-37">37</a></span>
+<span class="normal"><a href="#__codelineno-4-38">38</a></span>
+<span class="normal"><a href="#__codelineno-4-39">39</a></span>
+<span class="normal"><a href="#__codelineno-4-40">40</a></span>
+<span class="normal"><a href="#__codelineno-4-41">41</a></span>
+<span class="normal"><a href="#__codelineno-4-42">42</a></span>
+<span class="normal"><a href="#__codelineno-4-43">43</a></span>
+<span class="normal"><a href="#__codelineno-4-44">44</a></span>
+<span class="normal"><a href="#__codelineno-4-45">45</a></span>
+<span class="normal"><a href="#__codelineno-4-46">46</a></span>
+<span class="normal"><a href="#__codelineno-4-47">47</a></span>
+<span class="normal"><a href="#__codelineno-4-48">48</a></span>
+<span class="normal"><a href="#__codelineno-4-49">49</a></span>
+<span class="normal"><a href="#__codelineno-4-50">50</a></span>
+<span class="normal"><a href="#__codelineno-4-51">51</a></span>
+<span class="normal"><a href="#__codelineno-4-52">52</a></span>
+<span class="normal"><a href="#__codelineno-4-53">53</a></span>
+<span class="normal"><a href="#__codelineno-4-54">54</a></span>
+<span class="normal"><a href="#__codelineno-4-55">55</a></span>
+<span class="normal"><a href="#__codelineno-4-56">56</a></span>
+<span class="normal"><a href="#__codelineno-4-57">57</a></span>
+<span class="normal"><a href="#__codelineno-4-58">58</a></span>
+<span class="normal"><a href="#__codelineno-4-59">59</a></span>
+<span class="normal"><a href="#__codelineno-4-60">60</a></span>
+<span class="normal"><a href="#__codelineno-4-61">61</a></span>
+<span class="normal"><a href="#__codelineno-4-62">62</a></span>
+<span class="normal"><a href="#__codelineno-4-63">63</a></span>
+<span class="normal"><a href="#__codelineno-4-64">64</a></span>
+<span class="normal"><a href="#__codelineno-4-65">65</a></span>
+<span class="normal"><a href="#__codelineno-4-66">66</a></span>
+<span class="normal"><a href="#__codelineno-4-67">67</a></span>
+<span class="normal"><a href="#__codelineno-4-68">68</a></span>
+<span class="normal"><a href="#__codelineno-4-69">69</a></span>
+<span class="normal"><a href="#__codelineno-4-70">70</a></span>
+<span class="normal"><a href="#__codelineno-4-71">71</a></span>
+<span class="normal"><a href="#__codelineno-4-72">72</a></span>
+<span class="normal"><a href="#__codelineno-4-73">73</a></span>
+<span class="normal"><a href="#__codelineno-4-74">74</a></span>
+<span class="normal"><a href="#__codelineno-4-75">75</a></span>
+<span class="normal"><a href="#__codelineno-4-76">76</a></span>
+<span class="normal"><a href="#__codelineno-4-77">77</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a> // REACT 19 ACTION STATE PATTERN:
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a>  // Benefit: Manages current state, the trigger (formAction), and lifecycle (isPending) in one hook.
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a>  // Benefit: 'state' acts as the single source of truth returned by your async logic.
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a>  const [state, formAction, isPending] = useActionState(
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a>    async (prevState, id) =&gt; {
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a>      // REACT 19 ASYNC ACTION LOGIC:
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a>      // Benefit: Supports async utility calls directly within the Action body.
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a>      try {
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9"></a>        const newStatus = await toggleLikeInDB(id, prevState.isLiked);
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10"></a>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11"></a>        // ATOMIC STATE UPDATE:
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12"></a>        // Benefit: likeCount and isLiked are updated in a single transaction, ensuring UI consistency.
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13"></a>        return {
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14"></a>          isLiked: newStatus,
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15"></a>          likeCount: newStatus
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16"></a>            ? prevState.likeCount + 1
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17"></a>            : prevState.likeCount - 1,
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18"></a>          message: newStatus ? "Liked!" : "Unliked.",
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19"></a>          isError: false,
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20"></a>        };
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21"></a>      } catch (e) {
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22"></a>        // CONSISTENT ERROR HANDLING:
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23"></a>        // Benefit: We return the error state directly to the UI without separate error state hooks.
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24"></a>        // Benefit: isPending is guaranteed to flip to false even if the API throws an error.
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25"></a>        return {
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26"></a>          ...prevState,
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27"></a>          message: "Error: " + e.message,
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28"></a>          isError: true,
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29"></a>        };
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30"></a>      }
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31"></a>    },
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32"></a>    // INITIAL STATE:
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33"></a>    { isLiked: false, likeCount: 120, message: "", isError: false }
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34"></a>  );
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35"></a>
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36"></a>  return (
+</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37"></a>    &lt;div&gt;
+</span><span id="__span-4-38"><a id="__codelineno-4-38" name="__codelineno-4-38"></a>      &lt;div style={{ margin: "30px" }}&gt;Using useActionState&lt;/div&gt;
+</span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39"></a>      &lt;div
+</span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40"></a>        style={{
+</span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41"></a>          padding: "15px",
+</span><span id="__span-4-42"><a id="__codelineno-4-42" name="__codelineno-4-42"></a>          border: "1px solid #333",
+</span><span id="__span-4-43"><a id="__codelineno-4-43" name="__codelineno-4-43"></a>          borderRadius: "8px",
+</span><span id="__span-4-44"><a id="__codelineno-4-44" name="__codelineno-4-44"></a>          minWidth: "250px",
+</span><span id="__span-4-45"><a id="__codelineno-4-45" name="__codelineno-4-45"></a>        }}
+</span><span id="__span-4-46"><a id="__codelineno-4-46" name="__codelineno-4-46"></a>      &gt;
+</span><span id="__span-4-47"><a id="__codelineno-4-47" name="__codelineno-4-47"></a>        &lt;h4&gt;Post Id: 1&lt;/h4&gt;
+</span><span id="__span-4-48"><a id="__codelineno-4-48" name="__codelineno-4-48"></a>        &lt;p&gt;
+</span><span id="__span-4-49"><a id="__codelineno-4-49" name="__codelineno-4-49"></a>          Likes: &lt;strong&gt;{state.likeCount}&lt;/strong&gt;
+</span><span id="__span-4-50"><a id="__codelineno-4-50" name="__codelineno-4-50"></a>        &lt;/p&gt;
+</span><span id="__span-4-51"><a id="__codelineno-4-51" name="__codelineno-4-51"></a>
+</span><span id="__span-4-52"><a id="__codelineno-4-52" name="__codelineno-4-52"></a>        {/* REACT 19 ACTION TRIGGER: */}
+</span><span id="__span-4-53"><a id="__codelineno-4-53" name="__codelineno-4-53"></a>        {/* Benefit: startTransition allows useActionState to track the pending status manually. */}
+</span><span id="__span-4-54"><a id="__codelineno-4-54" name="__codelineno-4-54"></a>        &lt;button
+</span><span id="__span-4-55"><a id="__codelineno-4-55" name="__codelineno-4-55"></a>          onClick={() =&gt; startTransition(() =&gt; formAction(postId))}
+</span><span id="__span-4-56"><a id="__codelineno-4-56" name="__codelineno-4-56"></a>          disabled={isPending} // AUTOMATIC PENDING STATE
+</span><span id="__span-4-57"><a id="__codelineno-4-57" name="__codelineno-4-57"></a>        &gt;
+</span><span id="__span-4-58"><a id="__codelineno-4-58" name="__codelineno-4-58"></a>          {/* AUTOMATIC PENDING UI FEEDBACK: */}
+</span><span id="__span-4-59"><a id="__codelineno-4-59" name="__codelineno-4-59"></a>          {/* Benefit: isPending is automatically true as long as the async Action is in flight. */}
+</span><span id="__span-4-60"><a id="__codelineno-4-60" name="__codelineno-4-60"></a>          {isPending ? "Updating..." : state.isLiked ? "❤️ Unlike" : "🤍 Like"}
+</span><span id="__span-4-61"><a id="__codelineno-4-61" name="__codelineno-4-61"></a>        &lt;/button&gt;
+</span><span id="__span-4-62"><a id="__codelineno-4-62" name="__codelineno-4-62"></a>
+</span><span id="__span-4-63"><a id="__codelineno-4-63" name="__codelineno-4-63"></a>        {/* AUTOMATIC STATE FEEDBACK: */}
+</span><span id="__span-4-64"><a id="__codelineno-4-64" name="__codelineno-4-64"></a>        {/* Benefit: The UI automatically reflects the message or error returned by the latest Action. */}
+</span><span id="__span-4-65"><a id="__codelineno-4-65" name="__codelineno-4-65"></a>        {state.message &amp;&amp; (
+</span><span id="__span-4-66"><a id="__codelineno-4-66" name="__codelineno-4-66"></a>          &lt;p
+</span><span id="__span-4-67"><a id="__codelineno-4-67" name="__codelineno-4-67"></a>            style={{
+</span><span id="__span-4-68"><a id="__codelineno-4-68" name="__codelineno-4-68"></a>              color: state.isError ? "red" : "green",
+</span><span id="__span-4-69"><a id="__codelineno-4-69" name="__codelineno-4-69"></a>              marginTop: "10px",
+</span><span id="__span-4-70"><a id="__codelineno-4-70" name="__codelineno-4-70"></a>            }}
+</span><span id="__span-4-71"><a id="__codelineno-4-71" name="__codelineno-4-71"></a>          &gt;
+</span><span id="__span-4-72"><a id="__codelineno-4-72" name="__codelineno-4-72"></a>            {state.message}
+</span><span id="__span-4-73"><a id="__codelineno-4-73" name="__codelineno-4-73"></a>          &lt;/p&gt;
+</span><span id="__span-4-74"><a id="__codelineno-4-74" name="__codelineno-4-74"></a>        )}
+</span><span id="__span-4-75"><a id="__codelineno-4-75" name="__codelineno-4-75"></a>      &lt;/div&gt;
+</span><span id="__span-4-76"><a id="__codelineno-4-76" name="__codelineno-4-76"></a>    &lt;/div&gt;
+</span><span id="__span-4-77"><a id="__codelineno-4-77" name="__codelineno-4-77"></a>  );
+</span></code></pre></div></td></tr></tbody></table></div> <p>Этот современный подход лучше по трем ключевым причинам:</p> <ul> <li>Нативная синхронизация жизненного цикла: <code>isPending</code> — прямое окно в статус Promise. Он <code>true</code> во время выполнения и <code>false</code> после завершения. Нельзя "забыть" выключить loader.</li> <li>Cleanup без шаблонного кода: больше не нужен <code>finally { setIsPending(false) }</code>. Удаление этого шаблона убирает распространенный баг "залипшего спиннера".</li> <li>Декларативная логика: вы определяете трансформацию (старое состояние → новое состояние), а не процедуру (старт → fetch → update → stop). Это упрощает тестирование и рассуждение о логике.</li> </ul> <h3 id="action">Очередь Action: последовательная согласованность<a class="headerlink" href="#action" title="Permanent link">¶</a></h3> <p>Когда несколько action запускаются быстро подряд, React 19 управляет ими через внутреннюю очередь action. В отличие от традиционных async-паттернов, где ответы не по порядку могут вызывать race condition, <code>useActionState</code> обеспечивает последовательную согласованность. Каждая action ждет завершения предыдущей перед началом следующей, гарантируя, что каждая action получает максимально точный <code>previousState</code>.</p> <p>Для стабильности UI React 19 выполняет атомарный commit. Пока action выполняются по одной в фоне, React батчит результаты и обновляет UI только когда вся очередь становится пустой. Это предотвращает "мерцание" интерфейса через промежуточные состояния, а флаг <code>isPending</code> остается <code>true</code> на всем процессе синхронизации, сигнализируя, что фоновая работа еще завершается.</p> <p>Рассмотрим пример GameShop, где игрок тратит золото на экипировку. Это идеальный кейс для <code>useActionState</code>, потому что каждая покупка зависит от "иссякающего ресурса" (Gold), и успех одной покупки полностью зависит от результата предыдущей.</p> <hr> <p>🎮 Рабочий пример: проверьте последовательную согласованность и логику траты золота в интерактивном демо магазина: <a href="https://codesandbox.io/p/sandbox/p9smxc">GameShop Action Queue Sandbox</a></p> <hr> <p>Последовательная согласованность: в GameShop <code>useActionState</code> обеспечивает последовательную согласованность и предотвращает баги "двойной траты". Если игрок с 500g быстро покупает Sword (200g), а затем Shield (150g), покупка Shield вынужденно ждет результат Sword, чтобы корректно посчитать оставшиеся 300g. Эта логика остается надежной даже при ошибках: если покупка Sword не проходит из-за нехватки золота, очередь передает этот неизмененный баланс следующему предмету — например, более дешевому Potion — позволяя ему выполниться на основе точных данных в реальном времени.</p> <p>Атомарный commit: чтобы избежать мерцания промежуточных значений золота, <code>useActionState</code> использует атомарный commit. Он обрабатывает каждый кликнутый предмет в фоне, но ждет, пока очередь полностью опустеет, прежде чем обновить экран. Это обеспечивает стабильный UI, который сразу переходит к финальному состоянию, тогда как локальный state (<code>queuedItems</code>) дает мгновенную обратную связь, что каждый клик зарегистрирован.</p> <h3 id="useactionstate_1">Преимущества миграции на useActionState<a class="headerlink" href="#useactionstate_1" title="Permanent link">¶</a></h3> <p>Перенос data-heavy взаимодействий на <code>useActionState</code> — это не только про более чистый код; это про использование внутреннего движка React для обработки сложной синхронизации состояния. Этот переход от процедурной логики (управление переменными) к декларативной (описание преобразований состояния) дает следующие преимущества:</p> <ul> <li>Надежность: автоматическое управление состоянием устраняет человеческие ошибки, вроде забытого сброса loader или старой ошибки.</li> <li>Производительность: встроенные оптимизации и batching состояния обеспечивают эффективные и неблокирующие обновления UI.</li> <li>Поддерживаемость: логика состояния централизуется внутри Action-функции, компонент легче читать и отлаживать.</li> <li>Готовность к будущему: код идеально согласован с архитектурным направлением React, особенно в части Server Components и concurrent rendering.</li> <li>Опыт разработчика: заметно меньше шаблонного кода и более ясное намерение; код описывает, что должно произойти, а не как вручную управлять переменными.</li> <li>Тестирование: значительно проще тестировать "Actions" как чистые функции независимо от UI-компонента.</li> <li>Согласованность: гарантированные переходы состояния — если action выбрасывает ошибку, <code>isPending</code> автоматически становится <code>false</code>, а UI остается в последнем валидном состоянии, а не в "сломленной" полу-загруженной фазе.</li> </ul> <h2 id="_3">Примите новые паттерны<a class="headerlink" href="#_3" title="Permanent link">¶</a></h2> <p>Переход к стандарту "Async React" с transitions и action states позволяет разработчикам устранить распространенные баги "залипшего спиннера" и ручной cleanup-логики. Эти инструменты дают архитектурную надежность и производительность за счет централизации state-логики и гарантии последовательной согласованности. Принятие этих паттернов гарантирует, что ваше приложение будет модульным, легко тестируемым и полностью согласованным с будущим concurrent rendering.</p> <h2 id="_4">Связанные статьи<a class="headerlink" href="#_4" title="Permanent link">¶</a></h2> <ul> <li>Оригинал статьи на Rubrik: <a href="https://www.rubrik.com/blog/architecture/26/2/async-react-building-non-blocking-uis-with-usetransition-and-useactionstate">Async React: Building Non-Blocking UIs with useTransition and useActionState</a></li> </ul></div> <nav class="md-tags"> <span class="md-tag md-tag-icon">async</span> <span class="md-tag md-tag-icon">javascript</span> <span class="md-tag md-tag-icon">react</span> <span class="md-tag md-tag-icon">useactionstate</span> <span class="md-tag md-tag-icon">usetransition</span> </nav> </article> </div> <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> <div class="md-top" data-md-component="top" hidden=""> <div class="md-top__center"> <button type="button" class="md-top__button md-top__button--main" data-md-action="top"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg> <span>К началу</span> </button> <label class="md-top__button md-top__side md-top__side--nav" for="__drawer" hidden=""> <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-panel-left" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path></svg> </label> <label class="md-top__button md-top__side md-top__side--toc" for="__toc"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-panel-right" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M15 3v18"></path></svg> </label> </div> </div> </main> <footer class="md-footer"> <nav class="md-footer__inner md-grid" aria-label="Нижний колонтитул"> <a href="../../js/whats-new-in-js/" class="md-footer__link md-footer__link--prev" aria-label="Назад: Что на самом деле нового в JavaScript (и что будет дальше)"> <div class="md-footer__button md-icon"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg> </div> <div class="md-footer__title"> <span class="md-footer__direction"> Назад </span> <div class="md-ellipsis"> Что на самом деле нового в JavaScript (и что будет дальше) </div> </div> </a> <a href="../../ai/ai-api-v-brauzere/" class="md-footer__link md-footer__link--next" aria-label="Вперед: API искусственного интеллекта в браузере: как использовать Built-in AI в Chrome в реальном вебе"> <div class="md-footer__title"> <span class="md-footer__direction"> Вперед </span> <div class="md-ellipsis"> API искусственного интеллекта в браузере: как использовать Built-in AI в Chrome в реальном вебе </div> </div> <div class="md-footer__button md-icon"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg> </div> </a> </nav> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class="md-copyright"> <div class="md-copyright__highlight"> (☭) 1981 </div> </div> <div class="md-social"> <a href="https://github.com/bndby" target="_blank" rel="noopener" title="GitHub" class="md-social__link"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg> </a> <a href="https://getmentor.dev/mentor/iuriy-bondarenko-4234" target="_blank" rel="noopener" title="GetMentor" class="md-social__link"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.487 14.887c.39 0 .706.314.706.7a.703.703 0 0 1-.706.7H5.632a.703.703 0 0 1-.707-.7c0-.386.317-.7.707-.7zm.69-2.593c.39 0 .706.315.706.7a.703.703 0 0 1-.707.7H5.648a.703.703 0 0 1-.706-.7c0-.386.316-.7.706-.7zm3.864-3.46a2.11 2.11 0 0 1 2.118-2.099 2.11 2.11 0 0 1 2.118 2.1 2.115 2.115 0 0 1-2.118 2.103 2.116 2.116 0 0 1-2.118-2.104m6.259 6.559c.1.619-.378 1.18-1.005 1.178h-6.272a1.016 1.016 0 0 1-1.005-1.178c.315-1.942 1.391-3.509 2.796-4.13a2.77 2.77 0 0 0 2.69 0c1.405.621 2.482 2.19 2.796 4.13m-8.712-4.29c-8.38 0-.147-.002-4.941-.002a.703.703 0 0 1-.707-.7c0-.386.317-.7.707-.7l4.941.001c.39 0 .707.314.706.701a.7.7 0 0 1-.706.7m-4.94-2.594a.7.7 0 0 1-.707-.7c0-.386.317-.7.707-.7h4.94c.389 0 .705.313.705.7a.703.703 0 0 1-.706.699zm7.809 10.117a.66.66 0 0 0 .66-.654h7.06v-12.6H2.824v12.599h7.059c0 .361.295.654.66.654zM24 17.972v.957c0 .605-.496 1.096-1.106 1.096H1.106c-.61 0-1.106-.49-1.106-1.096v-.957h1.413V5.357c0-.763.623-1.382 1.394-1.382h18.387c.77 0 1.394.619 1.394 1.382v12.615Z"></path></svg> </a> <a href="https://boosty.to/bndby" target="_blank" rel="noopener" title="Boosty" class="md-social__link"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!-- Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M378.9 80c-27.3 0-53 13.1-69 35.2l-34.4 47.6c-4.5 6.2-11.7 9.9-19.4 9.9s-14.9-3.7-19.4-9.9l-34.4-47.6c-16-22.1-41.7-35.2-69-35.2-47 0-85.1 38.1-85.1 85.1 0 49.9 32 98.4 68.1 142.3 41.1 50 91.4 94 125.9 120.3 3.2 2.4 7.9 4.2 14 4.2s10.8-1.8 14-4.2c34.5-26.3 84.8-70.4 125.9-120.3 36.2-43.9 68.1-92.4 68.1-142.3 0-47-38.1-85.1-85.1-85.1zM271 87.1C296 52.5 336.2 32 378.9 32 452.4 32 512 91.6 512 165.1c0 68.6-42.9 128.9-79.1 172.8-44.1 53.6-97.3 100.1-133.8 127.9-12.3 9.4-27.5 14.1-43.1 14.1s-30.8-4.7-43.1-14.1C176.4 438 123.2 391.5 79.1 338 42.9 294.1 0 233.7 0 165.1 0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1l15 20.7z"></path></svg> </a> <a href="https://www.linkedin.com/in/bndby/" target="_blank" rel="noopener" title="LinkedIn" class="md-social__link"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!-- Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"></path></svg> </a> </div> </div> </div> </footer> </div> <div class="md-dialog" data-md-component="dialog"> <div class="md-dialog__inner md-typeset"></div> </div> <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "code": null, "features": ["navigation.prune", "navigation.tabs", "navigation.tracking", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.path", "content.tabs.link", "content.code.copy", "content.tooltips"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "code.collapse": "\u0421\u0432\u0435\u0440\u043d\u0443\u0442\u044c", "code.download": "\u0421\u043a\u0430\u0447\u0430\u0442\u044c", "code.expand": "\u0420\u0430\u0437\u0432\u0435\u0440\u043d\u0443\u0442\u044c \u043e\u0441\u0442\u0430\u0432\u0448\u0438\u0435\u0441\u044f # \u0441\u0442\u0440\u043e\u043a", "code.select": "\u041f\u0435\u0440\u0435\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0432\u044b\u0431\u043e\u0440 \u0441\u0442\u0440\u043e\u043a", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script> <script src="../../../assets/javascripts/bundle.fc193f93.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js" defer=""></script>  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>
