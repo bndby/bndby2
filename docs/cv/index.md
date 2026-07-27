@@ -86,4 +86,4 @@ _Full-Stack разработчик_
 
 Прикладная математика, преподаватель математики и информатики
 
-<durak-game></durak-game><script type="module" src="./durak.js"></script>
+<!-- durak-game></durak-game><script type="module" src="./durak.js"></script -->
