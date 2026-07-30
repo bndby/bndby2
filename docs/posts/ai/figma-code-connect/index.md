@@ -27,7 +27,7 @@ Code Connect — это мост между вашей кодовой базой
 
 ### Code Connect UI {#code-connect-ui}
 
-**Code Connect UI** позволяет связывать компоненты прямо в Figma с интеграцией GitHub для доступа к репозиторию и контекста сопоставления. Code Connect UI поддерживает связи «один ко многим», позволяя сопоставить один дизайн-компонент с несколькими реализациями в коде на разных фреймворках и языках (например, React, SwiftUI, Jetpack Compose, Vue). Это упрощает масштабирование для команд дизайна и разработки; в планах — автоматическое сопоставление и расширенная поддержка фреймворков. **[Начало работы с Code Connect UI →](#getting-started-with-code-connect-ui)**
+**Code Connect UI** позволяет связывать компоненты прямо в Figma с интеграцией GitHub для доступа к репозиторию и контекста сопоставления. Code Connect UI поддерживает связи «один ко многим», позволяя сопоставить один дизайн-компонент с несколькими реализациями в коде на разных фреймворках и языках (например, React, Vue). Это упрощает масштабирование для команд дизайна и разработки; в планах — автоматическое сопоставление и расширенная поддержка фреймворков. **[Начало работы с Code Connect UI →](#getting-started-with-code-connect-ui)**
 
 > **Информация**
 >
@@ -69,8 +69,6 @@ Code Connect CLI также включает интеграции для кон�
 
 - **[React (и React Native) →](#connecting-react-components)**
 - **[HTML (например, Web Components, Angular и Vue) →](#connecting-web-components)**
-- **[SwiftUI →](#connecting-swiftui-components)**
-- **[Jetpack Compose →](#connecting-jetpack-compose-components)**
 
 ### Публикация в Figma для упрощения передачи в разработку {#publish-to-figma}
 
@@ -152,7 +150,7 @@ Code Connect UI позволяет сопоставить дизайн-комп�
 
 ### Подключение одного компонента к нескольким фреймворкам {#connecting-one-component-to-multiple-frameworks}
 
-Code Connect UI поддерживает **связи «один ко многим»**, позволяя сопоставить один дизайн-компонент с несколькими компонентами кода на разных языках или фреймворках. Например, дизайн-компонент `Button` можно одновременно связать с реализациями на React, SwiftUI, Jetpack Compose и Vue.
+Code Connect UI поддерживает **связи «один ко многим»**, позволяя сопоставить один дизайн-компонент с несколькими компонентами кода на разных языках или фреймворках. Например, дизайн-компонент `Button` можно одновременно связать с реализациями на React, и Vue.
 
 Это полезно, когда дизайн-система поставляет компоненты для нескольких платформ. Каждая связь независима: для каждого фреймворка можно указать разные пути к файлам, имена компонентов и пользовательские инструкции.
 
@@ -161,7 +159,7 @@ Code Connect UI поддерживает **связи «один ко многи
 1. В Code Connect UI прокрутите до дизайн-компонента, который нужно подключить.
 2. Если компонент ещё не подключён — подключите его.
 3. При наведении на строку компонента появится кнопка добавления, позволяющая подключить ещё один компонент кода.
-4. Укажите путь к файлу и имя нового компонента кода (например, `src/components/Button.swift` для SwiftUI).
+4. Укажите путь к файлу и имя нового компонента кода (например, `src/components/Button.tsx`).
 5. Повторите для каждого дополнительного фреймворка или языка.
 
 ![Code Connect UI — подключение всех кнопок](images/7836082e8322790d34a5c2fed9e51a3a3210e76d-f3d797335402.gif)
@@ -264,9 +262,9 @@ Code Connect предлагает два способа связать диза�
 
 ### Обзор {#obzor}
 
-**Code Connect CLI** ориентирован на разработчиков и запускается локально в репозитории. Позволяет задавать сопоставление свойств, генерировать динамические примеры кода и опубликовать связи в Figma из терминала. Встроенные парсеры для React, Web Components, SwiftUI и Jetpack Compose, а также поддержка документации Code Connect на JavaScript дают и глубину в популярных фреймворках, и гибкость для любого языка. Подходит командам разработки, которым нужны точность и контроль.
+**Code Connect CLI** ориентирован на разработчиков и запускается локально в репозитории. Позволяет задавать сопоставление свойств, генерировать динамические примеры кода и опубликовать связи в Figma из терминала. Встроенные парсеры для React, Web Components, а также поддержка документации Code Connect на JavaScript дают и глубину в популярных фреймворках, и гибкость для любого языка. Подходит командам разработки, которым нужны точность и контроль.
 
-**Code Connect UI** рассчитан на доступность и совместную работу. Работает целиком в Figma, поэтому сопоставления можно создавать прямо в файлах дизайна или библиотеках без установки. При подключении к репозиторию GitHub получает пути и имена компонентов в кодовой базе и связывает их с дизайн-компонентами. Также можно вручную указать путь и имя компонента без подключения к репозиторию. Code Connect UI поддерживает связи «один ко многим: один дизайн-компонент можно сопоставить с несколькими реализациями на разных фреймворках и языках (например, React, SwiftUI, Jetpack Compose, Vue). Пока нет сопоставления свойств и динамических примеров, но подход не привязан к языку, прост в настройке и хорошо масштабируется для команд дизайна и разработки.
+**Code Connect UI** рассчитан на доступность и совместную работу. Работает целиком в Figma, поэтому сопоставления можно создавать прямо в файлах дизайна или библиотеках без установки. При подключении к репозиторию GitHub получает пути и имена компонентов в кодовой базе и связывает их с дизайн-компонентами. Также можно вручную указать путь и имя компонента без подключения к репозиторию. Code Connect UI поддерживает связи «один ко многим: один дизайн-компонент можно сопоставить с несколькими реализациями на разных фреймворках и языках (например, React, Vue). Пока нет сопоставления свойств и динамических примеров, но подход не привязан к языку, прост в настройке и хорошо масштабируется для команд дизайна и разработки.
 
 ### Сравнение возможностей {#sravnenie-vozmozhnostey}
 
@@ -275,7 +273,7 @@ Code Connect предлагает два способа связать диза�
 | **Контекст MCP** | Путь к компоненту, имя компонента, сопоставление свойств и динамические примеры кода | Путь к компоненту, имя компонента, пользовательский промпт и контекст компонента из кодовой базы |
 | **Пользовательский опыт** | Локально в репозитории; публикация из терминала | Интеграция с Figma; сопоставление прямо в файлах дизайна или библиотеках; сейчас ограничено одной кодовой библиотекой |
 | **Доступ к кодовой базе** | Локально на вашей машине и в репозитории | Подключение к репозиторию через Figma |
-| **Фреймворк и язык** | Парсеры для React, Web Components, SwiftUI, Jetpack Compose; документация на JS для любого языка | Достаточно пути к коду и имени компонента; не привязан к языку; связи «один ко многим» между фреймворками |
+| **Фреймворк и язык** | Парсеры для React, Web Components; документация на JS для любого языка | Достаточно пути к коду и имени компонента; не привязан к языку; связи «один ко многим» между фреймворками |
 | **Сниппеты кода** | Показывает сниппеты кода дизайн-системы на панели Inspect. | Показывает путь к файлу и имя компонента (если указаны); поддерживает превью AI-сгенерированных сниппетов кода. |
 
 ---
@@ -344,7 +342,7 @@ Figma логирует только базовые события для пон�
 }
 ```
 
-Значения `label` и `language` определяют, как фрагменты кода помечаются в Figma. Измените их в соответствии с вашей кодовой базой — например, для проекта SwiftUI используйте `"Swift"` и `"swift"`.
+Значения `label` и `language` определяют, как фрагменты кода помечаются в Figma. Измените их в соответствии с вашей кодовой базой.
 
 Если вы используете TypeScript, добавьте определения типов шаблонов в `tsconfig.json` для автодополнения и проверки типов в файлах шаблонов:
 
@@ -422,22 +420,23 @@ export default {
 
 Чтобы видеть фрагменты Code Connect для компонентов в Dev Mode, сначала нужно опубликовать файлы:
 
-1. В корне репозитория выполните следующую команду с вашим персональным токеном доступа:
+1.  В корне репозитория выполните следующую команду с вашим персональным токеном доступа:
 
-```jsx
-npx figma connect publish --token=PERSONAL_ACCESS_TOKEN
-```
+    ```jsx
+    npx figma connect publish --token=PERSONAL_ACCESS_TOKEN
+    ```
 
-Где `PERSONAL_ACCESS_TOKEN` — токен доступа к API Figma, который вы сгенерировали.
+    Где `PERSONAL_ACCESS_TOKEN` — токен доступа к API Figma, который вы сгенерировали.
 
-> **Примечание**
->
-> **Примечание:** опционально можно использовать переменную окружения `FIGMA_ACCESS_TOKEN` для передачи персонального токена доступа в инструмент командной строки Code Connect. При использовании переменной окружения параметр `--token` не нужен.
+    !!!note "Примечание"
 
-Инструмент опубликует ваши файлы Code Connect и вернёт список имён компонентов и URL соответствующих узлов.
+        Опционально можно использовать переменную окружения `FIGMA_ACCESS_TOKEN` для передачи персонального токена доступа в инструмент командной строки Code Connect. При использовании переменной окружения параметр `--token` не нужен.
 
-2. Чтобы посмотреть сопоставленные компоненты в Figma, щёлкните ссылки в списке после публикации. Ссылки откроют соответствующие компоненты в файле дизайн-системы Figma.
-3. На панели инструментов щёлкните **Dev Mode**. Фрагмент кода из Code Connect появится в панели Inspect в правой боковой панели.
+    Инструмент опубликует ваши файлы Code Connect и вернёт список имён компонентов и URL соответствующих узлов.
+
+2.  Чтобы посмотреть сопоставленные компоненты в Figma, щёлкните ссылки в списке после публикации. Ссылки откроют соответствующие компоненты в файле дизайн-системы Figma.
+
+3.  На панели инструментов щёлкните **Dev Mode**. Фрагмент кода из Code Connect появится в панели Inspect в правой боковой панели.
 
 ![Пример отображения фрагмента кода в верхней части панели Inspect](images/code-connect-code-snippet-3fc471f3bd6dc2872814f290705f0356-83c15547f8e9.png)
 
@@ -462,7 +461,7 @@ npx figma connect unpublish --node=NODE_URL --label=LABEL
 - **[Writing template files →](#writing-template-files)**: полный API шаблонов, включая вложенные компоненты, условный рендеринг и другие возможности.
 - **[Template API reference →](#template-api-reference)**: полный справочник всех доступных методов и типов.
 - **[Configuration →](#configuring-your-project)**: расширенные параметры конфигурации для `figma.config.json`.
-- **Framework-specific APIs**: Code Connect также поддерживает интеграции для конкретных фреймворков: [React (и React Native)](#connecting-react-components), [HTML/Web Components](#connecting-web-components), [SwiftUI](#connecting-swiftui-components) и [Jetpack Compose](#connecting-jetpack-compose-components).
+- **Framework-specific APIs**: Code Connect также поддерживает интеграции для конкретных фреймворков: [React (и React Native)](#connecting-react-components), [HTML/Web Components](#connecting-web-components).
 
 ---
 
@@ -666,35 +665,6 @@ figma.connect(Button, 'https://...', {
 });
 ```
 
-### Конфигурация проекта для SwiftUI {#konfiguratsiya-proekta-dlya-swiftui}
-
-```json
-"codeConnect": {
-  "include": [...],
-  "exclude": [...],
-  "xcodeprojPath": "MyProject.xcodeproj",
-  "swiftPackagePath": "../path/to/my/Package.swift",
-  "sourcePackagesPath": "/Users/{username}/Development/{project}/DerivedData/{project}/SourcePackages",
-  "importMapping": {
-      "packages/design-system/*": "DesignSystem"
-  }
-}
-```
-
-#### `xcodeprojPath` {#xcodeprojpath}
-
-Параметр конфигурации `xcodeprojPath` позволяет указать файл `.xcodeproj`, связанный с проектом. Альтернативно, при использовании `Package.swift` можно указать `swiftPackagePath`. Code Connect нужен этот файл (или `Package.swift`) для поиска пакета Code Connect и сборки бинарного файла языковой поддержки. По умолчанию Code Connect использует первый найденный `.xcodeproj`, что подходит для большинства проектов; при ошибках и наличии нескольких `.xcodeproj` этот параметр указывает Code Connect на нужный файл.
-
-#### `sourcePackagesPath` {#sourcepackagespath}
-
-Параметр конфигурации `sourcePackagesPath` задаёт расположение директории Source Packages проекта. Если не указан, по умолчанию используется стандартное расположение Xcode (`/Users/{username}/Library/Developer/Xcode/DerivedData/{project}/SourcePackages` или `{project}/DerivedData/{project}/SourcePackages`), кроме случая с `Package.swift`. Этот параметр опционален.
-
-#### `importMapping` {#importmapping}
-
-Параметр конфигурации `importMapping` обеспечивает корректное определение импортов Code Connect и отображение правильных импортов в Dev Mode.
-
----
-
 ## Написание файлов шаблонов {#writing-template-files}
 
 Файлы шаблонов предоставляют независимый от фреймворка способ связать ваш код с компонентами Figma. Вместо парсеров для конкретных фреймворков вы пишете TypeScript-файлы, которые явно определяют, как ваши компоненты должны отображаться. Этот подход проще в сопровождении, гибче и мощнее, чем API для конкретных фреймворков.
@@ -847,7 +817,7 @@ const iconSnippet = iconInstance.executeTemplate().example;
 
 ##### Работа со слотами {#rabota-so-slotami}
 
-Слоты — свойства компонентов, которые создают гибкие области внутри компонента и позволяют свободно редактировать содержимое. В коде слоты обычно соответствуют children или пропсам content, например `children` в React, лямбде `content` в Jetpack Compose или параметру `@ViewBuilder` в SwiftUI.
+Слоты — свойства компонентов, которые создают гибкие области внутри компонента и позволяют свободно редактировать содержимое. В коде слоты обычно соответствуют children или пропсам content, например `children` в React.
 
 Когда компонент Figma имеет свойство слота, используйте `getSlot()` для его ссылки в шаблоне:
 
@@ -1358,50 +1328,6 @@ Type guard, проверяющий, является ли значение ма�
 
 **Примечание:** этот хелпер в основном используется внутренне системой отображения, но может быть полезен для продвинутой логики шаблонов.
 
-##### Хелперы Swift {#helpery-swift}
-
-Доступны в `figma.helpers.swift`:
-
-###### `renderChildren(children: ResultSectionList | string | undefined, prefix: string): ResultSection[]` {#renderchildren-children-resultsectionlist-string-undefined-prefix-string-resultsection}
-
-Отображает Swift children с корректными отступами. Применяет указанный prefix ко всем непустым строкам и обрабатывает пробелы между вложенными инстансами.
-
-**Пример:**
-
-```tsx
-const children = figma.selectedInstance.findConnectedInstances(...)
-  .map(c => c.executeTemplate().example)
-
-figma.swift`VStack {
-${figma.helpers.swift.renderChildren(children, '  ')}
-}`
-// Properly indents all children with 2 spaces
-```
-
-**Примечание:** логика отступов и пробелов может потребовать настройки в соответствии с конвенциями форматирования Swift. Проверьте сгенерированный вывод, чтобы он соответствовал стилю вашего проекта.
-
-##### Хелперы Kotlin {#helpery-kotlin}
-
-Доступны в `figma.helpers.kotlin`:
-
-###### `renderChildren(children: ResultSectionList | string | undefined, prefix: string): ResultSection[]` {#renderchildren-children-resultsectionlist-string-undefined-prefix-string-resultsection-2}
-
-Отображает Kotlin Compose children с корректными отступами. Аналогичен Swift хелперу, но следует конвенциям форматирования Kotlin/Compose.
-
-**Пример:**
-
-```tsx
-const children = figma.selectedInstance.findConnectedInstances(...)
-  .map(c => c.executeTemplate().example)
-
-figma.kotlin`Column {
-${figma.helpers.kotlin.renderChildren(children, '  ')}
-}`
-// Properly indents all children with 2 spaces
-```
-
-**Примечание:** логика отступов и пробелов может потребовать настройки в соответствии с конвенциями форматирования Kotlin/Compose. Проверьте сгенерированный вывод, чтобы он соответствовал стилю вашего проекта.
-
 ### Объект `InstanceHandle` {#obekt-instancehandle}
 
 #### Свойства {#svoystva}
@@ -1678,220 +1604,6 @@ type ResultError =
     | ChildLayerNotFoundErrorObject
     | TemplateExecutionErrorObject;
 ```
-
----
-
-### устаревший API {#ustarevshiy-api}
-
-Этот раздел документирует оригинальный Template API. API выше имеет лучшую эргономику и рекомендуется для новых шаблонов.
-
-##### `figma.currentLayer:` [`InstanceHandle`](#instancehandle-object-1) {#figma-currentlayer-instancehandle}
-
-Объект `currentLayer` представляет текущий выбранный слой в документе Figma. Этот [InstanceHandle](#instancehandle-object-1) предоставляет доступ к различным свойствам и методам для взаимодействия с выбранным слоем.
-
-##### `figma.properties` {#figma-properties}
-
-Объект `properties` — сокращение для `figma.currentLayer.__properties__`
-
-#### Объект `InstanceHandle` {#obekt-instancehandle-2}
-
-##### Свойства {#svoystva-4}
-
-###### `children`: {#children}
-
-- Список прямых дочерних элементов (инстансы или текст).
-
-###### `__properties__` {#properties}
-
-- возвращает объект методов, дающих доступ к различным свойствам узла figma. См. следующий раздел для доступных методов.
-
-##### Методы {#metody-2}
-
-###### `__find__(name): InstanceHandle | ErrorHandle | null` {#find-name-instancehandle-errorhandle-null}
-
-- Находит дочерний или вложенный дочерний инстанс по имени.
-
-###### `__findChildWithCriteria__({ type, name }: { type: 'INSTANCE' | 'TEXT'; name: string }): InstanceHandle |` [`TextHandle`](#texthandle-object) `| ErrorHandle | null` {#findchildwithcriteria-type-name-type-instance-text-name-string-instancehandle-texthandle-errorhandle-null}
-
-- Находит дочерний элемент, соответствующий указанному типу и имени
-
-###### `__getPropertyValue__(name: string): string | boolean | ErrorHandle` {#getpropertyvalue-name-string-string-boolean-errorhandle}
-
-- Получает значение свойства по имени.
-
-###### `__render__(): ResultSection[]` {#render-resultsection}
-
-- Возвращает информацию отображения для узла.
-- Если инстанс не имеет связанного шаблона, возвращается следующий формат
-
-```tsx
-{
-  type: 'INSTANCE' as const,
-  guid,
-  symbolId,
-}
-```
-
-###### `__getProps__(): Record<string, any> | ErrorHandle | undefined` {#getprops-record-string-any-errorhandle-undefined}
-
-- Возвращает свойства, указанные в поле metadata
-
-###### `__renderWithFn__(renderFn: (props: Record<string, any>) => TemplateStringResult): ResultSection[] | ErrorHandle | undefined` {#renderwithfn-renderfn-props-record-string-any-templatestringresult-resultsection-errorhandle-undefined}
-
-- Отображает с предоставленной функцией.
-
-#### properties или `__properties__` {#properties-ili-properties}
-
-Объект `properties` предоставляет несколько методов для взаимодействия со свойствами текущего узла.
-
-##### `boolean(propertyName: string, options?: Record<string, TemplateArgValueKind> ): boolean` {#boolean-propertyname-string-options-record-string-templateargvaluekind-boolean}
-
-Этот метод возвращает булевое значение указанного свойства слоя. Вы можете указать options для сопоставления значения (true/false) с чем-либо из TemplateArgValueKind.
-
-Пример:
-
-```tsx
-const booleanProperty = figma.currentLayer.__properties__.boolean(
-    'propertyName',
-    {
-        true: 'icon',
-        false: undefined,
-    },
-);
-```
-
-##### `enum(propertyName: string, options: Record<string, TemplateArgValueKind> ): number` {#enum-propertyname-string-options-record-string-templateargvaluekind-number}
-
-Этот метод возвращает значение enum указанного свойства слоя. Ключи в объекте options должны соответствовать различным опциям этого Variant в Figma, а значение — тому, что вы хотите вывести вместо него, типа TemplateArgValueKind.
-
-##### `string(propertyName: string): string` {#string-propertyname-string-string}
-
-Этот метод возвращает строковое значение указанного свойства слоя.
-
-##### `instance(propertyName: string): string | ResultSection[]` {#instance-propertyname-string-string-resultsection}
-
-Этот метод возвращает отображённый инстанс, сопоставленный со свойством замены инстанса propertyName. Этот метод возвращает отображённый инстанс (т. е. на нём вызывается **render**())
-
-##### `__instance__(instanceSwapProp: string): InstanceHandle | undefined` {#instance-instanceswapprop-string-instancehandle-undefined}
-
-Этот метод возвращает инстанс, сопоставленный со свойством замены инстанса propertyName. В отличие от метода выше, не вызывает **render**().
-
-##### `children(layerNames: string[]): ResultSection[]` {#children-layernames-string-resultsection}
-
-Этот метод получает дочерние элементы с именами в layerNames, вызывает **render**() на них и возвращает этот массив.
-
-#### Пример использования {#primer-ispolzovaniya}
-
-```tsx
-import figma from 'figma';
-
-const string = figma.currentLayer.__properties__.string('String Prop');
-const boolean = figma.currentLayer.__properties__.boolean('Boolean Prop');
-const instance = figma.currentLayer.__properties__.instance('Instance Prop');
-const children = figma.currentLayer.__properties__.children([
-    'Logic Child',
-    'Child 1',
-    'Child 2',
-]);
-
-export default figma.code`<Component
-string={${string}}
-boolean={${boolean}}
-instance={${instance}}
-children={${figma.code`${children}`}} />`;
-```
-
-#### Использование функций для инкапсуляции логики {#ispolzovanie-funktsiy-dlya-inkapsulyatsii-logiki}
-
-Для покрытия разных типов можно включить функции. Ниже пример того, как выглядит сложный parsed React Code Connect doc.
-
-```tsx
-import figma from 'figma';
-
-function _fcc_renderProp(name, prop) {
-    if (Array.isArray(prop)) {
-        return figma.code` ${name}={<>${prop}</>}`;
-    }
-
-    if (typeof prop === 'boolean') {
-        return prop ? ` ${name}` : '';
-    }
-
-    // Replace any newlines or quotes in the string with escaped versions
-    if (typeof prop === 'string') {
-        const str = prop.replaceAll('\n', '\\n').replaceAll('"', '\\"');
-        if (str === '') {
-            return '';
-        }
-        return ` ${name}="${str}"`;
-    }
-
-    if (typeof prop === 'number') {
-        return ` ${name}={${prop}}`;
-    }
-
-    if (prop === undefined) {
-        return '';
-    }
-
-    return '';
-}
-
-function _fcc_renderChildren(prop) {
-    if (Array.isArray(prop)) {
-        return prop;
-    }
-
-    if (
-        typeof prop === 'string' ||
-        typeof prop === 'number' ||
-        typeof prop === 'boolean'
-    ) {
-        return prop;
-    }
-
-    if (prop === undefined) {
-        return '';
-    }
-}
-
-const string = figma.currentLayer.__properties__.string('String Prop');
-const boolean = figma.currentLayer.__properties__.boolean('Boolean Prop');
-const instance = figma.currentLayer.__properties__.instance('Instance Prop');
-const children = figma.currentLayer.__properties__.children([
-    'Logic Child',
-    'Child 1',
-    'Child 2',
-]);
-
-const enumProp = figma.currentLayer.__properties__.enum('Enum Prop', {
-    String: 'String',
-    Number: 3,
-    'Boolean true': true,
-    'Boolean false': false,
-    Undefined: undefined,
-    'figma.string': figma.currentLayer.__properties__.string('String Prop'),
-    'figma.boolean': figma.currentLayer.__properties__.boolean('Boolean Prop'),
-    'figma.instance':
-        figma.currentLayer.__properties__.instance('Instance Prop'),
-    'figma.children': figma.currentLayer.__properties__.children([
-        'Logic Child',
-        'Child 1',
-        'Child 2',
-    ]),
-});
-
-export default figma.code`<TestComponent
-${_fcc_renderProp('boolean', boolean)}${_fcc_renderProp('instance', instance)}${_fcc_renderProp('childrenProp', children)}${_fcc_renderProp('enum', enumProp)}>
-        <div className="string">${_fcc_renderChildren(string)}</div>
-        <div className="boolean">${_fcc_renderChildren(boolean)}</div>
-        <div className="instance">${_fcc_renderChildren(instance)}</div>
-        <div className="children">${_fcc_renderChildren(children)}</div>
-        <div className="enum">${_fcc_renderChildren(enumProp)}</div>
-      </TestComponent>`;
-```
-
----
 
 ## Пакетные (batch) файлы {#batch-files}
 
@@ -2326,11 +2038,6 @@ npx figma connect publish
 - `importPaths` (только React)
 - `paths` (только React)
 - `imports` (только React)
-- `xcodeprojPath` (только SwiftUI)
-- `sourcePackagesPath` (только SwiftUI)
-- `importMapping` (только SwiftUI)
-
----
 
 ## Справочник CLI {#cli-reference}
 
@@ -3280,8 +2987,6 @@ figma.connect("icon-button-url", {
 
 ---
 
----
-
 ## Подключение Web-компонентов {#connecting-web-components}
 
 > **Предупреждение**
@@ -3829,460 +3534,6 @@ figma.connect("my-button-url, {
 // renders in Dev Mode
 <ds-icon iconId="icon-heart" />
 ```
-
----
-
-## Подключение компонентов SwiftUI {#connecting-swiftui-components}
-
-> **Предупреждение**
->
-> **Парсеры, специфичные для фреймворков, больше не будут получать обновления и поддержку с 17 августа 2026 года. Файлы шаблонов останутся единственным активно поддерживаемым способом использования Code Connect.**
->
-> Подробнее о миграции Code Connect на основе парсеров см. в руководстве по миграции: [Миграция с парсеров на файлы шаблонов](#migrating-from-parsers-to-template-files)
-
-Это руководство поможет вам связать компоненты SwiftUI с компонентами Figma с помощью Code Connect. В нём описана базовая настройка для отображения первых фрагментов кода в Dev Mode, а также сопоставление свойств и вариантов.
-
-### Требования {#trebovaniya}
-
-Перед использованием Code Connect со SwiftUI добавьте Code Connect в качестве зависимости в `Package.swift` — как для самого проекта, так и для всех соответствующих целей (targets):
-
-```swift
-let package = Package(
-    name: "ExampleProject",
-    platforms: [...],
-    products: [...],
-    dependencies: [
-        .package(url: "https://github.com/figma/code-connect", from: "1.0.0"),
-    ],
-    targets: [
-      .target(
-         name: "ExampleTarget",
-         dependencies: [
-               .product(name: "Figma", package: "code-connect")
-         ]
-      )
-    ]
-)
-```
-
-### Динамические фрагменты кода {#dinamicheskie-fragmenty-koda-3}
-
-Если вы прошли [Начало работы с Code Connect](#getting-started-with-code-connect-cli), при проверке экземпляров этого компонента в Dev Mode должен отображаться подключённый фрагмент кода. Однако фрагмент кода пока не отражает весь дизайн целиком.
-
-Чтобы подключённый код точно соответствовал дизайну, нужно использовать сопоставление свойств (prop mapping). Оно позволяет связать конкретные свойства в дизайне со свойствами в коде. В большинстве случаев свойства дизайна и кода не совпадают один к одному, поэтому настройку нужно выполнить вручную, чтобы в Dev Mode отображался правильный код.
-
-Ниже простой пример для кнопки со свойствами `label`, `disabled` и `type`.
-
-```swift
-import Figma
-
-struct Button_connection : FigmaConnect {
-   let component = Button.self
-   let figmaNodeUrl: String = "https://..."
-
-   @FigmaString("Text Content")
-   var label: String = "Submit"
-
-   @FigmaBoolean("Disabled")
-   var disabled: Bool = false
-
-   @FigmaEnum(
-      "Variant",
-      mapping: [
-          "Primary": ButtonVariant.primary,
-          "Secondary": ButtonVariant.secondary,
-          "Destructive": ButtonVariant.danger
-      ]
-  )
-  var type: ButtonType = .primary
-
-   var body: some View {
-      Button(type: self.type, disabled: self.disabled, label: {
-          Text(self.label)
-      })
-   }
-}
-```
-
-`@FigmaString` используется для прямого сопоставления строк. `@FigmaBoolean` — для булевых значений. Варианты в Figma можно сопоставить с помощью `@FigmaEnum`. Для вложенных экземпляров следует использовать `@FigmaInstance`.
-
-```swift
-@FigmaString("A string") var label: String
-
-@FigmaBoolean("A boolean") var hasLabel: Bool
-
-@FigmaInstance("An instance") var icon: Icon
-
-@FigmaEnum(
-   "An enum",
-   mapping: [
-      "Primary": .primary,
-      "Secondary": .secondary
-   ]) var variant: ButtonVariant
-```
-
-Для более сложного сопоставления, когда свойства в Figma и коде не совпадают один к одному, в Code Connect можно задать собственное сопоставление. Например, сопоставить булево значение из Figma с отображением иконки или заполнителя (spacer) в качестве аксессуара.
-
-```swift
-@FigmaBoolean(
-   "has icon",
-   mapping: [
-      true: Icon(),
-      false: Spacer()
-   ]) var accessory: some View
-```
-
-Или установить булево значение `true`, когда в Figma выбрана определённая опция перечисления.
-
-```swift
-@FigmaEnum("Type", mapping: [ "Disabled": true ]) var isDisabled: Bool
-```
-
-#### Скрытие значений по умолчанию {#skrytie-znacheniy-po-umolchaniyu}
-
-Для некоторых типов сопоставленных свойств может понадобиться скрывать их, если отображается значение по умолчанию. Например, вы можете показывать модификатор `.disabled(true)`, если у компонента есть булево свойство `Disabled = True`, но в остальных случаях ничего не выводить. Для этого используйте параметр `hideDefault` в `@FigmaEnum` или `@FigmaBoolean`.
-
-```swift
-   @FigmaBoolean("Disabled", hideDefault: true)
-   var disabled: Bool = false
-
-   var body: some View {
-       MyView()
-           .disabled(self.disabled)
-   }
-```
-
-Если у компонента в Figma `Disabled = True`, результирующий код будет таким:
-
-```swift
-MyView()
-   .disabled(true)
-```
-
-Если `Disabled = false`, результирующий код будет просто `MyView()`.
-
-### Дочерние экземпляры {#dochernie-ekzemplyary-3}
-
-Хотя `@FigmaInstance` можно использовать для сопоставления дочерних экземпляров, являющихся свойствами instance-swap в Figma, часто у компонентов в Figma есть дочерние экземпляры, не привязанные к свойству instance-swap. Фрагменты кода для таких вложенных экземпляров можно отобразить с помощью обёртки свойства `@FigmaChildren`. Этот помощник принимает в качестве параметра _имя слоя экземпляра_, а не имя свойства Figma. Важно: вложенный экземпляр также должен быть подключён отдельно.
-
-```swift
-@FigmaChildren(layers: ["Header", "Row"])
-var contents = AnyView? = nil
-
-var body: some View {
-    VStack {
-        self.contents
-    }
-}
-```
-
-### Сопоставление вариантов {#sopostavlenie-variantov}
-
-Иногда один компонент в Figma представлен в коде несколькими компонентами. Например, в дизайн-системе Figma может быть одна кнопка `Button` со свойством `type` для переключения между вариантами primary, secondary и danger. В коде это может быть три разных компонента: `PrimaryButton`, `SecondaryButton` и `DangerButton`.
-
-Чтобы смоделировать такое поведение в Code Connect, используются сопоставления вариантов (variant mappings). Они позволяют предоставлять полностью разные образцы кода для разных вариантов одного компонента Figma.
-
-```swift
-struct PrimaryButton_connection : FigmaConnect {
-  let component = PrimaryButton.self
-  let variant = ["Type": "Primary"]
-  let figmaNodeUrl: String = "https://..."
-
-   var body: some View {
-      PrimaryButton(title: "Text")
-   }
-}
-
-struct SecondaryButton_connection : FigmaConnect {
-  let component = SecondaryButton.self
-  let variant = ["Type": "Secondary"]
-  let figmaNodeUrl: String = "https://..."
-
-   var body: some View {
-      SecondaryButton(title: "Text")
-   }
-}
-
-struct DangerButton_connection : FigmaConnect {
-  let component = DangerButton.self
-  let variant = ["Type": "Danger"]
-  let figmaNodeUrl: String = "https://..."
-
-   var body: some View {
-      DangerButton(title: "Text")
-   }
-}
-```
-
-В сложных случаях может понадобиться сопоставить компонент кода с комбинацией вариантов в Figma.
-
-```swift
-// Default case
-struct Button_connection : FigmaConnect {
-  let component = Button.self
-  let figmaNodeUrl: String = "https://..."
-
-   var body: some View {
-      Button(title: "Text")
-   }
-}
-
-struct DangerButton_connection : FigmaConnect {
-  let component = DangerButton.self
-  let variant = ["Type": "Danger", "Disabled": false]
-  let figmaNodeUrl: String = "https://..."
-
-   var body: some View {
-      DangerButton(title: "Text")
-   }
-}
-```
-
-### Условное применение модификаторов {#uslovnoe-primenenie-modifikatorov}
-
-Некоторые свойства в Figma могут соответствовать конкретным модификаторам, а не параметрам функции. Для таких случаев используйте помощник `figmaApply`. Например:
-
-```swift
-struct MyComponent_doc: FigmaConnect {
-   ...
-   @FigmaEnum("Type", mapping: ["Primary": true])
-   var isPrimary: Bool = false
-
-   var body: some View {
-        MyComponent()
-            .figmaApply(isPrimary) {
-                $0.tint(.blue)
-            } elseApply {
-                $0.backgroundColor(.clear)
-            }
-   }
-}
-```
-
-В предыдущем примере, если в Figma значение `State = Primary`, код будет таким:
-
-```swift
-MyComponent()
-   .tint(.blue)
-```
-
-В противном случае:
-
-```swift
-MyComponent()
-   .backgroundColor(.clear)
-```
-
-Параметр `elseApply` можно опустить, чтобы ничего не отображать.
-
-### Превью в Xcode {#prevyu-v-xcode}
-
-Code Connect бесшовно интегрируется с превью Xcode, поэтому не нужно писать несколько примеров использования компонента. Достаточно использовать структуру подключения как превью:
-
-```swift
-struct Button : View { ... }
-
-struct Button_connection : FigmaConnect { ... }
-
-#Preview { Button_connection() }
-```
-
----
-
-## Подключение компонентов Jetpack Compose {#connecting-jetpack-compose-components}
-
-> **Предупреждение**
->
-> **Парсеры, специфичные для фреймворков, больше не будут получать обновления и поддержку с 17 августа 2026 года. Файлы шаблонов останутся единственным активно поддерживаемым способом использования Code Connect.**
->
-> Подробнее о миграции Code Connect на основе парсеров см. в руководстве по миграции: [Миграция с парсеров на файлы шаблонов](#migrating-from-parsers-to-template-files)
-
-Это руководство поможет вам связать компоненты Jetpack Compose с компонентами Figma с помощью Code Connect. Мы рассмотрим базовую настройку для отображения первого подключённого компонента, а затем сопоставление свойств и вариантов.
-
-### Требования {#trebovaniya-2}
-
-- Плагин `com.figma.code.connect`: **[v1.2.9](https://plugins.gradle.org/plugin/com.figma.code.connect)**
-- `code-connect-lib`: **[v1.1.3](https://central.sonatype.com/artifact/com.figma.code.connect/code-connect-lib/overview)**
-- Kotlin: **v2.2.10**
-
-Перед использованием Code Connect с Jetpack Compose обновите `build.gradle.kts`, добавив плагин и библиотеку Code Connect:
-
-```kotlin
-plugins {
-    ...,
-    id("com.figma.code.connect") version "1.+"
-}
-...
-dependencies {
-    ...,
-    implementation("com.figma.code.connect:code-connect-lib:1.+")
-}
-```
-
-### Динамические фрагменты кода {#dinamicheskie-fragmenty-koda-4}
-
-Если вы прошли [Начало работы с Code Connect](#getting-started-with-code-connect-cli), при проверке экземпляров этого компонента в Dev Mode должен отображаться подключённый фрагмент кода. Однако фрагмент кода пока не отражает весь дизайн целиком.
-
-Чтобы подключённый код точно соответствовал дизайну, нужно использовать сопоставление свойств (prop mapping). Оно позволяет связать конкретные свойства в дизайне со свойствами в коде. В большинстве случаев свойства дизайна и кода не совпадают точно, поэтому настройку нужно выполнить вручную, чтобы в Dev Mode отображался правильный код.
-
-Ниже простой пример для кнопки со свойствами `label`, `disabled` и `type`.
-
-```kotlin
-package com.your.app.directory
-
-import androidx.compose.runtime.Composable
-import com.figma.code.connect.Figma
-import com.figma.code.connect.FigmaConnect
-import com.figma.code.connect.FigmaProperty
-import com.figma.code.connect.FigmaType
-import com.figma.code.connect.FigmaVariant
-
-@FigmaConnect(url="http://figma.com/component1")
-class ButtonDoc {
-
-    @FigmaProperty(FigmaType.Text, "Text Content")
-    val label = "Click me txt"
-
-    @FigmaProperty(FigmaType.Boolean, "Disabled")
-    val disabled = false
-
-    @FigmaProperty(FigmaType.Enum, "Variant")
-    val type: ButtonType = Figma.mapping(
-        "Primary" to ButtonType.Primary,
-        "Secondary" to ButtonType.Secondary
-    )
-
-    @Composable
-    fun Component2() {
-        ButtonComponent(
-            type = type,
-            label = label,
-            disabled = disabled
-        )
-    }
-}
-```
-
-`@FigmaProperty` используется для сопоставления типов свойств в Figma. Первый параметр аннотации принимает `FigmaType`, который соответствует разным типам свойств компонента Figma.
-
-`FigmaType.Text` используется для текстовых свойств. `FigmaType.Boolean` — для булевых значений. Для вложенных экземпляров следует использовать `FigmaType.Instance`.
-
-Варианты в Figma можно сопоставить с помощью `FigmaType.Enum` и помощника `Figma.mapping`. `Figma.mapping` принимает список пар, где первый элемент — значение в Figma, а второй — то, что должно появиться в коде.
-
-```kotlin
-@FigmaProperty(FigmaType.Text, "Text Content")
-val label: String = "Click me txt"
-
-@FigmaProperty(FigmaType.Boolean, "Disabled")
-val disabled: Boolean = false
-
-@FigmaProperty(FigmaType.Enum, "Variant")
-val type: ButtonType = Figma.mapping(
-   "Primary" to ButtonType.Primary,
-   "Secondary" to ButtonType.Secondary
-)
-
-@FigmaProperty(FigmaType.Instance, "Icon")
-val icon : @Composable () -> Unit = { IconComponent() }
-```
-
-Для более сложного сопоставления — когда свойства в Figma и коде не совпадают точно — в Code Connect можно задать собственное сопоставление. Например, сопоставить булево значение из Figma с отображением иконки или разделителя (divider) в качестве аксессуара.
-
-```kotlin
-@FigmaProperty(FigmaType.Boolean, "Has Icon")
-val accessory: @Composable() -> Unit = Figma.mapping(
-   true to Icon(),
-   false to Divider()
-)
-```
-
-Или установить булево значение `true`, когда в Figma выбрана определённая опция перечисления.
-
-```kotlin
-@FigmaProperty(FigmaType.Enum, "Type")
-val isDisabled: Bool = Figma.mapping("Disabled" to true)
-```
-
-### Дочерние экземпляры {#dochernie-ekzemplyary-4}
-
-Хотя `@FigmaInstance` можно использовать для сопоставления дочерних экземпляров, являющихся свойствами instance-swap в Figma, часто у компонентов в Figma есть дочерние экземпляры, не привязанные к свойству instance-swap. Фрагменты кода для таких вложенных экземпляров можно отобразить с помощью обёртки свойства `@FigmaChildren`. Этот помощник принимает в качестве параметра _имя слоя экземпляра_, а не имя свойства Figma. Важно: вложенный экземпляр также должен быть подключён отдельно.
-
-```kotlin
-@FigmaChildren("Header", "Row")
-val contents : @Composable () -> Unit = { }
-
-@Composable
-fun ListExample() {
-    List {
-        contents
-    }
-}
-```
-
-### Сопоставление вариантов {#sopostavlenie-variantov-2}
-
-Иногда один компонент в Figma представлен в коде несколькими компонентами. Например, в дизайн-системе Figma может быть одна кнопка `Button` со свойством `type` для переключения между вариантами primary, secondary и danger. В коде это может быть три разных компонента: `PrimaryButton`, `SecondaryButton` и `DangerButton`.
-
-Чтобы смоделировать такое поведение в Code Connect, используются сопоставления вариантов. Они позволяют предоставлять разные образцы кода для разных вариантов одного компонента Figma.
-
-```kotlin
-@FigmaConnect("https://...")
-@FigmaVariant("Type", "Primary")
-class PrimaryButtonConnection {
-
-   @Composable
-   fun PrimaryButtonExample() {
-      PrimaryButton(title: "Text")
-   }
-}
-
-@FigmaConnect("https://...")
-@FigmaVariant("Type", "Secondary")
-class PrimaryButtonConnection {
-
-   @Composable
-   fun SecondaryButtonExample() {
-      SecondaryButton(title: "Text")
-   }
-}
-
-@FigmaConnect("https://...")
-@FigmaVariant("Type", "Danger")
-class DangerButtonConnection {
-
-   @Composable
-   fun DangerButtonExample() {
-      DangerButton(title: "Text")
-   }
-}
-```
-
-В сложных случаях может понадобиться сопоставить компонент кода с комбинацией вариантов в Figma.
-
-```kotlin
-// Default case
-@FigmaConnect("https://...")
-class ButtonConnection {
-
-   @Composable
-   fun ButtonExample() {
-      Button(title: "Text")
-   }
-}
-
-@FigmaConnect("https://...")
-@FigmaVariant("Type", "Danger")
-@FigmaVariant("Disabled", "False")
-class DangerButtonConnection {
-
-   @Composable
-   fun DangerButtonExample() {
-      DangerButton(title: "Text")
-   }
-}
-```
-
----
 
 ## Интеграция со Storybook {#integrating-with-storybook}
 
