@@ -9,7 +9,7 @@ categories:
 slug: llm-fundamentals
 ---
 
-# Основы больших языковых моделей
+# Основы больших языковых моделей {#llm-fundamentals}
 
 ИИ уже умеет менять то, как вы работаете. Он же легко встает на пути, если не понимать его ограничения.
 
@@ -322,7 +322,7 @@ T H E space C A T space S A T space O N space T H E space M A T
 
 В этом и разница. Агент уместен, когда маршрут неизвестен. Рабочий процесс уместен, когда маршрут уже понятен и его можно закрепить в коде.
 
-## Источники
+## Источники {#sources}
 
 - <https://www.aihero.dev/llm-fundamentals>
 - <https://www.aihero.dev/messages-system-prompts-and-reasoning-tokens>
