@@ -21,7 +21,7 @@ Fullstack-разработчик с 20-летним стажем в веб-ра�
 [:fontawesome-brands-github:&nbsp;Github](https://github.com/bndby) &nbsp;&nbsp;&nbsp; [:simple-codementor:&nbsp;GetMentor](https://getmentor.dev/mentor/iuriy-bondarenko-4234) &nbsp;&nbsp;&nbsp; [:fontawesome-regular-heart:&nbsp;Boosty](https://boosty.to/bndby) &nbsp;&nbsp;&nbsp; [:fontawesome-brands-linkedin:&nbsp;Linkedin](https://www.linkedin.com/in/bndby/) &nbsp;&nbsp;&nbsp; [:octicons-arrow-right-24:&nbsp;Резюме](./cv/index.md)
 
 <div style="clear: both">
-  <auto-mario size="760"></auto-mario>
+  <auto-mario size="507"></auto-mario>
   <script type="module" src="./auto-mario.js"></script>
 </div>
 

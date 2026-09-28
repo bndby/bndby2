@@ -395,6 +395,23 @@ function compile(spec) {
 			powerups += 1;
 		}
 	}
+	for (const drop of spec.mushrooms ?? []) {
+		const surface = groundSurface(tiles, w, drop.x);
+		if (surface == null) continue;
+		items.push({
+			kind: 'mushroom',
+			x: drop.x * TILE,
+			y: surface * TILE - TILE,
+			w: TILE,
+			h: TILE,
+			vx: 0.75,
+			vy: 0,
+			emerge: 0,
+			dir: drop.dir ?? 1,
+			alive: true,
+		});
+		powerups += 1;
+	}
 
 	return {
 		id: spec.id,
@@ -487,6 +504,10 @@ const SPECS = [
 			...g([
 				22, 40, 51, 53, 80, 82, 97, 99, 114, 116, 128, 130, 170, 172,
 			]),
+		],
+		mushrooms: [
+			{ x: 10, dir: 1 },
+			{ x: 24, dir: -1 },
 		],
 		flag: 198,
 	}),

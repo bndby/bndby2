@@ -94,7 +94,93 @@ for (const level of LEVELS) {
 }
 
 physics();
+powerChain();
 console.log('physics ok, levels', LEVELS.length);
+
+function giveMushroom(state) {
+	const mario = state.mario;
+	state.items.push({
+		kind: 'mushroom',
+		x: mario.x,
+		y: mario.y + mario.h - 16,
+		w: 16,
+		h: 16,
+		vx: 0,
+		vy: 0,
+		emerge: 0,
+		dir: 1,
+		alive: true,
+	});
+}
+
+function powerChain() {
+	const state = createGame({ skipCard: true });
+	const lives = state.lives;
+	assert(state.mario.form === 'small', 'старт маленький');
+	giveMushroom(state);
+	step(state, IDLE);
+	assert(
+		state.mario.form === 'big',
+		`первый гриб растит, сейчас ${state.mario.form}`,
+	);
+	assert(state.mario.h === 32, `высокий рост ${state.mario.h}`);
+	assert(state.lives === lives, 'жизнь после гриба');
+	step(state, { dir: 1, run: true, jump: 'none', down: false });
+	assert(state.shots.length === 0, 'большой ещё не стреляет');
+
+	giveMushroom(state);
+	step(state, IDLE);
+	assert(
+		state.mario.form === 'fire',
+		`второй гриб даёт огонь, сейчас ${state.mario.form}`,
+	);
+	assert(state.mario.h === 32, 'огонь остаётся высоким');
+	const beforeShots = state.shots.length;
+	step(state, { dir: 1, run: true, jump: 'none', down: false });
+	assert(state.shots.length > beforeShots, 'огненный стреляет');
+
+	state.mario.vy = 0;
+	state.mario.vx = 0;
+	state.mario.onGround = true;
+	state.shots = [];
+	state.enemies.push({
+		kind: 'goomba',
+		x: state.mario.x + 2,
+		y: state.mario.y + state.mario.h - 16,
+		w: 16,
+		h: 16,
+		vx: 0,
+		vy: 0,
+		alive: true,
+		dir: 1,
+		speed: 0.2,
+	});
+	step(state, IDLE);
+	assert(
+		state.mario.form === 'small',
+		`первый удар уменьшает, сейчас ${state.mario.form}`,
+	);
+	assert(state.mario.h === 16, `после удара рост ${state.mario.h}`);
+	assert(state.lives === lives, 'первый удар не забирает жизнь');
+	assert(state.mode === 'play', `после удара режим ${state.mode}`);
+
+	state.mario.invuln = 1;
+	const enemy = state.enemies.find(
+		(actor) => actor.alive && actor.kind === 'goomba',
+	);
+	assert(enemy, 'гумба на месте');
+	enemy.x = state.mario.x;
+	enemy.y = state.mario.y;
+	step(state, IDLE);
+	assert(
+		state.lives === lives - 1,
+		`второй удар забирает жизнь: ${state.lives}`,
+	);
+	assert(
+		state.mario.dead || state.mode === 'dead',
+		`второй удар смертелен: ${state.mode}`,
+	);
+}
 
 const focus = ['1-1', '1-2', '1-3', '1-4', '2-2'];
 for (const id of focus) {

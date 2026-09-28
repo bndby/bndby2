@@ -335,26 +335,32 @@ function controlMario(state, input) {
 
 	if (mario.y > LEVEL_H * TILE) defeat(state, 'pit');
 
+	tryShoot(state, input);
+}
+
+function tryShoot(state, input) {
+	const mario = state.mario;
 	if (
-		input.run &&
-		mario.form === 'fire' &&
-		mario.fireCd <= 0 &&
-		state.shots.length < 2 &&
-		state.mode === 'play'
+		!input.run ||
+		mario.form !== 'fire' ||
+		mario.fireCd > 0 ||
+		state.shots.length >= 2 ||
+		state.mode !== 'play'
 	) {
-		state.shots.push({
-			x: mario.x + (mario.dir > 0 ? mario.w : -8),
-			y: mario.y + mario.h * 0.45,
-			w: 8,
-			h: 8,
-			vx: mario.dir * 3.4,
-			vy: 0.4,
-			bounces: 0,
-			alive: true,
-		});
-		mario.fireCd = 18;
-		state.events.push({ type: 'fire' });
+		return;
 	}
+	state.shots.push({
+		x: mario.x + (mario.dir > 0 ? mario.w - 2 : -6),
+		y: mario.y + mario.h * 0.42,
+		w: 8,
+		h: 8,
+		vx: mario.dir * 3.4,
+		vy: 0.35,
+		bounces: 0,
+		alive: true,
+	});
+	mario.fireCd = 16;
+	state.events.push({ type: 'fire' });
 }
 
 function swim(state, input) {
@@ -377,6 +383,7 @@ function swim(state, input) {
 	moveY(mario, state, true);
 	if (mario.y < 4) mario.y = 4;
 	if (mario.y > LEVEL_H * TILE) defeat(state, 'pit');
+	tryShoot(state, input);
 }
 
 function moveX(body, state) {
@@ -546,8 +553,7 @@ function triggerBlock(state, tx, ty) {
 		return;
 	}
 	if (tile === Tile.Mushroom) {
-		const kind = state.mario.form === 'small' ? 'mushroom' : 'flower';
-		spawnItem(state, tx, ty, kind);
+		spawnItem(state, tx, ty, 'mushroom');
 		setTile(state, tx, ty, Tile.Used);
 		state.events.push({ type: 'bump' });
 		return;
@@ -641,17 +647,16 @@ function collectItems(state) {
 			continue;
 		}
 		if (item.kind === 'mushroom') {
-			if (mario.form === 'small') grow(state);
-			addScore(state, 1000, item.x, item.y, '1000');
+			const label = applyMushroom(state);
+			addScore(state, 1000, item.x, item.y, label);
 			state.powerups += 1;
 			state.events.push({ type: 'power' });
 			continue;
 		}
 		if (item.kind === 'flower') {
-			if (mario.form === 'small') grow(state);
-			mario.form = 'fire';
+			const label = applyMushroom(state);
+			addScore(state, 1000, item.x, item.y, label);
 			state.powerups += 1;
-			addScore(state, 1000, item.x, item.y, '1000');
 			state.events.push({ type: 'power' });
 			continue;
 		}
@@ -671,12 +676,55 @@ function collectItems(state) {
 	}
 }
 
+function applyMushroom(state) {
+	const mario = state.mario;
+	if (mario.form === 'small') {
+		grow(state);
+		return 'BIG';
+	}
+	if (mario.form === 'big') {
+		becomeFire(state);
+		return 'FIRE';
+	}
+	return '1000';
+}
+
 function grow(state) {
 	const mario = state.mario;
+	const nextH = 32;
 	mario.form = 'big';
-	mario.y -= 16;
-	mario.h = 32;
+	mario.y -= nextH - mario.h;
+	mario.h = nextH;
 	if (mario.y < 0) mario.y = 0;
+	unstick(state, mario);
+}
+
+function becomeFire(state) {
+	const mario = state.mario;
+	if (mario.h < 32) {
+		mario.y -= 32 - mario.h;
+		mario.h = 32;
+		if (mario.y < 0) mario.y = 0;
+		unstick(state, mario);
+	}
+	mario.form = 'fire';
+}
+
+function unstick(state, body) {
+	if (!overlapsSolid(state, body)) return;
+	const start = body.y;
+	for (let i = 1; i <= 16; i += 1) {
+		body.y = start + i;
+		if (!overlapsSolid(state, body)) return;
+	}
+	body.y = start;
+}
+
+function overlapsSolid(state, body) {
+	for (const [tx, ty] of cells(body)) {
+		if (solidAt(state, tx, ty)) return true;
+	}
+	return false;
 }
 
 function updateEnemies(state) {
@@ -1390,9 +1438,16 @@ function hurt(state) {
 		defeat(state, 'enemy');
 		return;
 	}
+	shrink(state);
+}
+
+function shrink(state) {
+	const mario = state.mario;
+	const nextH = 16;
 	mario.form = 'small';
-	mario.y += mario.h - 16;
-	mario.h = 16;
+	mario.y += Math.max(0, mario.h - nextH);
+	mario.h = nextH;
+	mario.fireCd = 0;
 	mario.invuln = 120;
 	state.events.push({ type: 'hurt' });
 }
