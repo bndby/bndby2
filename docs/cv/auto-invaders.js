@@ -57,7 +57,7 @@ class AutoInvaders extends HTMLElement {
 		this.running = false;
 		this.rafId = null;
 		this.lastTime = 0;
-		this.logicTimeScale = 1 / 1.5;
+		this.logicTimeScale = 1;
 
 		this.applySize(this.getSizeFromAttribute());
 		this.background = this.getBackgroundFromAttribute();
@@ -116,38 +116,48 @@ class AutoInvaders extends HTMLElement {
 
 		this.playerWidth = Math.max(22, Math.round(size * 0.09));
 		this.playerHeight = Math.max(12, Math.round(size * 0.045));
-		this.playerSpeed = size * 0.55;
+		this.playerSpeed = size * 1.05;
 		this.playerY =
 			this.playBottom -
 			this.playerHeight -
 			Math.max(8, Math.round(size * 0.03));
+		this.dangerY = this.playerY - Math.max(2, Math.round(size * 0.012));
 
 		this.bulletRadius = Math.max(2, Math.round(size * 0.009));
-		this.playerBulletSpeed = size * 0.9;
-		this.enemyBulletSpeed = this.playerBulletSpeed * 0.5;
+		this.playerBulletSpeed = size * 0.95;
+		this.enemyBulletSpeed = this.playerBulletSpeed * 0.4;
 
-		this.formationCols = 8;
-		this.formationRows = 3;
-		this.invaderGapX = Math.max(4, Math.round(size * 0.016));
-		this.invaderGapY = Math.max(6, Math.round(size * 0.02));
+		// Строй уже поля: остаётся запас, чтобы захватчики шли вбок,
+		// а не падали вниз на каждом шаге.
+		this.baseRows = 3;
+		this.maxRows = 4;
+		this.invaderGapY = Math.max(5, Math.round(size * 0.016));
+		this.invaderGapX = Math.max(3, Math.round(size * 0.012));
+		this.spriteScale = 2;
 		const inner = size - this.padding * 2;
-		const slot = Math.floor(
-			(inner - this.invaderGapX * (this.formationCols - 1)) /
-				this.formationCols,
-		);
-		this.spriteScale = Math.max(1, Math.floor(slot / 11));
+		let cols = 6;
+		const formationWidth = (count) =>
+			count * 11 * this.spriteScale + (count - 1) * this.invaderGapX;
+		while (cols > 4 && formationWidth(cols) > inner * 0.78) cols -= 1;
+		if (formationWidth(cols) > inner * 0.9) this.spriteScale = 1;
+		this.formationCols = cols;
 		this.invaderWidth = 11 * this.spriteScale;
 		this.invaderHeight = 8 * this.spriteScale;
-		this.invaderStepX = Math.max(6, Math.round(size * 0.02));
-		this.invaderStepY = Math.max(8, Math.round(size * 0.022));
+		this.invaderStepX = Math.max(3, Math.round(this.invaderWidth * 0.18));
+		this.invaderStepY = Math.max(4, Math.round(this.invaderHeight * 0.22));
 	}
 
 	initGame() {
 		this.score = 0;
 		this.wave = 1;
-		this.lives = 3;
+		this.lives = 4;
 		this.gameOver = false;
 		this.restartTimer = 0;
+		this.bannerText = 'WAVE 1';
+		this.bannerTimer = 650;
+		this.pendingWave = false;
+		this.focusCol = null;
+		this.breachCooldown = 0;
 
 		this.player = {
 			x: this.width * 0.5,
@@ -163,12 +173,26 @@ class AutoInvaders extends HTMLElement {
 	}
 
 	initWave() {
+		this.formationRows = this.getFormationRows();
 		this.invaders = this.createInvaders();
 		this.invaderDir = 1;
 		this.invaderMoveAccum = 0;
-		this.invaderShotAccum = 0;
+		this.invaderShotAccum = 0.35;
 		this.shields = this.createShields();
 		this.bullets = [];
+		this.focusCol = null;
+		this.breachCooldown = 0;
+	}
+
+	getFormationRows() {
+		return Math.min(
+			this.maxRows,
+			this.baseRows + Math.floor((this.wave - 1) / 2),
+		);
+	}
+
+	getFormationStartY() {
+		return this.playTop + Math.max(6, Math.round(this.size * 0.02));
 	}
 
 	createStars() {
@@ -191,8 +215,7 @@ class AutoInvaders extends HTMLElement {
 		const formationWidth =
 			cols * this.invaderWidth + (cols - 1) * this.invaderGapX;
 		const startX = (this.width - formationWidth) * 0.5;
-		const startY =
-			this.playTop + Math.max(8, Math.round(this.size * 0.03));
+		const startY = this.getFormationStartY();
 
 		const invaders = [];
 		let id = 0;
@@ -200,6 +223,8 @@ class AutoInvaders extends HTMLElement {
 			for (let col = 0; col < cols; col += 1) {
 				invaders.push({
 					id,
+					col,
+					row,
 					alive: true,
 					x: startX + col * (this.invaderWidth + this.invaderGapX),
 					y: startY + row * (this.invaderHeight + this.invaderGapY),
@@ -261,9 +286,11 @@ class AutoInvaders extends HTMLElement {
 
 	getInvaderMoveInterval() {
 		const alive = this.getAliveInvaders().length;
-		const speedUp = Math.max(0, 50 - alive) * 3;
-		const waveBoost = (this.wave - 1) * 10;
-		return Math.max(55, 420 - speedUp - waveBoost);
+		const total = Math.max(1, this.formationCols * this.formationRows);
+		const cleared = Math.max(0, total - alive);
+		const speedUp = cleared * 14;
+		const waveBoost = Math.min(280, (this.wave - 1) * 32);
+		return Math.max(130, 580 - speedUp - waveBoost);
 	}
 
 	getInvaderBounds() {
@@ -292,7 +319,13 @@ class AutoInvaders extends HTMLElement {
 		if (dodgeTargetX !== null) {
 			this.player.targetX = dodgeTargetX;
 		} else if (target) {
-			this.player.targetX = target.x + this.invaderWidth * 0.5;
+			const center = target.x + this.invaderWidth * 0.5;
+			const shotInFlight = this.bullets.some(
+				(bullet) => bullet.type === 'player',
+			);
+			const slide =
+				(target.col % 2 === 0 ? 1 : -1) * this.playerWidth * 0.7;
+			this.player.targetX = shotInFlight ? center + slide : center;
 		} else {
 			this.player.targetX = this.width * 0.5;
 		}
@@ -313,43 +346,46 @@ class AutoInvaders extends HTMLElement {
 		this.player.fireCooldown -= dtSec;
 		this.player.hitCooldown = Math.max(0, this.player.hitCooldown - dtSec);
 
-		// Во время уклонения приоритет — выживание, а не огонь.
-		if (
-			this.player.fireCooldown <= 0 &&
-			dodgeTargetX === null &&
-			this.shouldFire(target)
-		) {
+		if (this.player.fireCooldown <= 0 && this.shouldFire(target)) {
 			this.spawnPlayerBullet();
-			const baseCooldown = 0.22 - (this.wave - 1) * 0.01;
-			this.player.fireCooldown = Math.max(
-				0.12,
-				baseCooldown + Math.random() * 0.06,
-			);
+			this.player.fireCooldown = 0.12;
 		}
 	}
 
 	selectTargetInvader() {
-		const alive = this.getAliveInvaders();
-		if (alive.length === 0) return null;
+		const bottoms = this.getBottomInvadersPerColumn();
+		if (bottoms.length === 0) return null;
 
-		// Берем наиболее близкого к игроку снизу и по горизонтали.
-		const playerX = this.player.x;
-		let best = null;
-		for (const invader of alive) {
-			const dx = Math.abs(invader.x + this.invaderWidth * 0.5 - playerX);
-			const threat = invader.y * 0.8 + (this.height - dx) * 0.2;
-			if (!best || threat > best.threat) {
-				best = { invader, threat };
+		if (this.focusCol !== null) {
+			const focused = bottoms.find(
+				(invader) => invader.col === this.focusCol,
+			);
+			if (focused) return focused;
+		}
+
+		let best = bottoms[0];
+		let bestScore = Infinity;
+		for (const invader of bottoms) {
+			const dx = Math.abs(
+				invader.x + this.invaderWidth * 0.5 - this.player.x,
+			);
+			const score = dx - invader.y * 0.12;
+			if (score < bestScore) {
+				bestScore = score;
+				best = invader;
 			}
 		}
-		return best?.invader ?? null;
+		this.focusCol = best.col;
+		return best;
+	}
+
+	getPlayerHitHalf() {
+		return this.playerWidth * 0.22;
 	}
 
 	getDodgeTargetX() {
-		const playerHalf = this.playerWidth * 0.5;
-		const margin = playerHalf + 4;
-		const bulletDangerRadius =
-			playerHalf + this.bulletRadius + Math.max(6, this.size * 0.02);
+		const margin = this.playerWidth * 0.5 + 4;
+		const bulletDangerRadius = this.getPlayerHitHalf() + this.bulletRadius + 3;
 		const bullets = this.bullets.filter(
 			(bullet) => bullet.type === 'enemy' && bullet.vy > 0,
 		);
@@ -358,8 +394,7 @@ class AutoInvaders extends HTMLElement {
 		let mostDangerous = null;
 		for (const bullet of bullets) {
 			const timeToPlayerY = (this.playerY - bullet.y) / bullet.vy;
-			// Интересуют пули, которые скоро пересекут линию танка.
-			if (timeToPlayerY < 0 || timeToPlayerY > 0.9) continue;
+			if (timeToPlayerY < 0 || timeToPlayerY > 0.62) continue;
 
 			const predictedX = bullet.x + bullet.vx * timeToPlayerY;
 			const dx = Math.abs(predictedX - this.player.x);
@@ -376,7 +411,7 @@ class AutoInvaders extends HTMLElement {
 		if (!mostDangerous) return null;
 
 		// Выбираем сторону с большим запасом и отступаем от траектории.
-		const dodgeDistance = this.playerWidth * 1.35 + this.bulletRadius * 2;
+		const dodgeDistance = this.getPlayerHitHalf() * 2 + this.bulletRadius + 10;
 		const goRightX = Math.min(
 			this.width - margin,
 			mostDangerous.predictedX + dodgeDistance,
@@ -395,14 +430,13 @@ class AutoInvaders extends HTMLElement {
 
 	shouldFire(target) {
 		if (!target) return false;
-		const existingPlayerBullets = this.bullets.filter(
-			(b) => b.type === 'player',
-		).length;
-		if (existingPlayerBullets >= 2) return false;
+		const hasShot = this.bullets.some((bullet) => bullet.type === 'player');
+		if (hasShot) return false;
 		const targetX = target.x + this.invaderWidth * 0.5;
-		const aligned =
-			Math.abs(targetX - this.player.x) <= this.playerWidth * 0.45;
-		return aligned || Math.random() < 0.12;
+		return (
+			Math.abs(targetX - this.player.x) <=
+			Math.max(3, this.invaderWidth * 0.3)
+		);
 	}
 
 	spawnPlayerBullet() {
@@ -417,15 +451,23 @@ class AutoInvaders extends HTMLElement {
 	}
 
 	spawnEnemyBullet() {
+		const active = this.bullets.filter((bullet) => bullet.type === 'enemy');
+		if (active.length >= 2) return;
 		const shooters = this.getBottomInvadersPerColumn();
 		if (shooters.length === 0) return;
-		const shooter = shooters[Math.floor(Math.random() * shooters.length)];
+		const ranked = [...shooters].sort((a, b) => {
+			const da = Math.abs(a.x + this.invaderWidth * 0.5 - this.player.x);
+			const db = Math.abs(b.x + this.invaderWidth * 0.5 - this.player.x);
+			return da - db;
+		});
+		const pool = ranked.slice(0, Math.min(3, ranked.length));
+		const shooter = pool[Math.floor(Math.random() * pool.length)];
 		this.bullets.push({
 			type: 'enemy',
 			x: shooter.x + this.invaderWidth * 0.5,
 			y: shooter.y + this.invaderHeight,
-			vx: (Math.random() - 0.5) * this.enemyBulletSpeed * 0.12,
-			vy: this.enemyBulletSpeed * (0.9 + Math.random() * 0.18),
+			vx: 0,
+			vy: this.enemyBulletSpeed,
 			r: this.bulletRadius,
 		});
 	}
@@ -434,11 +476,8 @@ class AutoInvaders extends HTMLElement {
 		const byCol = new Map();
 		for (const invader of this.invaders) {
 			if (!invader.alive) continue;
-			const col = Math.round(
-				invader.x / (this.invaderWidth + this.invaderGapX),
-			);
-			const current = byCol.get(col);
-			if (!current || invader.y > current.y) byCol.set(col, invader);
+			const current = byCol.get(invader.col);
+			if (!current || invader.y > current.y) byCol.set(invader.col, invader);
 		}
 		return [...byCol.values()];
 	}
@@ -454,15 +493,41 @@ class AutoInvaders extends HTMLElement {
 		}
 
 		this.invaderShotAccum += dtMs;
-		const shotInterval = Math.max(190, 680 - this.wave * 45);
+		const shotInterval = Math.max(420, 1100 - (this.wave - 1) * 60);
 		if (this.invaderShotAccum >= shotInterval) {
 			this.invaderShotAccum = 0;
-			if (Math.random() < 0.78) this.spawnEnemyBullet();
+			this.spawnEnemyBullet();
 		}
+	}
 
+	handleBreach(dtSec) {
+		this.breachCooldown = Math.max(0, this.breachCooldown - dtSec);
 		const bounds = this.getInvaderBounds();
-		if (bounds.bottom >= this.playerY - this.playerHeight * 0.4) {
-			this.loseLife();
+		if (bounds.bottom < this.dangerY || this.breachCooldown > 0) return;
+		this.loseLife();
+		if (!this.gameOver) this.retreatInvaders();
+		this.breachCooldown = 1.5;
+	}
+
+	retreatInvaders() {
+		const startY = this.getFormationStartY();
+		let minY = Infinity;
+		for (const invader of this.invaders) {
+			if (invader.alive) minY = Math.min(minY, invader.y);
+		}
+		if (!Number.isFinite(minY)) return;
+		const shift = minY - startY;
+		if (shift <= 1) return;
+		for (const invader of this.invaders) {
+			if (!invader.alive) continue;
+			invader.y -= shift;
+		}
+	}
+
+	dropInvaders() {
+		for (const invader of this.invaders) {
+			if (!invader.alive) continue;
+			invader.y += this.invaderStepY;
 		}
 	}
 
@@ -471,17 +536,16 @@ class AutoInvaders extends HTMLElement {
 		if (bounds.right <= bounds.left) return;
 
 		const hitRight =
-			bounds.right + this.invaderStepX >= this.width - this.padding;
-		const hitLeft = bounds.left - this.invaderStepX <= this.padding;
-		if (
-			(this.invaderDir > 0 && hitRight) ||
-			(this.invaderDir < 0 && hitLeft)
-		) {
-			this.invaderDir *= -1;
-			for (const invader of this.invaders) {
-				if (!invader.alive) continue;
-				invader.y += this.invaderStepY;
-			}
+			bounds.right + this.invaderStepX > this.width - this.padding;
+		const hitLeft = bounds.left - this.invaderStepX < this.padding;
+		if (this.invaderDir > 0 && hitRight) {
+			this.invaderDir = -1;
+			this.dropInvaders();
+			return;
+		}
+		if (this.invaderDir < 0 && hitLeft) {
+			this.invaderDir = 1;
+			this.dropInvaders();
 			return;
 		}
 
@@ -506,7 +570,7 @@ class AutoInvaders extends HTMLElement {
 				continue;
 			}
 
-			if (this.hitShieldByBullet(bullet)) continue;
+			if (bullet.type === 'enemy' && this.hitShieldByBullet(bullet)) continue;
 			if (bullet.type === 'player') {
 				if (this.hitInvaderByBullet(bullet)) continue;
 			} else if (this.hitPlayerByBullet(bullet)) {
@@ -571,11 +635,12 @@ class AutoInvaders extends HTMLElement {
 	hitPlayerByBullet(bullet) {
 		if (this.player.hitCooldown > 0) return false;
 
-		const px = this.player.x - this.playerWidth * 0.5;
+		const hitW = this.getPlayerHitHalf() * 2;
+		const px = this.player.x - hitW * 0.5;
 		const py = this.playerY;
 		if (
 			bullet.x + bullet.r < px ||
-			bullet.x - bullet.r > px + this.playerWidth ||
+			bullet.x - bullet.r > px + hitW ||
 			bullet.y + bullet.r < py ||
 			bullet.y - bullet.r > py + this.playerHeight
 		) {
@@ -597,7 +662,7 @@ class AutoInvaders extends HTMLElement {
 				) {
 					continue;
 				}
-				cell.hp -= bullet.type === 'player' ? 2 : 1;
+				cell.hp -= 1;
 				if (cell.hp <= 0) shield.splice(i, 1);
 				this.explosions.push({ x: bullet.x, y: bullet.y, ttl: 0.1 });
 				return true;
@@ -646,15 +711,29 @@ class AutoInvaders extends HTMLElement {
 			return;
 		}
 
+		if (this.bannerTimer > 0) {
+			this.bannerTimer -= scaledDtMs;
+			this.updateExplosions(dtSec);
+			if (this.bannerTimer <= 0 && this.pendingWave) {
+				this.pendingWave = false;
+				this.initWave();
+			}
+			return;
+		}
+
 		this.updateAutopilot(dtSec);
 		this.updateInvaders(scaledDtMs);
+		this.handleBreach(dtSec);
 		this.updateBullets(dtSec);
 		this.updateExplosions(dtSec);
 
 		if (this.getAliveInvaders().length === 0) {
 			this.wave += 1;
-			this.score += 100;
-			this.initWave();
+			this.score += 80 + this.wave * 20;
+			this.bannerText = `WAVE ${this.wave}`;
+			this.bannerTimer = 800;
+			this.pendingWave = true;
+			this.bullets = [];
 		}
 	}
 
@@ -792,6 +871,12 @@ class AutoInvaders extends HTMLElement {
 		paintBanner(this.ctx, this.width, this.height * 0.44, h, 'RESTARTING');
 	}
 
+	drawBanner() {
+		if (this.gameOver || this.bannerTimer <= 0 || !this.bannerText) return;
+		const h = Math.max(36, Math.round(this.size * 0.14));
+		paintBanner(this.ctx, this.width, this.height * 0.42, h, this.bannerText);
+	}
+
 	draw() {
 		this.drawBackground();
 		this.drawShields();
@@ -800,6 +885,7 @@ class AutoInvaders extends HTMLElement {
 		this.drawBullets();
 		this.drawExplosions();
 		this.drawHud();
+		this.drawBanner();
 		this.drawGameOver();
 	}
 
