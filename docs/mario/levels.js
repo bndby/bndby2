@@ -74,7 +74,7 @@ function compile(spec) {
 
 	for (const pit of pits) {
 		for (let x = pit[0]; x < pit[1]; x += 1) {
-			set(x, GROUND_Y, Tile.Empty);
+			set(x, GROUND_Y, Tile.Lava);
 			set(x, GROUND_Y + 1, Tile.Lava);
 		}
 	}

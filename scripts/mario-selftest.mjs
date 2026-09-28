@@ -182,6 +182,89 @@ function powerChain() {
 	);
 }
 
+function placeBeforePit(state, tileX) {
+	const mario = state.mario;
+	mario.x = tileX * 16 - mario.w - 1;
+	mario.y = 13 * 16 - mario.h;
+	mario.vx = 0;
+	mario.vy = 0;
+	mario.onGround = true;
+	mario.dead = false;
+	state.mode = 'play';
+	state.camX = Math.max(0, mario.x - 80);
+}
+
+function pitAndStairs() {
+	const index = LEVELS.findIndex((level) => level.id === '1-2');
+	const dropped = createGame({ levelIndex: index, skipCard: true });
+	placeBeforePit(dropped, 48);
+	let cause = '';
+	for (let i = 0; i < 80; i += 1) {
+		step(dropped, { dir: 1, run: true, jump: 'none', down: false });
+		if (dropped.mario.dead || dropped.mode === 'dead') {
+			cause = dropped.deathCause;
+			break;
+		}
+	}
+	assert(
+		cause === 'lava' || cause === 'pit',
+		`узкая пропасть убивает, сейчас ${cause || dropped.mode} y=${dropped.mario.y.toFixed(1)}`,
+	);
+
+	const wide = createGame({ levelIndex: index, skipCard: true });
+	placeBeforePit(wide, 96);
+	cause = '';
+	for (let i = 0; i < 80; i += 1) {
+		step(wide, { dir: 1, run: true, jump: 'none', down: false });
+		if (wide.mario.dead || wide.mode === 'dead') {
+			cause = wide.deathCause;
+			break;
+		}
+	}
+	assert(
+		cause === 'lava' || cause === 'pit',
+		`широкая пропасть убивает, сейчас ${cause || wide.mode}`,
+	);
+
+	const jumped = createGame({ levelIndex: index, skipCard: true });
+	placeBeforePit(jumped, 48);
+	for (let i = 0; i < 70; i += 1) {
+		step(jumped, { dir: 1, run: true, jump: 'full', down: false });
+	}
+	assert(
+		!jumped.mario.dead && jumped.mode === 'play',
+		`прыжок через пропасть выживает, сейчас ${jumped.deathCause || jumped.mode}`,
+	);
+	assert(
+		jumped.mario.x > 50 * 16,
+		`прыжок переносит за пропасть, x=${jumped.mario.x.toFixed(1)}`,
+	);
+
+	const lip = createGame({ levelIndex: index, skipCard: true });
+	placeBeforePit(lip, 48);
+	for (let i = 0; i < 8; i += 1) step(lip, IDLE);
+	assert(!lip.mario.dead, 'стояние у края пропасти безопасно');
+
+	const stairs = createGame({ skipCard: true });
+	stairs.mario.x = 72 * 16 - stairs.mario.w - 2;
+	stairs.mario.y = 13 * 16 - stairs.mario.h;
+	stairs.mario.onGround = true;
+	stairs.mario.vx = 0;
+	stairs.mario.vy = 0;
+	const ground = stairs.mario.y;
+	for (let i = 0; i < 40; i += 1) {
+		step(stairs, { dir: 1, run: true, jump: 'none', down: false });
+	}
+	assert(
+		stairs.mario.y < ground - 10,
+		`ступенька поднимает, y=${stairs.mario.y.toFixed(1)} vs ${ground}`,
+	);
+	assert(!stairs.mario.dead, 'ступенька не убивает');
+}
+
+pitAndStairs();
+console.log('pits ok');
+
 const focus = ['1-1', '1-2', '1-3', '1-4', '2-2'];
 for (const id of focus) {
 	const index = LEVELS.findIndex((level) => level.id === id);

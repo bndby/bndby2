@@ -90,14 +90,14 @@ function liftUnder(state, x, y) {
 function pickTarget(state) {
 	const mario = state.mario;
 	const targets = [];
-	const add = (x, y, priority) => {
+	const add = (x, y, priority, kind = 'item') => {
 		if (x < state.camX - 6) return;
 		if (mario.x <= state.camX + 3 && x < mario.x - 2) return;
 		if (x < mario.x - 80 && priority < 6) return;
 		if (x > mario.x + 280) return;
 		const dy = y - (mario.y + mario.h);
 		if (dy < -150 || dy > 180) return;
-		targets.push({ x, y, priority });
+		targets.push({ x, y, priority, kind });
 	};
 
 	for (const item of state.items) {
@@ -140,7 +140,7 @@ function pickTarget(state) {
 	if (state.exit) {
 		const y =
 			state.exit.type === 'pipe' ? state.exit.y : GROUND_Y * TILE - 8;
-		add(state.exit.x, y, 1.5);
+		add(state.exit.x, y, 1.5, 'exit');
 	}
 
 	let best = null;
@@ -195,9 +195,15 @@ function rollout(state, action, target) {
 		if (sim.mode !== 'play') score += 12000;
 	}
 	const progressed = sim.mario.x - state.mario.x;
+	const gained =
+		sim.coinTotal > state.coinTotal ||
+		sim.kills > state.kills ||
+		sim.powerups > state.powerups ||
+		sim.lives > state.lives;
 	score += progressed * 2.2;
 	if (action.dir < 0 && progressed > -0.4) score -= 520;
 	if (Math.abs(progressed) < 0.4 && action.jump === 'none') score -= 70;
+	if (progressed < 0.4 && !gained && target?.kind !== 'exit') score -= 90;
 	if (action.dir === 0 && action.jump === 'none') score -= 36;
 	if (target) {
 		const before = Math.hypot(
@@ -209,7 +215,9 @@ function rollout(state, action, target) {
 			target.y - sim.mario.y,
 		);
 		const behind = target.x < state.mario.x - 16;
-		score += (before - after) * (behind ? 1.4 : 7.5);
+		const exitTarget = target.kind === 'exit';
+		const pull = exitTarget || gained ? 7.5 : 1.1;
+		score += (before - after) * (behind ? 1.4 : pull);
 	}
 	if (!sim.mario.onGround && !willLand(sim)) score -= 5000;
 	return score;

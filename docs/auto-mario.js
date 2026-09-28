@@ -1,6 +1,6 @@
 import { createDriver, drive } from './mario/ai.js';
 import { MarioAudio } from './mario/audio.js';
-import { IDLE, createGame, defeat, step } from './mario/game.js';
+import { IDLE, createGame, step } from './mario/game.js';
 import { FIRE_SUIT, PALETTE, drawActor } from './mario/sprites.js';
 import {
 	GROUND_Y,
@@ -274,10 +274,6 @@ class AutoMario extends HTMLElement {
 					down: false,
 				};
 				this.driver.cooldown = 18;
-			}
-			if (this.stuck > 520) {
-				defeat(state, 'stuck');
-				this.stuck = 0;
 			}
 		} else {
 			this.stuck = 0;

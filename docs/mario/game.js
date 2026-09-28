@@ -396,6 +396,7 @@ function moveX(body, state) {
 		if (hits.length === 0) break;
 		const feet = body.y + body.h;
 		const stepUp =
+			body.onGround &&
 			body.vy >= 0 &&
 			hits.every(([, ty]) => {
 				const top = ty * TILE;
@@ -1262,7 +1263,9 @@ function collideHazards(state) {
 			tx <= Math.floor((mario.x + mario.w) / TILE);
 			tx += 1
 		) {
-			if (tileAt(state, tx, ty) === Tile.Lava) {
+			if (tileAt(state, tx, ty) !== Tile.Lava) continue;
+			const feet = mario.y + mario.h;
+			if (feet - ty * TILE > 2) {
 				defeat(state, 'lava');
 				return;
 			}
