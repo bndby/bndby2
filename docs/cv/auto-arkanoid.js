@@ -1,7 +1,18 @@
+import {
+	FRAME,
+	clampSize,
+	paintBlock,
+	paintCabinet,
+	paintHud,
+	paintOrb,
+	readBackground,
+	renderFrame,
+} from './game-frame.js';
+
 class AutoArkanoid extends HTMLElement {
 	// Публичные параметры веб-компонента:
-	// - size: размер игрового поля в px (квадрат), по умолчанию 300, диапазон 180..800.
-	// - background: цвет фона canvas (любой CSS color), по умолчанию transparent.
+	// - size: размер игрового поля в px (квадрат).
+	// - background: цвет фона canvas (любой CSS color).
 	static get observedAttributes() {
 		return ['size', 'background'];
 	}
@@ -13,9 +24,13 @@ class AutoArkanoid extends HTMLElement {
 		// Базовые параметры сетки кирпичей.
 		this.brickRows = 5;
 		this.brickCols = 7;
-		this.defaultSize = 300;
-		this.minSize = 180;
-		this.maxSize = 800;
+		this.brickColors = [
+			FRAME.enemy,
+			FRAME.amber,
+			FRAME.gold,
+			FRAME.mint,
+			FRAME.player,
+		];
 
 		// Флаги и тайминг анимации.
 		this.running = false;
@@ -42,7 +57,6 @@ class AutoArkanoid extends HTMLElement {
 
 			if (!this.isConnected) return;
 			this.renderRoot();
-			this.ctx = this.canvas.getContext('2d');
 			return;
 		}
 
@@ -53,32 +67,25 @@ class AutoArkanoid extends HTMLElement {
 
 	getFieldSizeFromAttribute() {
 		// Читаем параметр size из атрибута:
-		// <auto-arkanoid size="360"></auto-arkanoid>
-		const rawSize = Number.parseInt(this.getAttribute('size') ?? '', 10);
-		const normalizedSize = Number.isFinite(rawSize)
-			? rawSize
-			: this.defaultSize;
-		return Math.min(this.maxSize, Math.max(this.minSize, normalizedSize));
+		// <auto-arkanoid size="220"></auto-arkanoid>
+		return clampSize(this.getAttribute('size'));
 	}
 
 	getBackgroundFromAttribute() {
-		// Читаем параметр background из атрибута:
-		// <auto-arkanoid background="#101522"></auto-arkanoid>
-		// Если значение не задано, оставляем прозрачный фон.
-		const background = this.getAttribute('background');
-		if (!background || !background.trim()) return 'transparent';
-		return background.trim();
+		return readBackground(this.getAttribute('background'));
 	}
 
 	applyFieldSize(size) {
 		this.width = size;
 		this.height = size;
+		this.hudHeight = Math.max(24, Math.round(size * 0.11));
 
 		// Параметры счета и сетки кирпичей.
-		this.brickPadding = Math.max(2, Math.round(size * 0.013));
-		this.brickHeight = Math.max(10, Math.round(size * 0.047));
-		this.brickOffsetTop = Math.max(20, Math.round(size * 0.1));
-		this.brickOffsetLeft = Math.max(8, Math.round(size * 0.033));
+		this.brickPadding = Math.max(2, Math.round(size * 0.012));
+		this.brickHeight = Math.max(10, Math.round(size * 0.052));
+		this.brickOffsetTop =
+			this.hudHeight + Math.max(8, Math.round(size * 0.04));
+		this.brickOffsetLeft = Math.max(8, Math.round(size * 0.04));
 		this.brickWidth =
 			(this.width -
 				this.brickOffsetLeft * 2 -
@@ -86,22 +93,20 @@ class AutoArkanoid extends HTMLElement {
 			this.brickCols;
 
 		// Параметры платформы.
-		this.paddleWidth = Math.max(44, Math.round(size * 0.193));
-		this.paddleHeight = Math.max(6, Math.round(size * 0.027));
-		this.paddleY = this.height - Math.max(14, Math.round(size * 0.06));
+		this.paddleWidth = Math.max(44, Math.round(size * 0.22));
+		this.paddleHeight = Math.max(8, Math.round(size * 0.036));
+		this.paddleY = this.height - Math.max(18, Math.round(size * 0.08));
 		this.paddleX = (this.width - this.paddleWidth) / 2;
 		this.paddleSpeed = size * 0.014;
 
 		// Параметры мяча и стартовая скорость.
-		this.ballRadius = Math.max(4, Math.round(size * 0.017));
+		this.ballRadius = Math.max(4, Math.round(size * 0.02));
 		this.ballSpeed = size * 0.0093;
-		this.ballStartOffset = Math.max(24, Math.round(size * 0.117));
-		this.scoreFontSize = Math.max(12, Math.round(size * 0.04));
+		this.ballStartOffset = Math.max(28, Math.round(size * 0.13));
 	}
 
 	connectedCallback() {
 		this.renderRoot();
-		this.ctx = this.canvas.getContext('2d');
 		this.running = true;
 		this.lastTime = performance.now();
 		this.animationFrame = requestAnimationFrame((t) => this.loop(t));
@@ -209,8 +214,9 @@ class AutoArkanoid extends HTMLElement {
 			this.ballX = this.width - this.ballRadius;
 			this.ballVX = -this.ballVX;
 		}
-		if (this.ballY - this.ballRadius <= 0 && this.ballVY < 0) {
-			this.ballY = this.ballRadius;
+		const ceiling = this.hudHeight;
+		if (this.ballY - this.ballRadius <= ceiling && this.ballVY < 0) {
+			this.ballY = ceiling + this.ballRadius;
 			this.ballVY = -this.ballVY;
 		}
 	}
@@ -323,49 +329,58 @@ class AutoArkanoid extends HTMLElement {
 	}
 
 	drawBackground() {
-		this.ctx.clearRect(0, 0, this.width, this.height);
-		if (this.background === 'transparent') return;
-		this.ctx.fillStyle = this.background;
-		this.ctx.fillRect(0, 0, this.width, this.height);
+		paintCabinet(this.ctx, this.width, this.height, this.background);
 	}
 
 	drawBricks() {
-		this.ctx.fillStyle = '#59d4ff';
+		const radius = Math.min(4, this.brickHeight * 0.35);
 		for (let r = 0; r < this.brickRows; r += 1) {
 			for (let c = 0; c < this.brickCols; c += 1) {
 				const brick = this.bricks[r][c];
 				if (!brick.alive) continue;
-				this.ctx.fillRect(
+				paintBlock(
+					this.ctx,
 					brick.x,
 					brick.y,
 					this.brickWidth,
 					this.brickHeight,
+					this.brickColors[r % this.brickColors.length],
+					radius,
 				);
 			}
 		}
 	}
 
 	drawPaddle() {
-		this.ctx.fillStyle = '#ffd166';
-		this.ctx.fillRect(
+		paintBlock(
+			this.ctx,
 			this.paddleX,
 			this.paddleY,
 			this.paddleWidth,
 			this.paddleHeight,
+			FRAME.gold,
+			this.paddleHeight / 2,
 		);
 	}
 
 	drawBall() {
-		this.ctx.fillStyle = '#ef476f';
-		this.ctx.beginPath();
-		this.ctx.arc(this.ballX, this.ballY, this.ballRadius, 0, Math.PI * 2);
-		this.ctx.fill();
+		paintOrb(
+			this.ctx,
+			this.ballX,
+			this.ballY,
+			this.ballRadius,
+			FRAME.enemy,
+		);
 	}
 
 	drawScore() {
-		this.ctx.fillStyle = '#ffffff';
-		this.ctx.font = `${this.scoreFontSize}px monospace`;
-		this.ctx.fillText(`Score: ${this.score}`, 10, this.scoreFontSize + 2);
+		paintHud(
+			this.ctx,
+			this.width,
+			this.hudHeight,
+			'ARKANOID',
+			`SCORE ${this.score}`,
+		);
 	}
 
 	draw() {
@@ -389,27 +404,9 @@ class AutoArkanoid extends HTMLElement {
 	}
 
 	renderRoot() {
-		this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          display: inline-block;
-          width: ${this.width}px;
-          height: ${this.height}px;
-          box-sizing: border-box;
-        }
-
-        canvas {
-          display: block;
-          width: ${this.width}px;
-          height: ${this.height}px;
-          border: 1px solid #2d3447;
-          border-radius: 8px;
-          image-rendering: auto;
-        }
-      </style>
-      <canvas width="${this.width}" height="${this.height}"></canvas>
-    `;
-		this.canvas = this.shadowRoot.querySelector('canvas');
+		const view = renderFrame(this.shadowRoot, this.width, this.height);
+		this.canvas = view.canvas;
+		this.ctx = view.ctx;
 	}
 }
 
