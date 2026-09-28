@@ -53,6 +53,7 @@ function blankState() {
 		lifts: [],
 		hazards: [],
 		bridges: [],
+		fx: [],
 		blockCoins: new Map(),
 		mario: null,
 		exitDone: false,
@@ -75,9 +76,17 @@ export function loadLevel(state, index, carry = {}) {
 	state.timeAcc = 0;
 	state.camX = 0;
 	state.tiles = level.tiles.slice();
-	state.enemies = level.enemies.map((enemy) => ({ ...enemy }));
+	state.enemies = level.enemies.map((enemy) => {
+		const copy = { ...enemy };
+		if (copy.kind === 'bowser') {
+			copy.jumpTimer = 28 + Math.floor(Math.random() * 55);
+			copy.timer = 24 + Math.floor(Math.random() * 48);
+		}
+		return copy;
+	});
 	state.items = level.items.map((item) => ({ ...item }));
 	state.shots = [];
+	state.fx = [];
 	state.lifts = level.lifts.map((lift) => ({ ...lift }));
 	state.hazards = level.hazards.map((hazard) => ({ ...hazard }));
 	state.bridges = [];
@@ -146,6 +155,7 @@ export function cloneState(state) {
 		lifts: state.lifts.map((actor) => ({ ...actor })),
 		hazards: state.hazards.map((actor) => ({ ...actor })),
 		bridges: state.bridges.map((actor) => ({ ...actor })),
+		fx: (state.fx ?? []).map((actor) => ({ ...actor })),
 		blockCoins: new Map(state.blockCoins),
 		exit: state.exit ? { ...state.exit } : null,
 		events: [],
@@ -155,6 +165,7 @@ export function cloneState(state) {
 export function step(state, input = IDLE) {
 	state.tick += 1;
 	state.events = [];
+	updateFx(state);
 	const mode = state.mode;
 
 	if (mode === 'card') {
@@ -271,7 +282,8 @@ function playFrame(state, input) {
 	updateShots(state);
 	controlMario(state, input);
 	collectItems(state);
-	collideEnemies(state);
+	grabAxe(state);
+	if (state.mode === 'play') collideEnemies(state);
 	collideHazards(state);
 	checkSensors(state, input);
 	updateTime(state);
@@ -335,26 +347,32 @@ function controlMario(state, input) {
 
 	if (mario.y > LEVEL_H * TILE) defeat(state, 'pit');
 
+	tryShoot(state, input);
+}
+
+function tryShoot(state, input) {
+	const mario = state.mario;
 	if (
-		input.run &&
-		mario.form === 'fire' &&
-		mario.fireCd <= 0 &&
-		state.shots.length < 2 &&
-		state.mode === 'play'
+		!input.run ||
+		mario.form !== 'fire' ||
+		mario.fireCd > 0 ||
+		state.shots.length >= 2 ||
+		state.mode !== 'play'
 	) {
-		state.shots.push({
-			x: mario.x + (mario.dir > 0 ? mario.w : -8),
-			y: mario.y + mario.h * 0.45,
-			w: 8,
-			h: 8,
-			vx: mario.dir * 3.4,
-			vy: 0.4,
-			bounces: 0,
-			alive: true,
-		});
-		mario.fireCd = 18;
-		state.events.push({ type: 'fire' });
+		return;
 	}
+	state.shots.push({
+		x: mario.x + (mario.dir > 0 ? mario.w - 2 : -6),
+		y: mario.y + mario.h * 0.42,
+		w: 8,
+		h: 8,
+		vx: mario.dir * 3.4,
+		vy: 0.35,
+		bounces: 0,
+		alive: true,
+	});
+	mario.fireCd = 16;
+	state.events.push({ type: 'fire' });
 }
 
 function swim(state, input) {
@@ -377,6 +395,7 @@ function swim(state, input) {
 	moveY(mario, state, true);
 	if (mario.y < 4) mario.y = 4;
 	if (mario.y > LEVEL_H * TILE) defeat(state, 'pit');
+	tryShoot(state, input);
 }
 
 function moveX(body, state) {
@@ -389,6 +408,7 @@ function moveX(body, state) {
 		if (hits.length === 0) break;
 		const feet = body.y + body.h;
 		const stepUp =
+			body.onGround &&
 			body.vy >= 0 &&
 			hits.every(([, ty]) => {
 				const top = ty * TILE;
@@ -528,6 +548,7 @@ function triggerBlock(state, tx, ty) {
 	const y = ty * TILE;
 	if (tile === Tile.Question || tile === Tile.HiddenCoin) {
 		addCoin(state, x, y);
+		spawnCoinPop(state, tx, ty);
 		setTile(state, tx, ty, Tile.Used);
 		state.events.push({ type: 'bump' });
 		return;
@@ -536,6 +557,7 @@ function triggerBlock(state, tx, ty) {
 		const key = `${tx},${ty}`;
 		const left = (state.blockCoins.get(key) ?? 1) - 1;
 		addCoin(state, x, y);
+		spawnCoinPop(state, tx, ty);
 		if (left <= 0) {
 			state.blockCoins.delete(key);
 			setTile(state, tx, ty, Tile.Used);
@@ -546,33 +568,90 @@ function triggerBlock(state, tx, ty) {
 		return;
 	}
 	if (tile === Tile.Mushroom) {
-		const kind = state.mario.form === 'small' ? 'mushroom' : 'flower';
-		spawnItem(state, tx, ty, kind);
+		spawnItem(state, tx, ty, 'mushroom');
+		bumpBlock(state, tx, ty);
 		setTile(state, tx, ty, Tile.Used);
 		state.events.push({ type: 'bump' });
 		return;
 	}
 	if (tile === Tile.Star) {
 		spawnItem(state, tx, ty, 'star');
+		bumpBlock(state, tx, ty);
 		setTile(state, tx, ty, Tile.Used);
 		state.events.push({ type: 'bump' });
 		return;
 	}
 	if (tile === Tile.HiddenOneUp) {
 		spawnItem(state, tx, ty, 'oneup');
+		bumpBlock(state, tx, ty);
 		setTile(state, tx, ty, Tile.Used);
 		state.events.push({ type: 'bump' });
 		return;
 	}
 	if (tile === Tile.Brick) {
 		if (state.mario.form === 'small') {
+			bumpBlock(state, tx, ty);
 			state.events.push({ type: 'bump' });
 		} else {
 			setTile(state, tx, ty, Tile.Empty);
+			spawnBrickBits(state, tx, ty);
 			addScore(state, 50, x, y, '50');
 			state.events.push({ type: 'break' });
 		}
 	}
+}
+
+function bumpBlock(state, tx, ty) {
+	state.fx.push({ kind: 'bump', tx, ty, life: 8, age: 0 });
+}
+
+function spawnCoinPop(state, tx, ty) {
+	bumpBlock(state, tx, ty);
+	state.fx.push({
+		kind: 'coin',
+		x: tx * TILE + 4,
+		y: ty * TILE + 2,
+		vx: 0,
+		vy: -4.7,
+		life: 22,
+		age: 0,
+	});
+}
+
+function spawnBrickBits(state, tx, ty) {
+	const bits = [
+		{ vx: -1.85, vy: -5.4, vr: -0.32 },
+		{ vx: 1.85, vy: -5.15, vr: 0.3 },
+		{ vx: -1.15, vy: -3.35, vr: -0.18 },
+		{ vx: 1.2, vy: -3.55, vr: 0.2 },
+	];
+	for (const bit of bits) {
+		state.fx.push({
+			kind: 'shard',
+			x: tx * TILE + 4,
+			y: ty * TILE + 4,
+			rot: Math.random() * 0.6,
+			life: 40,
+			age: 0,
+			...bit,
+		});
+	}
+}
+
+function updateFx(state) {
+	if (!state.fx) return;
+	for (const fx of state.fx) {
+		fx.age += 1;
+		fx.life -= 1;
+		if (fx.kind === 'bump') continue;
+		fx.vy += fx.kind === 'coin' ? 0.12 : 0.26;
+		fx.x += fx.vx || 0;
+		fx.y += fx.vy;
+		if (fx.rot != null) fx.rot += fx.vr || 0;
+	}
+	state.fx = state.fx.filter(
+		(fx) => fx.life > 0 && fx.y < LEVEL_H * TILE + 48,
+	);
 }
 
 function spawnItem(state, tx, ty, kind) {
@@ -641,17 +720,16 @@ function collectItems(state) {
 			continue;
 		}
 		if (item.kind === 'mushroom') {
-			if (mario.form === 'small') grow(state);
-			addScore(state, 1000, item.x, item.y, '1000');
+			const label = applyMushroom(state);
+			addScore(state, 1000, item.x, item.y, label);
 			state.powerups += 1;
 			state.events.push({ type: 'power' });
 			continue;
 		}
 		if (item.kind === 'flower') {
-			if (mario.form === 'small') grow(state);
-			mario.form = 'fire';
+			const label = applyMushroom(state);
+			addScore(state, 1000, item.x, item.y, label);
 			state.powerups += 1;
-			addScore(state, 1000, item.x, item.y, '1000');
 			state.events.push({ type: 'power' });
 			continue;
 		}
@@ -671,12 +749,55 @@ function collectItems(state) {
 	}
 }
 
+function applyMushroom(state) {
+	const mario = state.mario;
+	if (mario.form === 'small') {
+		grow(state);
+		return 'BIG';
+	}
+	if (mario.form === 'big') {
+		becomeFire(state);
+		return 'FIRE';
+	}
+	return '1000';
+}
+
 function grow(state) {
 	const mario = state.mario;
+	const nextH = 32;
 	mario.form = 'big';
-	mario.y -= 16;
-	mario.h = 32;
+	mario.y -= nextH - mario.h;
+	mario.h = nextH;
 	if (mario.y < 0) mario.y = 0;
+	unstick(state, mario);
+}
+
+function becomeFire(state) {
+	const mario = state.mario;
+	if (mario.h < 32) {
+		mario.y -= 32 - mario.h;
+		mario.h = 32;
+		if (mario.y < 0) mario.y = 0;
+		unstick(state, mario);
+	}
+	mario.form = 'fire';
+}
+
+function unstick(state, body) {
+	if (!overlapsSolid(state, body)) return;
+	const start = body.y;
+	for (let i = 1; i <= 16; i += 1) {
+		body.y = start + i;
+		if (!overlapsSolid(state, body)) return;
+	}
+	body.y = start;
+}
+
+function overlapsSolid(state, body) {
+	for (const [tx, ty] of cells(body)) {
+		if (solidAt(state, tx, ty)) return true;
+	}
+	return false;
 }
 
 function updateEnemies(state) {
@@ -851,29 +972,34 @@ function updateBowser(state, enemy) {
 		if (enemy.y > LEVEL_H * TILE) enemy.alive = false;
 		return;
 	}
-	if (enemy.x < enemy.minX) enemy.dir = 1;
-	if (enemy.x + enemy.w > enemy.maxX) enemy.dir = -1;
-	enemy.vx = enemy.dir * enemy.speed;
-	enemy.x += enemy.vx;
 	enemy.jumpTimer -= 1;
 	if (enemy.onGround && enemy.jumpTimer <= 0) {
-		enemy.vy = -6.4;
+		enemy.vy = -5.6;
 		enemy.onGround = false;
-		enemy.jumpTimer = 100;
+		enemy.jumpTimer = 120;
+		state.hazards = state.hazards.filter(
+			(hazard) => hazard.kind !== 'hammer',
+		);
 	}
-	enemy.vy = Math.min(4.2, enemy.vy + 0.24);
+	if (enemy.onGround) {
+		if (enemy.x < enemy.minX) enemy.dir = 1;
+		if (enemy.x + enemy.w > enemy.maxX) enemy.dir = -1;
+		enemy.vx = enemy.dir * enemy.speed;
+		enemy.x += enemy.vx;
+	}
+	enemy.vy = Math.min(3.4, enemy.vy + 0.14);
 	moveY(enemy, state, false);
 	enemy.timer -= 1;
-	if (enemy.timer <= 0) {
-		enemy.timer = 78;
+	if (enemy.timer <= 0 && enemy.onGround) {
+		enemy.timer = 96;
 		state.hazards.push({
 			kind: 'hammer',
 			x: enemy.x + 4,
-			y: enemy.y + 8,
+			y: enemy.y + 6,
 			w: 12,
 			h: 12,
-			vx: -1.35,
-			vy: -3.1,
+			vx: -1.15,
+			vy: -4.4,
 			alive: true,
 		});
 	}
@@ -1060,7 +1186,16 @@ function collideEnemies(state) {
 		if (!enemy.alive) continue;
 		if (enemy.kind === 'piranha' && !enemy.exposed) continue;
 		if (enemy.squish > 0) continue;
-		if (!overlap(mario, enemy)) continue;
+		const body =
+			enemy.kind === 'bowser'
+				? {
+						x: enemy.x + 4,
+						y: enemy.y + 8,
+						w: enemy.w - 8,
+						h: enemy.h - 8,
+					}
+				: enemy;
+		if (!overlap(mario, body)) continue;
 
 		const falling = mario.vy > 0 && prevBottom <= enemy.y + 8;
 		if (falling && canStomp(enemy)) {
@@ -1214,7 +1349,9 @@ function collideHazards(state) {
 			tx <= Math.floor((mario.x + mario.w) / TILE);
 			tx += 1
 		) {
-			if (tileAt(state, tx, ty) === Tile.Lava) {
+			if (tileAt(state, tx, ty) !== Tile.Lava) continue;
+			const feet = mario.y + mario.h;
+			if (feet - ty * TILE > 2) {
 				defeat(state, 'lava');
 				return;
 			}
@@ -1256,14 +1393,7 @@ function checkSensors(state, input) {
 			return;
 		}
 		if (exit.type === 'axe') {
-			state.exitDone = true;
-			state.mode = 'collapse';
-			state.modeTime = 0;
-			state.bridges = collectBridges(state);
-			state.events.push({ type: 'axe' });
-			for (const enemy of state.enemies) {
-				if (enemy.kind === 'bowser') enemy.falling = true;
-			}
+			grabAxe(state);
 			return;
 		}
 		if (exit.type === 'pipe' && exit.mode === 'overlap') {
@@ -1302,6 +1432,21 @@ function exitPad(sensor) {
 		w: sensor.w + 4,
 		h: sensor.h + 10,
 	};
+}
+
+function grabAxe(state) {
+	if (state.mode !== 'play' || state.exitDone) return;
+	const exit = state.exit;
+	if (!exit || exit.type !== 'axe') return;
+	if (!overlap(state.mario, exit)) return;
+	state.exitDone = true;
+	state.mode = 'collapse';
+	state.modeTime = 0;
+	state.bridges = collectBridges(state);
+	state.events.push({ type: 'axe' });
+	for (const enemy of state.enemies) {
+		if (enemy.kind === 'bowser') enemy.falling = true;
+	}
 }
 
 function grabFlag(state) {
@@ -1390,9 +1535,16 @@ function hurt(state) {
 		defeat(state, 'enemy');
 		return;
 	}
+	shrink(state);
+}
+
+function shrink(state) {
+	const mario = state.mario;
+	const nextH = 16;
 	mario.form = 'small';
-	mario.y += mario.h - 16;
-	mario.h = 16;
+	mario.y += Math.max(0, mario.h - nextH);
+	mario.h = nextH;
+	mario.fireCd = 0;
 	mario.invuln = 120;
 	state.events.push({ type: 'hurt' });
 }

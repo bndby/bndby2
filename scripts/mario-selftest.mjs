@@ -1,6 +1,7 @@
 import { createGame, step, LEVELS } from '../docs/mario/game.js';
 import { createDriver, drive } from '../docs/mario/ai.js';
 import { IDLE } from '../docs/mario/game.js';
+import { TILE, Tile, idx } from '../docs/mario/tiles.js';
 
 function assert(cond, message) {
 	if (!cond) throw new Error(message);
@@ -94,7 +95,209 @@ for (const level of LEVELS) {
 }
 
 physics();
+powerChain();
 console.log('physics ok, levels', LEVELS.length);
+
+function giveMushroom(state) {
+	const mario = state.mario;
+	state.items.push({
+		kind: 'mushroom',
+		x: mario.x,
+		y: mario.y + mario.h - 16,
+		w: 16,
+		h: 16,
+		vx: 0,
+		vy: 0,
+		emerge: 0,
+		dir: 1,
+		alive: true,
+	});
+}
+
+function powerChain() {
+	const state = createGame({ skipCard: true });
+	const lives = state.lives;
+	assert(state.mario.form === 'small', 'старт маленький');
+	giveMushroom(state);
+	step(state, IDLE);
+	assert(
+		state.mario.form === 'big',
+		`первый гриб растит, сейчас ${state.mario.form}`,
+	);
+	assert(state.mario.h === 32, `высокий рост ${state.mario.h}`);
+	assert(state.lives === lives, 'жизнь после гриба');
+	step(state, { dir: 1, run: true, jump: 'none', down: false });
+	assert(state.shots.length === 0, 'большой ещё не стреляет');
+
+	giveMushroom(state);
+	step(state, IDLE);
+	assert(
+		state.mario.form === 'fire',
+		`второй гриб даёт огонь, сейчас ${state.mario.form}`,
+	);
+	assert(state.mario.h === 32, 'огонь остаётся высоким');
+	const beforeShots = state.shots.length;
+	step(state, { dir: 1, run: true, jump: 'none', down: false });
+	assert(state.shots.length > beforeShots, 'огненный стреляет');
+
+	state.mario.vy = 0;
+	state.mario.vx = 0;
+	state.mario.onGround = true;
+	state.shots = [];
+	state.enemies.push({
+		kind: 'goomba',
+		x: state.mario.x + 2,
+		y: state.mario.y + state.mario.h - 16,
+		w: 16,
+		h: 16,
+		vx: 0,
+		vy: 0,
+		alive: true,
+		dir: 1,
+		speed: 0.2,
+	});
+	step(state, IDLE);
+	assert(
+		state.mario.form === 'small',
+		`первый удар уменьшает, сейчас ${state.mario.form}`,
+	);
+	assert(state.mario.h === 16, `после удара рост ${state.mario.h}`);
+	assert(state.lives === lives, 'первый удар не забирает жизнь');
+	assert(state.mode === 'play', `после удара режим ${state.mode}`);
+
+	state.mario.invuln = 1;
+	const enemy = state.enemies.find(
+		(actor) => actor.alive && actor.kind === 'goomba',
+	);
+	assert(enemy, 'гумба на месте');
+	enemy.x = state.mario.x;
+	enemy.y = state.mario.y;
+	step(state, IDLE);
+	assert(
+		state.lives === lives - 1,
+		`второй удар забирает жизнь: ${state.lives}`,
+	);
+	assert(
+		state.mario.dead || state.mode === 'dead',
+		`второй удар смертелен: ${state.mode}`,
+	);
+}
+
+function placeBeforePit(state, tileX) {
+	const mario = state.mario;
+	mario.x = tileX * 16 - mario.w - 1;
+	mario.y = 13 * 16 - mario.h;
+	mario.vx = 0;
+	mario.vy = 0;
+	mario.onGround = true;
+	mario.dead = false;
+	state.mode = 'play';
+	state.camX = Math.max(0, mario.x - 80);
+}
+
+function pitAndStairs() {
+	const index = LEVELS.findIndex((level) => level.id === '1-2');
+	const dropped = createGame({ levelIndex: index, skipCard: true });
+	placeBeforePit(dropped, 48);
+	let cause = '';
+	for (let i = 0; i < 80; i += 1) {
+		step(dropped, { dir: 1, run: true, jump: 'none', down: false });
+		if (dropped.mario.dead || dropped.mode === 'dead') {
+			cause = dropped.deathCause;
+			break;
+		}
+	}
+	assert(
+		cause === 'lava' || cause === 'pit',
+		`узкая пропасть убивает, сейчас ${cause || dropped.mode} y=${dropped.mario.y.toFixed(1)}`,
+	);
+
+	const wide = createGame({ levelIndex: index, skipCard: true });
+	placeBeforePit(wide, 96);
+	cause = '';
+	for (let i = 0; i < 80; i += 1) {
+		step(wide, { dir: 1, run: true, jump: 'none', down: false });
+		if (wide.mario.dead || wide.mode === 'dead') {
+			cause = wide.deathCause;
+			break;
+		}
+	}
+	assert(
+		cause === 'lava' || cause === 'pit',
+		`широкая пропасть убивает, сейчас ${cause || wide.mode}`,
+	);
+
+	const jumped = createGame({ levelIndex: index, skipCard: true });
+	placeBeforePit(jumped, 48);
+	for (let i = 0; i < 70; i += 1) {
+		step(jumped, { dir: 1, run: true, jump: 'full', down: false });
+	}
+	assert(
+		!jumped.mario.dead && jumped.mode === 'play',
+		`прыжок через пропасть выживает, сейчас ${jumped.deathCause || jumped.mode}`,
+	);
+	assert(
+		jumped.mario.x > 50 * 16,
+		`прыжок переносит за пропасть, x=${jumped.mario.x.toFixed(1)}`,
+	);
+
+	const lip = createGame({ levelIndex: index, skipCard: true });
+	placeBeforePit(lip, 48);
+	for (let i = 0; i < 8; i += 1) step(lip, IDLE);
+	assert(!lip.mario.dead, 'стояние у края пропасти безопасно');
+
+	const stairs = createGame({ skipCard: true });
+	stairs.mario.x = 72 * 16 - stairs.mario.w - 2;
+	stairs.mario.y = 13 * 16 - stairs.mario.h;
+	stairs.mario.onGround = true;
+	stairs.mario.vx = 0;
+	stairs.mario.vy = 0;
+	const ground = stairs.mario.y;
+	for (let i = 0; i < 40; i += 1) {
+		step(stairs, { dir: 1, run: true, jump: 'none', down: false });
+	}
+	assert(
+		stairs.mario.y < ground - 10,
+		`ступенька поднимает, y=${stairs.mario.y.toFixed(1)} vs ${ground}`,
+	);
+	assert(!stairs.mario.dead, 'ступенька не убивает');
+}
+
+pitAndStairs();
+console.log('pits ok');
+
+function hitOverhead(tileX, tile, form) {
+	const state = createGame({ skipCard: true });
+	state.tiles[idx(tileX, 9, state.w)] = tile;
+	state.mario.form = form;
+	state.mario.h = form === 'small' ? 16 : 32;
+	state.mario.x = tileX * TILE;
+	state.mario.y = 10 * TILE;
+	state.mario.vy = -4;
+	state.mario.vx = 0;
+	state.mario.onGround = false;
+	step(state, { dir: 0, run: false, jump: 'full', down: false });
+	return state;
+}
+
+function blockFx() {
+	const coin = hitOverhead(16, Tile.Question, 'small');
+	assert(
+		coin.fx.some((fx) => fx.kind === 'coin'),
+		'из вопросика вылетает монетка',
+	);
+	assert(
+		coin.tiles[idx(16, 9, coin.w)] === Tile.Used,
+		'вопросик становится пустым',
+	);
+	const brick = hitOverhead(20, Tile.Brick, 'big');
+	const shards = brick.fx.filter((fx) => fx.kind === 'shard');
+	assert(shards.length >= 4, `осколков кирпича ${shards.length}`);
+	assert(brick.tiles[idx(20, 9, brick.w)] === Tile.Empty, 'кирпич исчезает');
+}
+
+blockFx();
+console.log('blocks ok');
 
 const focus = ['1-1', '1-2', '1-3', '1-4', '2-2'];
 for (const id of focus) {
@@ -106,4 +309,10 @@ for (const id of focus) {
 	console.log(
 		`${result.id} cleared=${result.cleared} coins=${result.coins}/${result.budget} (${coinPct}%) kills=${result.kills}/${result.enemies} power=${result.powerups}/${result.powerBudget} deaths=${result.deaths} cause=${result.cause} x=${result.x} mode=${result.mode} ${ms}ms`,
 	);
+	if (id === '1-1' || id === '1-2' || id === '1-4' || id === '2-2') {
+		assert(
+			result.cleared,
+			`${id} не пройден: ${result.mode} ${result.cause}`,
+		);
+	}
 }

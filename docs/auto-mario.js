@@ -1,6 +1,7 @@
 import { createDriver, drive } from './mario/ai.js';
 import { MarioAudio } from './mario/audio.js';
-import { IDLE, createGame, defeat, step } from './mario/game.js';
+import { IDLE, createGame, step } from './mario/game.js';
+import { FIRE_SUIT, PALETTE, drawActor } from './mario/sprites.js';
 import {
 	GROUND_Y,
 	LEVEL_H,
@@ -66,9 +67,18 @@ const THEMES = {
 	},
 };
 
+function blockHop(state, tx, ty) {
+	const bump = state.fx?.find(
+		(fx) => fx.kind === 'bump' && fx.tx === tx && fx.ty === ty,
+	);
+	if (!bump) return 0;
+	const t = Math.min(1, bump.age / 8);
+	return Math.sin(t * Math.PI) * 6;
+}
+
 function clampWidth(raw) {
 	const parsed = Number.parseInt(raw ?? '', 10);
-	const value = Number.isFinite(parsed) ? parsed : 720;
+	const value = Number.isFinite(parsed) ? parsed : 507;
 	return Math.min(960, Math.max(360, value));
 }
 
@@ -159,6 +169,8 @@ class AutoMario extends HTMLElement {
           height: 100%;
           border-radius: 12px;
           background: ${FRAME.background};
+          image-rendering: pixelated;
+          image-rendering: crisp-edges;
           box-shadow:
             0 0 0 1px rgba(148, 163, 184, 0.28),
             0 10px 28px rgba(2, 6, 23, 0.28);
@@ -212,7 +224,7 @@ class AutoMario extends HTMLElement {
     `;
 		this.canvas = this.shadowRoot.querySelector('canvas');
 		this.ctx = this.canvas.getContext('2d');
-		this.ctx.imageSmoothingEnabled = true;
+		this.ctx.imageSmoothingEnabled = false;
 		this.button = this.shadowRoot.querySelector('button.sound');
 		this.button.addEventListener('click', () => this.toggleSound());
 	}
@@ -272,10 +284,6 @@ class AutoMario extends HTMLElement {
 				};
 				this.driver.cooldown = 18;
 			}
-			if (this.stuck > 520) {
-				defeat(state, 'stuck');
-				this.stuck = 0;
-			}
 		} else {
 			this.stuck = 0;
 		}
@@ -313,16 +321,19 @@ class AutoMario extends HTMLElement {
 		ctx.beginPath();
 		ctx.rect(0, this.hudHeight, this.width, this.playHeight);
 		ctx.clip();
+		const scale = this.dpr * this.scale;
+		ctx.imageSmoothingEnabled = false;
 		ctx.setTransform(
-			this.dpr * this.scale,
+			scale,
 			0,
 			0,
-			this.dpr * this.scale,
-			-state.camX * this.dpr * this.scale,
-			this.hudHeight * this.dpr,
+			scale,
+			-Math.round(state.camX * scale),
+			Math.round(this.hudHeight * this.dpr),
 		);
 		this.drawBackdrop(theme);
 		this.drawTiles(theme);
+		this.drawFx(theme);
 		this.drawFlag();
 		this.drawActors();
 		this.drawPopups();
@@ -385,7 +396,7 @@ class AutoMario extends HTMLElement {
 					continue;
 				}
 				const x = tx * TILE;
-				const y = ty * TILE;
+				const y = ty * TILE - blockHop(state, tx, ty);
 				if (tile === Tile.Lava) {
 					ctx.fillStyle =
 						state.theme === 'bridge' ? '#0f766e' : '#fb7185';
@@ -533,6 +544,26 @@ class AutoMario extends HTMLElement {
 		}
 	}
 
+	drawFx(theme) {
+		const ctx = this.ctx;
+		for (const fx of this.state.fx ?? []) {
+			if (fx.kind === 'coin') {
+				const spin = Math.abs(Math.cos(fx.age * 0.55));
+				paintOrb(ctx, fx.x + 4, fx.y + 5, 1.5 + spin * 5.5, FRAME.gold);
+				continue;
+			}
+			if (fx.kind !== 'shard') continue;
+			ctx.save();
+			ctx.translate(fx.x + 4, fx.y + 4);
+			ctx.rotate(fx.rot || 0);
+			ctx.fillStyle = theme.brick;
+			ctx.fillRect(-4, -3, 8, 6);
+			ctx.fillStyle = 'rgba(255,255,255,0.38)';
+			ctx.fillRect(-4, -3, 8, 2);
+			ctx.restore();
+		}
+	}
+
 	drawActors() {
 		const state = this.state;
 		for (const lift of state.lifts) {
@@ -542,7 +573,7 @@ class AutoMario extends HTMLElement {
 		for (const hazard of state.hazards) this.drawHazard(hazard);
 		for (const enemy of state.enemies) this.drawEnemy(enemy);
 		for (const shot of state.shots) {
-			paintOrb(this.ctx, shot.x + 4, shot.y + 4, 4, FRAME.amber);
+			drawActor(this.ctx, 'fireball', shot);
 		}
 		this.drawMario();
 	}
@@ -556,27 +587,20 @@ class AutoMario extends HTMLElement {
 			return;
 		}
 		if (item.kind === 'mushroom' || item.kind === 'oneup') {
-			paintBlock(ctx, item.x + 3, item.y + 8, 10, 8, '#f8fafc', 3);
-			paintBlock(
-				ctx,
-				item.x,
-				item.y,
-				16,
-				10,
-				item.kind === 'oneup' ? FRAME.mint : FRAME.enemy,
-				4,
-			);
-			ctx.fillStyle = '#f8fafc';
-			ctx.fillRect(item.x + 3, item.y + 3, 3, 3);
+			drawActor(ctx, 'mushroom', item, {
+				replace:
+					item.kind === 'oneup'
+						? { R: PALETTE.G, r: PALETTE.g }
+						: null,
+			});
 			return;
 		}
 		if (item.kind === 'flower') {
-			paintOrb(ctx, item.x + 8, item.y + 8, 7, FRAME.amber);
-			paintOrb(ctx, item.x + 8, item.y + 8, 3, FRAME.gold);
+			drawActor(ctx, 'flower', item);
 			return;
 		}
 		if (item.kind === 'star') {
-			paintOrb(ctx, item.x + 8, item.y + 8, 7, FRAME.gold);
+			drawActor(ctx, 'star', item);
 		}
 	}
 
@@ -596,27 +620,21 @@ class AutoMario extends HTMLElement {
 			return;
 		}
 		if (hazard.kind === 'podoboo' && hazard.y < hazard.origin - 2) {
-			paintOrb(ctx, hazard.x + 7, hazard.y + 7, 6, FRAME.enemy);
+			drawActor(ctx, 'fireball', hazard);
 		}
 		if (hazard.kind === 'hammer') {
-			paintBlock(ctx, hazard.x, hazard.y, 12, 12, FRAME.amber, 2);
+			drawActor(ctx, 'hammer', hazard, { flip: hazard.vx < 0 });
 		}
 		if (hazard.kind === 'lakitu' && hazard.respawn <= 0) {
-			paintBlock(ctx, hazard.x, hazard.y, 20, 14, FRAME.violet, 4);
-			paintOrb(ctx, hazard.x + 14, hazard.y + 6, 4, FRAME.ink);
+			drawActor(ctx, 'lakitu', hazard);
 		}
 	}
 
 	drawEnemy(enemy) {
 		const ctx = this.ctx;
+		const flip = enemy.dir < 0;
 		if (enemy.kind === 'goomba') {
-			if (enemy.squish > 0) {
-				paintBlock(ctx, enemy.x, enemy.y + 10, 16, 6, FRAME.enemy, 3);
-				return;
-			}
-			paintBlock(ctx, enemy.x, enemy.y + 4, 16, 12, FRAME.enemy, 6);
-			eye(ctx, enemy.x + 4, enemy.y + 8);
-			eye(ctx, enemy.x + 10, enemy.y + 8);
+			drawActor(ctx, enemy.squish > 0 ? 'goombaFlat' : 'goomba', enemy);
 			return;
 		}
 		if (
@@ -624,81 +642,53 @@ class AutoMario extends HTMLElement {
 			enemy.kind === 'buzzy' ||
 			enemy.kind === 'paratroopa'
 		) {
-			const shell =
-				enemy.kind === 'buzzy'
-					? FRAME.amber
-					: enemy.red
-						? FRAME.enemy
-						: FRAME.mint;
-			paintBlock(ctx, enemy.x, enemy.y + 8, 16, 14, shell, 6);
-			paintOrb(
-				ctx,
-				enemy.x + (enemy.dir > 0 ? 12 : 4),
-				enemy.y + 6,
-				4,
-				FRAME.player,
-			);
 			if (enemy.kind === 'paratroopa' && enemy.winged !== false) {
-				ctx.fillStyle = 'rgba(226, 232, 240, 0.7)';
-				ctx.beginPath();
-				ctx.ellipse(
-					enemy.x + 8,
-					enemy.y + 4,
-					7,
-					3,
-					-0.4,
-					0,
-					Math.PI * 2,
-				);
-				ctx.fill();
+				ctx.fillStyle = PALETTE.W;
+				ctx.fillRect(enemy.x - 3, enemy.y + 8, 5, 3);
+				ctx.fillRect(enemy.x + enemy.w - 2, enemy.y + 8, 5, 3);
 			}
+			const replace =
+				enemy.kind === 'buzzy'
+					? { G: '#5a5a5a', g: '#2e2e2e', Y: '#d8d8d8' }
+					: enemy.red
+						? { G: PALETTE.R, g: PALETTE.r, Y: PALETTE.Y }
+						: null;
+			drawActor(ctx, 'koopa', enemy, { flip, replace });
 			return;
 		}
 		if (enemy.kind === 'shell') {
-			paintBlock(ctx, enemy.x, enemy.y, 16, 14, FRAME.mint, 6);
+			drawActor(ctx, 'shell', enemy);
 			return;
 		}
 		if (enemy.kind === 'piranha' && enemy.exposed) {
-			paintBlock(ctx, enemy.x + 2, enemy.y, 12, enemy.h, FRAME.enemy, 4);
-			ctx.fillStyle = '#0b1220';
-			ctx.fillRect(enemy.x + 4, enemy.y + 6, 8, 3);
+			drawActor(ctx, 'piranha', enemy);
 			return;
 		}
 		if (enemy.kind === 'bowser') {
-			paintBlock(ctx, enemy.x, enemy.y + 8, 32, 24, FRAME.amber, 6);
-			paintBlock(ctx, enemy.x + 16, enemy.y, 14, 12, FRAME.enemy, 4);
-			eye(ctx, enemy.x + 22, enemy.y + 4);
+			drawActor(ctx, 'bowser', enemy, { flip: enemy.dir > 0 });
 			return;
 		}
 		if (enemy.kind === 'hammerbro') {
-			paintBlock(ctx, enemy.x, enemy.y + 6, 16, 18, FRAME.violet, 4);
-			paintBlock(ctx, enemy.x + 2, enemy.y, 12, 8, FRAME.player, 3);
+			drawActor(ctx, 'bro', enemy, { flip });
 			return;
 		}
 		if (enemy.kind === 'cheep' || enemy.kind === 'jumpcheep') {
-			paintBlock(ctx, enemy.x, enemy.y, 16, 12, FRAME.enemy, 6);
+			drawActor(ctx, 'cheep', enemy, {
+				flip,
+				replace: enemy.kind === 'jumpcheep' ? { R: PALETTE.G } : null,
+			});
 			return;
 		}
 		if (enemy.kind === 'blooper') {
-			paintBlock(ctx, enemy.x, enemy.y, 16, 14, FRAME.ink, 6);
+			drawActor(ctx, 'blooper', enemy);
 			return;
 		}
 		if (enemy.kind === 'bullet') {
-			paintBlock(ctx, enemy.x, enemy.y, 16, 12, '#334155', 6);
-			paintOrb(
-				ctx,
-				enemy.x + (enemy.dir > 0 ? 12 : 4),
-				enemy.y + 6,
-				3,
-				FRAME.amber,
-			);
+			drawActor(ctx, 'bullet', enemy, { flip });
 			return;
 		}
 		if (enemy.kind === 'spiny' || enemy.kind === 'spinyfly') {
-			paintBlock(ctx, enemy.x, enemy.y + 4, 16, 12, FRAME.enemy, 4);
-			ctx.fillStyle = FRAME.gold;
-			ctx.fillRect(enemy.x + 3, enemy.y + 2, 3, 5);
-			ctx.fillRect(enemy.x + 10, enemy.y + 2, 3, 5);
+			drawActor(ctx, 'spiny', enemy, { flip });
 		}
 	}
 
@@ -708,36 +698,43 @@ class AutoMario extends HTMLElement {
 		const blink =
 			mario.invuln > 0 && Math.floor(this.state.tick / 4) % 2 === 0;
 		if (blink && !mario.dead) ctx.globalAlpha = 0.45;
-		const colors = [
-			FRAME.player,
-			FRAME.gold,
-			FRAME.mint,
-			FRAME.violet,
-			FRAME.enemy,
-		];
-		const suit =
-			mario.star > 0
-				? colors[Math.floor(this.state.tick / 4) % colors.length]
-				: mario.form === 'fire'
-					? FRAME.amber
-					: FRAME.player;
-		ctx.save();
-		ctx.translate(mario.x + mario.w / 2, mario.y + mario.h);
-		ctx.scale(mario.dir < 0 ? -1 : 1, 1);
-		const tall = mario.h > 20;
-		const step = mario.onGround ? Math.sin(mario.x / 3) : 0;
-		ctx.fillStyle = 'rgba(2, 6, 23, 0.28)';
-		ctx.beginPath();
-		ctx.ellipse(0, 1, 6, 2, 0, 0, Math.PI * 2);
-		ctx.fill();
-		paintBlock(ctx, -5, -6, 4, 6, FRAME.amber, 1);
-		paintBlock(ctx, 1, -6 + step, 4, 6, FRAME.amber, 1);
-		paintBlock(ctx, -6, tall ? -22 : -14, 12, tall ? 16 : 8, suit, 3);
-		paintOrb(ctx, 0, tall ? -26 : -18, tall ? 6 : 5.5, suit);
-		ctx.fillStyle = shade(suit, -0.25);
-		ctx.fillRect(-6, tall ? -30 : -22, 12, 4);
-		eye(ctx, 2, tall ? -27 : -19);
-		ctx.restore();
+		const tall = mario.form !== 'small';
+		const walking =
+			!mario.dead &&
+			mario.onGround &&
+			Math.abs(mario.vx) > 0.2 &&
+			Math.floor(this.state.tick / 6) % 2 === 1;
+		let replace = null;
+		if (mario.star > 0) {
+			const cycle = [
+				{ R: PALETTE.Y, B: PALETTE.W, H: PALETTE.O },
+				{ R: PALETTE.G, B: PALETTE.Y, H: PALETTE.R },
+				{ R: '#f8f8f8', B: PALETTE.O, H: PALETTE.B },
+			];
+			replace = cycle[Math.floor(this.state.tick / 4) % cycle.length];
+		} else if (mario.form === 'fire') {
+			replace = FIRE_SUIT;
+		}
+		drawActor(
+			ctx,
+			tall ? 'marioBig' : 'marioSmall',
+			{ ...mario, y: mario.y + (walking ? -1 : 0) },
+			{
+				flip: mario.dir < 0,
+				flipY: Boolean(mario.dead),
+				replace,
+			},
+		);
+		if (mario.form === 'fire' && mario.fireCd > 8 && !mario.dead) {
+			const left = mario.dir < 0;
+			ctx.fillStyle = FIRE_SUIT.R;
+			ctx.fillRect(
+				Math.round(mario.x + (left ? -4 : mario.w)),
+				Math.round(mario.y + mario.h * 0.42),
+				4,
+				3,
+			);
+		}
 		ctx.globalAlpha = 1;
 	}
 
@@ -846,11 +843,6 @@ class AutoMario extends HTMLElement {
 		}
 		ctx.textAlign = 'left';
 	}
-}
-
-function eye(ctx, x, y) {
-	ctx.fillStyle = '#0b1220';
-	ctx.fillRect(x, y, 2, 2);
 }
 
 function speakerIcon(on) {
