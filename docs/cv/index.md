@@ -22,7 +22,8 @@ Fullstack-разработчик с 20+ годами в веб-разработ�
 
 ### ![Lesta Games](./lesta.jpg){ width="28" height="28" class="nolightbox" align="absmiddle"} Lesta Games / <small>Август 2022 — настоящее время</small>
 
-<auto-tanks size="180"></auto-tanks><script type="module" src="./auto-tanks.js"></script>
+<script type="module" src="./game-frame.js"></script>
+<auto-tanks size="220"></auto-tanks><script type="module" src="./auto-tanks.js"></script>
 
 _Senior Frontend разработчик_
 

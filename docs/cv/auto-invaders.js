@@ -1,3 +1,50 @@
+import {
+	FRAME,
+	clampSize,
+	paintBanner,
+	paintBlock,
+	paintCabinet,
+	paintHud,
+	paintOrb,
+	readBackground,
+	renderFrame,
+} from './game-frame.js';
+
+const INVADER_SPRITES = [
+	[
+		'..#.....#..',
+		'...#...#...',
+		'..#######..',
+		'.##.###.##.',
+		'###########',
+		'#.###.###.#',
+		'#.#.....#.#',
+		'...##.##...',
+	],
+	[
+		'.#.......#.',
+		'..#.....#..',
+		'.#########.',
+		'##.##.##.##',
+		'###########',
+		'.#.#####.#.',
+		'##.......##',
+		'.#.......#.',
+	],
+	[
+		'...#####...',
+		'.#########.',
+		'###########',
+		'#.##...##.#',
+		'###########',
+		'..##...##..',
+		'.##.#.#.##.',
+		'#..#...#..#',
+	],
+];
+
+const INVADER_COLORS = [FRAME.mint, FRAME.player, FRAME.gold];
+
 class AutoInvaders extends HTMLElement {
 	static get observedAttributes() {
 		return ['size', 'background'];
@@ -6,10 +53,6 @@ class AutoInvaders extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: 'open' });
-
-		this.defaultSize = 320;
-		this.minSize = 200;
-		this.maxSize = 900;
 
 		this.running = false;
 		this.rafId = null;
@@ -23,7 +66,6 @@ class AutoInvaders extends HTMLElement {
 
 	connectedCallback() {
 		this.renderRoot();
-		this.ctx = this.canvas.getContext('2d');
 		this.running = true;
 		this.lastTime = performance.now();
 		this.rafId = requestAnimationFrame((t) => this.loop(t));
@@ -45,10 +87,7 @@ class AutoInvaders extends HTMLElement {
 			if (nextSize === this.size) return;
 			this.applySize(nextSize);
 			this.initGame();
-			if (this.isConnected) {
-				this.renderRoot();
-				this.ctx = this.canvas.getContext('2d');
-			}
+			if (this.isConnected) this.renderRoot();
 			return;
 		}
 
@@ -58,15 +97,11 @@ class AutoInvaders extends HTMLElement {
 	}
 
 	getSizeFromAttribute() {
-		const raw = Number.parseInt(this.getAttribute('size') ?? '', 10);
-		const normalized = Number.isFinite(raw) ? raw : this.defaultSize;
-		return Math.min(this.maxSize, Math.max(this.minSize, normalized));
+		return clampSize(this.getAttribute('size'));
 	}
 
 	getBackgroundFromAttribute() {
-		const value = this.getAttribute('background');
-		if (!value || !value.trim()) return '#080d1a';
-		return value.trim();
+		return readBackground(this.getAttribute('background'));
 	}
 
 	applySize(size) {
@@ -75,30 +110,36 @@ class AutoInvaders extends HTMLElement {
 		this.height = size;
 
 		this.padding = Math.max(8, Math.round(size * 0.03));
-		this.hudHeight = Math.max(26, Math.round(size * 0.11));
-		this.playTop = this.hudHeight + Math.max(4, Math.round(size * 0.01));
+		this.hudHeight = Math.max(24, Math.round(size * 0.11));
+		this.playTop = this.hudHeight + Math.max(6, Math.round(size * 0.02));
 		this.playBottom = this.height - this.padding;
 
-		this.playerWidth = Math.max(20, Math.round(size * 0.08));
-		this.playerHeight = Math.max(10, Math.round(size * 0.03));
+		this.playerWidth = Math.max(22, Math.round(size * 0.09));
+		this.playerHeight = Math.max(12, Math.round(size * 0.045));
 		this.playerSpeed = size * 0.55;
 		this.playerY =
 			this.playBottom -
 			this.playerHeight -
 			Math.max(8, Math.round(size * 0.03));
 
-		this.bulletRadius = Math.max(2, Math.round(size * 0.008));
+		this.bulletRadius = Math.max(2, Math.round(size * 0.009));
 		this.playerBulletSpeed = size * 0.9;
 		this.enemyBulletSpeed = this.playerBulletSpeed * 0.5;
 
-		this.invaderWidth = Math.max(11, Math.round(size * 0.042));
-		this.invaderHeight = Math.max(8, Math.round(size * 0.027));
-		this.invaderGapX = Math.max(6, Math.round(size * 0.021));
-		this.invaderGapY = Math.max(7, Math.round(size * 0.022));
-		this.invaderStepX = Math.max(8, Math.round(size * 0.022));
-		this.invaderStepY = Math.max(10, Math.round(size * 0.025));
-
-		this.fontMain = Math.max(10, Math.round(size * 0.038));
+		this.formationCols = 8;
+		this.formationRows = 3;
+		this.invaderGapX = Math.max(4, Math.round(size * 0.016));
+		this.invaderGapY = Math.max(6, Math.round(size * 0.02));
+		const inner = size - this.padding * 2;
+		const slot = Math.floor(
+			(inner - this.invaderGapX * (this.formationCols - 1)) /
+				this.formationCols,
+		);
+		this.spriteScale = Math.max(1, Math.floor(slot / 11));
+		this.invaderWidth = 11 * this.spriteScale;
+		this.invaderHeight = 8 * this.spriteScale;
+		this.invaderStepX = Math.max(6, Math.round(size * 0.02));
+		this.invaderStepY = Math.max(8, Math.round(size * 0.022));
 	}
 
 	initGame() {
@@ -126,7 +167,7 @@ class AutoInvaders extends HTMLElement {
 		this.invaderDir = 1;
 		this.invaderMoveAccum = 0;
 		this.invaderShotAccum = 0;
-		this.shields = [];
+		this.shields = this.createShields();
 		this.bullets = [];
 	}
 
@@ -145,14 +186,13 @@ class AutoInvaders extends HTMLElement {
 	}
 
 	createInvaders() {
-		const cols = 10;
-		const rows = 3;
+		const cols = this.formationCols;
+		const rows = this.formationRows;
 		const formationWidth =
 			cols * this.invaderWidth + (cols - 1) * this.invaderGapX;
 		const startX = (this.width - formationWidth) * 0.5;
 		const startY =
-			this.playTop + Math.max(10, Math.round(this.size * 0.045));
-		const palette = ['#9ae6b4', '#67e8f9', '#fcd34d', '#fdba74', '#fda4af'];
+			this.playTop + Math.max(8, Math.round(this.size * 0.03));
 
 		const invaders = [];
 		let id = 0;
@@ -163,8 +203,8 @@ class AutoInvaders extends HTMLElement {
 					alive: true,
 					x: startX + col * (this.invaderWidth + this.invaderGapX),
 					y: startY + row * (this.invaderHeight + this.invaderGapY),
-					type: row % 3,
-					color: palette[row],
+					type: row % INVADER_SPRITES.length,
+					color: INVADER_COLORS[row % INVADER_COLORS.length],
 				});
 				id += 1;
 			}
@@ -466,6 +506,7 @@ class AutoInvaders extends HTMLElement {
 				continue;
 			}
 
+			if (this.hitShieldByBullet(bullet)) continue;
 			if (bullet.type === 'player') {
 				if (this.hitInvaderByBullet(bullet)) continue;
 			} else if (this.hitPlayerByBullet(bullet)) {
@@ -618,12 +659,12 @@ class AutoInvaders extends HTMLElement {
 	}
 
 	drawBackground() {
-		this.ctx.clearRect(0, 0, this.width, this.height);
-		this.ctx.fillStyle = this.background;
-		this.ctx.fillRect(0, 0, this.width, this.height);
+		paintCabinet(this.ctx, this.width, this.height, this.background);
 
+		const time = performance.now() / 420;
 		for (const star of this.stars) {
-			this.ctx.fillStyle = `rgba(191, 219, 254, ${star.a})`;
+			const twinkle = 0.55 + 0.45 * Math.sin(time + star.x * 0.07);
+			this.ctx.fillStyle = `rgba(226, 232, 240, ${star.a * twinkle})`;
 			this.ctx.beginPath();
 			this.ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
 			this.ctx.fill();
@@ -631,135 +672,134 @@ class AutoInvaders extends HTMLElement {
 	}
 
 	drawHud() {
-		this.ctx.fillStyle = 'rgba(8, 15, 30, 0.72)';
-		this.ctx.fillRect(0, 0, this.width, this.hudHeight);
-		this.ctx.strokeStyle = 'rgba(148, 163, 184, 0.24)';
-		this.ctx.beginPath();
-		this.ctx.moveTo(0, this.hudHeight + 0.5);
-		this.ctx.lineTo(this.width, this.hudHeight + 0.5);
-		this.ctx.stroke();
-
-		this.ctx.fillStyle = '#dbeafe';
-		this.ctx.font = `${this.fontMain}px monospace`;
-		this.ctx.fillText(
-			`AUTO INVADERS  SCORE:${this.score}  W:${this.wave}  L:${Math.max(0, this.lives)}`,
-			8,
-			Math.max(15, this.hudHeight - 8),
+		paintHud(
+			this.ctx,
+			this.width,
+			this.hudHeight,
+			'INVADERS',
+			`S ${this.score}   W ${this.wave}   L ${Math.max(0, this.lives)}`,
 		);
 	}
 
 	drawInvaders() {
-		const frame = Math.floor(performance.now() / 220) % 2;
+		const frame = Math.floor(performance.now() / 280) % 2;
 		for (const invader of this.invaders) {
 			if (!invader.alive) continue;
-
+			const sprite =
+				INVADER_SPRITES[invader.type % INVADER_SPRITES.length];
+			const rows = sprite.length;
+			const cols = sprite[0].length;
+			const sx = this.invaderWidth / cols;
+			const sy = this.invaderHeight / rows;
 			this.ctx.fillStyle = invader.color;
-			this.ctx.fillRect(
-				invader.x,
-				invader.y,
-				this.invaderWidth,
-				this.invaderHeight,
-			);
-
-			// Упрощенный "пиксельный" силуэт с анимацией ног.
-			const eyeW = Math.max(2, Math.round(this.invaderWidth * 0.16));
-			const eyeY =
-				invader.y + Math.max(2, Math.round(this.invaderHeight * 0.24));
-			this.ctx.fillStyle = '#0b1220';
-			this.ctx.fillRect(invader.x + eyeW, eyeY, eyeW, eyeW);
-			this.ctx.fillRect(
-				invader.x + this.invaderWidth - eyeW * 2,
-				eyeY,
-				eyeW,
-				eyeW,
-			);
-
-			this.ctx.fillStyle = invader.color;
-			const legY = invader.y + this.invaderHeight;
-			const legW = Math.max(2, Math.round(this.invaderWidth * 0.14));
-			const leftLegX = invader.x + (frame ? legW : 0);
-			const rightLegX =
-				invader.x + this.invaderWidth - legW - (frame ? 0 : legW);
-			this.ctx.fillRect(leftLegX, legY, legW, legW);
-			this.ctx.fillRect(rightLegX, legY, legW, legW);
+			for (let row = 0; row < rows; row += 1) {
+				const line = sprite[row];
+				for (let col = 0; col < cols; col += 1) {
+					if (line[col] !== '#') continue;
+					const wobble =
+						frame && row >= rows - 2
+							? (col % 2 === 0 ? sx * 0.35 : -sx * 0.35)
+							: 0;
+					this.ctx.fillRect(
+						invader.x + col * sx + wobble,
+						invader.y + row * sy,
+						sx + 0.2,
+						sy + 0.2,
+					);
+				}
+			}
 		}
 	}
 
 	drawPlayer() {
-		const x = this.player.x - this.playerWidth * 0.5;
-		const y = this.playerY;
 		const blink =
 			this.player.hitCooldown > 0 &&
 			Math.floor(performance.now() / 80) % 2 === 0;
 		if (blink) return;
 
-		this.ctx.fillStyle = '#34d399';
-		this.ctx.fillRect(x, y, this.playerWidth, this.playerHeight);
-		const turretW = Math.max(4, Math.round(this.playerWidth * 0.22));
-		const turretH = Math.max(5, Math.round(this.playerHeight * 0.8));
-		this.ctx.fillRect(
-			this.player.x - turretW * 0.5,
-			y - turretH,
-			turretW,
-			turretH,
-		);
+		const w = this.playerWidth;
+		const h = this.playerHeight;
+		const x = this.player.x;
+		const y = this.playerY + h;
+		this.ctx.fillStyle = FRAME.mint;
+		this.ctx.beginPath();
+		this.ctx.moveTo(x, this.playerY);
+		this.ctx.lineTo(x + w * 0.5, y);
+		this.ctx.lineTo(x + w * 0.16, y - h * 0.34);
+		this.ctx.lineTo(x - w * 0.16, y - h * 0.34);
+		this.ctx.lineTo(x - w * 0.5, y);
+		this.ctx.closePath();
+		this.ctx.fill();
+		this.ctx.fillStyle = '#ecfdf5';
+		this.ctx.fillRect(x - w * 0.06, this.playerY + h * 0.28, w * 0.12, h * 0.28);
 	}
 
 	drawShields() {
 		for (const shield of this.shields) {
 			for (const cell of shield) {
-				if (cell.hp >= 3) this.ctx.fillStyle = '#4ade80';
-				else if (cell.hp === 2) this.ctx.fillStyle = '#86efac';
-				else this.ctx.fillStyle = '#bbf7d0';
-				this.ctx.fillRect(cell.x, cell.y, cell.w, cell.h);
+				const color =
+					cell.hp >= 3 ? '#67e8f9' : cell.hp === 2 ? '#38bdf8' : '#0284c7';
+				paintBlock(
+					this.ctx,
+					cell.x,
+					cell.y,
+					cell.w,
+					cell.h,
+					color,
+					Math.max(0.5, cell.w * 0.2),
+				);
 			}
 		}
 	}
 
 	drawBullets() {
 		for (const bullet of this.bullets) {
-			this.ctx.fillStyle =
-				bullet.type === 'player' ? '#93c5fd' : '#fca5a5';
-			this.ctx.beginPath();
-			this.ctx.arc(bullet.x, bullet.y, bullet.r, 0, Math.PI * 2);
-			this.ctx.fill();
+			paintOrb(
+				this.ctx,
+				bullet.x,
+				bullet.y,
+				bullet.r,
+				bullet.type === 'player' ? '#e0f2fe' : FRAME.enemy,
+			);
 		}
 	}
 
 	drawExplosions() {
 		for (const explosion of this.explosions) {
 			const life = Math.max(0, Math.min(1, explosion.ttl / 0.35));
-			const alpha = Math.max(0.1, life);
-			const radius = Math.max(2, (1 - life) * this.size * 0.03 + 2);
-			this.ctx.fillStyle = `rgba(251, 191, 36, ${alpha})`;
+			const alpha = Math.max(0.12, life);
+			const radius = Math.max(2, (1 - life) * this.size * 0.035 + 2);
 			this.ctx.beginPath();
+			this.ctx.fillStyle = `rgba(251, 191, 36, ${alpha})`;
 			this.ctx.arc(explosion.x, explosion.y, radius, 0, Math.PI * 2);
+			this.ctx.fill();
+			this.ctx.beginPath();
+			this.ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.65})`;
+			this.ctx.arc(
+				explosion.x,
+				explosion.y,
+				radius * 0.42,
+				0,
+				Math.PI * 2,
+			);
 			this.ctx.fill();
 		}
 	}
 
 	drawGameOver() {
 		if (!this.gameOver) return;
-		this.ctx.fillStyle = 'rgba(2, 6, 23, 0.72)';
-		const h = Math.max(42, Math.round(this.size * 0.15));
-		const y = this.height * 0.45;
-		this.ctx.fillRect(0, y, this.width, h);
-		this.ctx.fillStyle = '#f8fafc';
-		this.ctx.font = `${Math.max(12, Math.round(this.size * 0.043))}px monospace`;
-		this.ctx.fillText(
-			'GAME OVER  RESTARTING...',
-			Math.max(8, this.size * 0.07),
-			y + h * 0.62,
-		);
+		const h = Math.max(36, Math.round(this.size * 0.14));
+		paintBanner(this.ctx, this.width, this.height * 0.44, h, 'RESTARTING');
 	}
 
 	draw() {
 		this.drawBackground();
-		this.drawHud();
+		this.drawShields();
 		this.drawInvaders();
 		this.drawPlayer();
 		this.drawBullets();
 		this.drawExplosions();
+		this.drawHud();
 		this.drawGameOver();
 	}
 
@@ -773,28 +813,9 @@ class AutoInvaders extends HTMLElement {
 	}
 
 	renderRoot() {
-		this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          display: inline-block;
-          width: ${this.width}px;
-          height: ${this.height}px;
-          box-sizing: border-box;
-        }
-
-        canvas {
-          display: block;
-          width: ${this.width}px;
-          height: ${this.height}px;
-          border: 1px solid #334155;
-          border-radius: 8px;
-          box-shadow: 0 8px 24px rgba(2, 6, 23, 0.3);
-          image-rendering: auto;
-        }
-      </style>
-      <canvas width="${this.width}" height="${this.height}"></canvas>
-    `;
-		this.canvas = this.shadowRoot.querySelector('canvas');
+		const view = renderFrame(this.shadowRoot, this.width, this.height);
+		this.canvas = view.canvas;
+		this.ctx = view.ctx;
 	}
 }
 

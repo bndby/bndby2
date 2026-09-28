@@ -1,3 +1,18 @@
+import {
+	FRAME,
+	clampSize,
+	paintBlock,
+	paintCabinet,
+	paintHud,
+	paintOrb,
+	readBackground,
+	renderFrame,
+	roundRectPath,
+	shade,
+} from './game-frame.js';
+
+const ENEMY_COLORS = [FRAME.enemy, FRAME.amber, '#f472b6', FRAME.gold];
+
 class AutoTanks extends HTMLElement {
 	static get observedAttributes() {
 		return ['size', 'background'];
@@ -6,10 +21,6 @@ class AutoTanks extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: 'open' });
-
-		this.defaultSize = 360;
-		this.minSize = 220;
-		this.maxSize = 900;
 
 		this.running = false;
 		this.rafId = null;
@@ -29,7 +40,6 @@ class AutoTanks extends HTMLElement {
 
 	connectedCallback() {
 		this.renderRoot();
-		this.ctx = this.canvas.getContext('2d');
 		this.running = true;
 		this.lastTime = performance.now();
 		this.rafId = requestAnimationFrame((t) => this.loop(t));
@@ -51,10 +61,7 @@ class AutoTanks extends HTMLElement {
 			if (nextSize === this.size) return;
 			this.applySize(nextSize);
 			this.createWorld();
-			if (this.isConnected) {
-				this.renderRoot();
-				this.ctx = this.canvas.getContext('2d');
-			}
+			if (this.isConnected) this.renderRoot();
 			return;
 		}
 
@@ -64,24 +71,19 @@ class AutoTanks extends HTMLElement {
 	}
 
 	getSizeFromAttribute() {
-		const rawSize = Number.parseInt(this.getAttribute('size') ?? '', 10);
-		const normalized = Number.isFinite(rawSize)
-			? rawSize
-			: this.defaultSize;
-		return Math.min(this.maxSize, Math.max(this.minSize, normalized));
+		return clampSize(this.getAttribute('size'));
 	}
 
 	getBackgroundFromAttribute() {
-		const value = this.getAttribute('background');
-		if (!value || !value.trim()) return '#0f172a';
-		return value.trim();
+		return readBackground(this.getAttribute('background'));
 	}
 
 	applySize(size) {
 		this.size = size;
-		this.cell = Math.max(8, Math.floor(size / this.worldUnits));
-		this.width = this.cell * this.worldUnits;
-		this.height = this.cell * this.worldUnits;
+		this.width = size;
+		this.height = size;
+		this.cell = size / this.worldUnits;
+		this.hudHeight = Math.max(24, Math.round(size * 0.11));
 
 		this.tankSize = this.cell * 0.94;
 		this.halfTank = this.tankSize * 0.5;
@@ -109,9 +111,9 @@ class AutoTanks extends HTMLElement {
 		this.player = this.createTank('player', occupied, 3, 'player');
 		this.enemies = [];
 		for (let i = 0; i < this.enemiesCount; i += 1) {
-			this.enemies.push(
-				this.createTank(`enemy-${i}`, occupied, 2, 'enemy'),
-			);
+			const enemy = this.createTank(`enemy-${i}`, occupied, 2, 'enemy');
+			enemy.color = ENEMY_COLORS[i % ENEMY_COLORS.length];
+			this.enemies.push(enemy);
 		}
 	}
 
@@ -149,9 +151,10 @@ class AutoTanks extends HTMLElement {
 	}
 
 	getSpawnZone(team) {
-		// Игрок появляется внизу, враги — вверху поля.
+		// Игрок появляется внизу, враги — под панелью счёта, вверху поля.
 		const playableTop = 1;
 		const playableBottom = this.gridSize - 2;
+		const hudRows = Math.ceil(this.hudHeight / this.cell);
 		if (team === 'player') {
 			return {
 				minY: Math.max(playableTop, Math.floor(this.gridSize * 0.72)),
@@ -159,9 +162,13 @@ class AutoTanks extends HTMLElement {
 				dir: 'up',
 			};
 		}
+		const minY = Math.max(playableTop, hudRows);
 		return {
-			minY: playableTop,
-			maxY: Math.min(playableBottom, Math.floor(this.gridSize * 0.28)),
+			minY,
+			maxY: Math.min(
+				playableBottom,
+				Math.max(minY + 2, Math.floor(this.gridSize * 0.36)),
+			),
 			dir: 'down',
 		};
 	}
@@ -197,7 +204,7 @@ class AutoTanks extends HTMLElement {
 					this.fireCooldownMax,
 				),
 				turnCooldown: 0,
-				color: id === 'player' ? '#38bdf8' : '#f97316',
+				color: id === 'player' ? FRAME.player : FRAME.enemy,
 			};
 		}
 
@@ -224,7 +231,7 @@ class AutoTanks extends HTMLElement {
 				this.fireCooldownMax,
 			),
 			turnCooldown: 0,
-			color: id === 'player' ? '#38bdf8' : '#f97316',
+			color: id === 'player' ? FRAME.player : FRAME.enemy,
 		};
 	}
 
@@ -614,12 +621,12 @@ class AutoTanks extends HTMLElement {
 	}
 
 	drawGrid() {
-		this.ctx.strokeStyle = 'rgba(148, 163, 184, 0.10)';
+		this.ctx.strokeStyle = 'rgba(148, 163, 184, 0.08)';
 		this.ctx.lineWidth = 1;
 		for (let i = 1; i < this.gridSize; i += 1) {
 			const p = i * this.cell + 0.5;
 			this.ctx.beginPath();
-			this.ctx.moveTo(p, 0);
+			this.ctx.moveTo(p, this.hudHeight);
 			this.ctx.lineTo(p, this.height);
 			this.ctx.stroke();
 			this.ctx.beginPath();
@@ -630,19 +637,23 @@ class AutoTanks extends HTMLElement {
 	}
 
 	drawWalls() {
-		this.ctx.fillStyle = '#64748b';
-		this.ctx.strokeStyle = 'rgba(15, 23, 42, 0.65)';
+		const inset = this.cell * 0.14;
 		for (let y = 0; y < this.gridSize; y += 1) {
 			for (let x = 0; x < this.gridSize; x += 1) {
 				if (this.walls[y][x] !== 1) continue;
-				const px = x * this.cell;
-				const py = y * this.cell;
-				this.ctx.fillRect(px, py, this.cell, this.cell);
-				this.ctx.strokeRect(
-					px + 0.5,
-					py + 0.5,
-					this.cell - 1,
-					this.cell - 1,
+				const edge =
+					x === 0 ||
+					y === 0 ||
+					x === this.gridSize - 1 ||
+					y === this.gridSize - 1;
+				paintBlock(
+					this.ctx,
+					x * this.cell + inset,
+					y * this.cell + inset,
+					this.cell - inset * 2,
+					this.cell - inset * 2,
+					edge ? '#475569' : '#64748b',
+					this.cell * 0.16,
 				);
 			}
 		}
@@ -650,50 +661,77 @@ class AutoTanks extends HTMLElement {
 
 	drawTank(tank) {
 		if (!tank.alive) return;
-		this.ctx.fillStyle = tank.color;
-		this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.45)';
-		this.ctx.lineWidth = 1;
+		const ctx = this.ctx;
+		const dirAngle = {
+			right: 0,
+			down: Math.PI / 2,
+			left: Math.PI,
+			up: -Math.PI / 2,
+		};
+		const body = this.tankSize;
 
-		const left = tank.x - this.halfTank;
-		const top = tank.y - this.halfTank;
-		this.ctx.fillRect(left, top, this.tankSize, this.tankSize);
-		this.ctx.strokeRect(
-			left + 0.5,
-			top + 0.5,
-			this.tankSize - 1,
-			this.tankSize - 1,
+		ctx.save();
+		ctx.translate(tank.x, tank.y);
+		ctx.rotate(dirAngle[tank.dir] ?? 0);
+
+		const treadW = body * 0.18;
+		const treadH = body * 0.92;
+		ctx.fillStyle = shade(tank.color, -0.38);
+		roundRectPath(
+			ctx,
+			-body / 2,
+			-treadH / 2,
+			treadW,
+			treadH,
+			treadW * 0.4,
+		);
+		ctx.fill();
+		roundRectPath(
+			ctx,
+			body / 2 - treadW,
+			-treadH / 2,
+			treadW,
+			treadH,
+			treadW * 0.4,
+		);
+		ctx.fill();
+
+		paintBlock(
+			ctx,
+			-body * 0.34,
+			-body * 0.3,
+			body * 0.68,
+			body * 0.6,
+			tank.color,
+			body * 0.12,
 		);
 
-		this.ctx.fillStyle = tank.id === 'player' ? '#bae6fd' : '#fed7aa';
-		this.ctx.beginPath();
-		this.ctx.arc(tank.x, tank.y, this.tankSize * 0.2, 0, Math.PI * 2);
-		this.ctx.fill();
+		ctx.fillStyle = shade(tank.color, 0.38);
+		ctx.beginPath();
+		ctx.arc(0, 0, body * 0.15, 0, Math.PI * 2);
+		ctx.fill();
 
-		const v = this.dirToVector(tank.dir);
-		this.ctx.strokeStyle = tank.id === 'player' ? '#e0f2fe' : '#ffedd5';
-		this.ctx.lineWidth = Math.max(2, this.cell * 0.16);
-		this.ctx.beginPath();
-		this.ctx.moveTo(tank.x, tank.y);
-		this.ctx.lineTo(
-			tank.x + v.x * this.barrelLen,
-			tank.y + v.y * this.barrelLen,
-		);
-		this.ctx.stroke();
+		ctx.strokeStyle = shade(tank.color, 0.42);
+		ctx.lineWidth = Math.max(2, this.cell * 0.14);
+		ctx.lineCap = 'round';
+		ctx.beginPath();
+		ctx.moveTo(body * 0.08, 0);
+		ctx.lineTo(this.barrelLen * 0.92, 0);
+		ctx.stroke();
+		ctx.restore();
 	}
 
 	drawProjectiles() {
 		for (const projectile of this.projectiles) {
-			this.ctx.fillStyle =
-				projectile.ownerId === this.player.id ? '#22d3ee' : '#facc15';
-			this.ctx.beginPath();
-			this.ctx.arc(
+			const color =
+				projectile.ownerId === this.player.id ? '#67e8f9' : FRAME.gold;
+			paintOrb(
+				this.ctx,
 				projectile.x,
 				projectile.y,
 				projectile.r,
-				0,
-				Math.PI * 2,
+				color,
 			);
-			this.ctx.fill();
 		}
 	}
 
@@ -701,33 +739,37 @@ class AutoTanks extends HTMLElement {
 		for (const explosion of this.explosions) {
 			const p = explosion.ttl / this.explosionTTL;
 			const alpha = Math.max(0, Math.min(1, p));
-			const radius = this.cell * (0.2 + (1 - alpha) * 0.8);
-			this.ctx.fillStyle = `rgba(251, 191, 36, ${alpha})`;
+			const radius = this.cell * (0.25 + (1 - alpha) * 0.85);
 			this.ctx.beginPath();
+			this.ctx.fillStyle = `rgba(251, 191, 36, ${alpha})`;
 			this.ctx.arc(explosion.x, explosion.y, radius, 0, Math.PI * 2);
+			this.ctx.fill();
+			this.ctx.beginPath();
+			this.ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.7})`;
+			this.ctx.arc(
+				explosion.x,
+				explosion.y,
+				radius * 0.45,
+				0,
+				Math.PI * 2,
+			);
 			this.ctx.fill();
 		}
 	}
 
 	drawHud() {
-		const enemiesAlive = this.enemies.filter((e) => e.alive).length;
-		this.ctx.fillStyle = 'rgba(2, 6, 23, 0.5)';
-		this.ctx.fillRect(0, 0, this.width, Math.max(18, this.cell * 1.05));
-
-		this.ctx.fillStyle = '#e2e8f0';
-		this.ctx.font = `${Math.max(11, Math.floor(this.cell * 0.6))}px monospace`;
-		this.ctx.fillText(
-			`AUTO TANKS  K:${this.kills}  P:${this.player.alive ? 'alive' : 'down'}  E:${enemiesAlive}`,
-			8,
-			Math.max(13, Math.floor(this.cell * 0.78)),
+		const enemiesAlive = this.enemies.filter((enemy) => enemy.alive).length;
+		paintHud(
+			this.ctx,
+			this.width,
+			this.hudHeight,
+			'TANKS',
+			`K ${this.kills}   P ${this.player.alive ? 'OK' : 'DOWN'}   E ${enemiesAlive}`,
 		);
 	}
 
 	draw() {
-		this.ctx.clearRect(0, 0, this.width, this.height);
-		this.ctx.fillStyle = this.background;
-		this.ctx.fillRect(0, 0, this.width, this.height);
-
+		paintCabinet(this.ctx, this.width, this.height, this.background);
 		this.drawGrid();
 		this.drawWalls();
 		this.drawTank(this.player);
@@ -747,27 +789,9 @@ class AutoTanks extends HTMLElement {
 	}
 
 	renderRoot() {
-		this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          display: inline-block;
-          width: ${this.width}px;
-          height: ${this.height}px;
-          box-sizing: border-box;
-        }
-
-        canvas {
-          display: block;
-          width: ${this.width}px;
-          height: ${this.height}px;
-          border: 1px solid #334155;
-          border-radius: 8px;
-          box-shadow: 0 8px 24px rgba(2, 6, 23, 0.3);
-        }
-      </style>
-      <canvas width="${this.width}" height="${this.height}"></canvas>
-    `;
-		this.canvas = this.shadowRoot.querySelector('canvas');
+		const view = renderFrame(this.shadowRoot, this.width, this.height);
+		this.canvas = view.canvas;
+		this.ctx = view.ctx;
 	}
 }
 

@@ -1,3 +1,13 @@
+import {
+	FRAME,
+	clampSize,
+	paintBanner,
+	paintBlock,
+	paintCabinet,
+	readBackground,
+	renderFrame,
+} from './game-frame.js';
+
 class AutoTetris extends HTMLElement {
 	static get observedAttributes() {
 		return ['size', 'background'];
@@ -6,10 +16,6 @@ class AutoTetris extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: 'open' });
-
-		this.defaultSize = 300;
-		this.minSize = 180;
-		this.maxSize = 900;
 
 		this.cols = 10;
 		this.rows = 20;
@@ -33,7 +39,6 @@ class AutoTetris extends HTMLElement {
 
 	connectedCallback() {
 		this.renderRoot();
-		this.ctx = this.canvas.getContext('2d');
 		this.running = true;
 		this.lastTime = performance.now();
 		this.rafId = requestAnimationFrame((ts) => this.loop(ts));
@@ -55,10 +60,7 @@ class AutoTetris extends HTMLElement {
 			if (nextSize === this.size) return;
 			this.applySize(nextSize);
 			this.initGame();
-			if (this.isConnected) {
-				this.renderRoot();
-				this.ctx = this.canvas.getContext('2d');
-			}
+			if (this.isConnected) this.renderRoot();
 			return;
 		}
 
@@ -68,26 +70,20 @@ class AutoTetris extends HTMLElement {
 	}
 
 	getSizeFromAttribute() {
-		const raw = Number.parseInt(this.getAttribute('size') ?? '', 10);
-		const normalized = Number.isFinite(raw) ? raw : this.defaultSize;
-		return Math.min(this.maxSize, Math.max(this.minSize, normalized));
+		return clampSize(this.getAttribute('size'));
 	}
 
 	getBackgroundFromAttribute() {
-		const value = this.getAttribute('background');
-		if (!value || !value.trim()) return '#0b1220';
-		return value.trim();
+		return readBackground(this.getAttribute('background'));
 	}
 
 	applySize(size) {
 		this.size = size;
-		this.cell = Math.max(8, Math.round(size / this.rows));
+		this.width = size;
+		this.height = size;
+		this.cell = size / this.rows;
 		this.boardWidth = this.cell * this.cols;
-		this.boardHeight = this.cell * this.rows;
-
-		// Делаем внешний размер компонента квадратным, как у остальных демо.
-		this.width = this.boardHeight;
-		this.height = this.boardHeight;
+		this.boardHeight = size;
 		this.panelWidth = this.width - this.boardWidth;
 
 		this.fontMain = Math.max(11, Math.floor(this.cell * 0.72));
@@ -127,7 +123,7 @@ class AutoTetris extends HTMLElement {
 	getPieceCatalog() {
 		return {
 			I: {
-				color: '#38bdf8',
+				color: FRAME.player,
 				rotations: [
 					[
 						[0, 1],
@@ -156,7 +152,7 @@ class AutoTetris extends HTMLElement {
 				],
 			},
 			O: {
-				color: '#facc15',
+				color: FRAME.gold,
 				rotations: [
 					[
 						[1, 0],
@@ -167,7 +163,7 @@ class AutoTetris extends HTMLElement {
 				],
 			},
 			T: {
-				color: '#a78bfa',
+				color: FRAME.violet,
 				rotations: [
 					[
 						[1, 0],
@@ -196,7 +192,7 @@ class AutoTetris extends HTMLElement {
 				],
 			},
 			S: {
-				color: '#34d399',
+				color: FRAME.mint,
 				rotations: [
 					[
 						[1, 0],
@@ -225,7 +221,7 @@ class AutoTetris extends HTMLElement {
 				],
 			},
 			Z: {
-				color: '#fb7185',
+				color: FRAME.enemy,
 				rotations: [
 					[
 						[0, 0],
@@ -283,7 +279,7 @@ class AutoTetris extends HTMLElement {
 				],
 			},
 			L: {
-				color: '#fb923c',
+				color: FRAME.amber,
 				rotations: [
 					[
 						[2, 0],
@@ -638,21 +634,31 @@ class AutoTetris extends HTMLElement {
 		return y;
 	}
 
+	paintCell(px, py, size, color, alpha = 1) {
+		const pad = Math.max(0.6, size * 0.08);
+		this.ctx.save();
+		this.ctx.globalAlpha = alpha;
+		paintBlock(
+			this.ctx,
+			px + pad,
+			py + pad,
+			size - pad * 2,
+			size - pad * 2,
+			color,
+			Math.max(1.5, size * 0.16),
+		);
+		this.ctx.restore();
+	}
+
 	drawCell(x, y, color, alpha = 1) {
 		const px = x * this.cell;
 		const py = (y - this.hiddenRows) * this.cell;
-		if (py < 0 || py >= this.boardHeight) return;
-
-		this.ctx.globalAlpha = alpha;
-		this.ctx.fillStyle = color;
-		this.ctx.fillRect(px + 1, py + 1, this.cell - 2, this.cell - 2);
-		this.ctx.strokeStyle = 'rgba(255,255,255,0.18)';
-		this.ctx.strokeRect(px + 1.5, py + 1.5, this.cell - 3, this.cell - 3);
-		this.ctx.globalAlpha = 1;
+		if (py + this.cell <= 0 || py >= this.boardHeight) return;
+		this.paintCell(px, py, this.cell, color, alpha);
 	}
 
 	drawGrid() {
-		this.ctx.strokeStyle = 'rgba(148,163,184,0.14)';
+		this.ctx.strokeStyle = 'rgba(148, 163, 184, 0.12)';
 		this.ctx.lineWidth = 1;
 		for (let x = 1; x < this.cols; x += 1) {
 			const px = x * this.cell + 0.5;
@@ -702,66 +708,90 @@ class AutoTetris extends HTMLElement {
 
 	drawPanel() {
 		const panelX = this.boardWidth;
-		this.ctx.fillStyle = 'rgba(15, 23, 42, 0.65)';
+		this.ctx.fillStyle = 'rgba(8, 15, 30, 0.72)';
 		this.ctx.fillRect(panelX, 0, this.panelWidth, this.height);
-		this.ctx.strokeStyle = 'rgba(148,163,184,0.35)';
+		this.ctx.strokeStyle = FRAME.line;
 		this.ctx.beginPath();
 		this.ctx.moveTo(panelX + 0.5, 0);
 		this.ctx.lineTo(panelX + 0.5, this.height);
 		this.ctx.stroke();
 
-		this.ctx.fillStyle = '#e2e8f0';
-		this.ctx.font = `${this.fontMain}px monospace`;
-		this.ctx.fillText('AUTO', panelX + 8, this.fontMain + 6);
-		this.ctx.fillText('TETRIS', panelX + 8, this.fontMain * 2 + 7);
+		const pad = Math.max(8, this.cell * 0.7);
+		this.ctx.fillStyle = '#7dd3fc';
+		this.ctx.font = `${this.fontMain}px ${FRAME.font}`;
+		this.ctx.textAlign = 'left';
+		this.ctx.textBaseline = 'alphabetic';
+		this.ctx.fillText('TETRIS', panelX + pad, this.fontMain + pad);
 
-		this.ctx.font = `${this.fontSub}px monospace`;
-		this.ctx.fillStyle = '#cbd5e1';
-		this.ctx.fillText(
+		this.ctx.font = `${this.fontSub}px ${FRAME.font}`;
+		this.ctx.fillStyle = FRAME.ink;
+		const stats = [
 			`Score ${this.score}`,
-			panelX + 8,
-			this.fontMain * 3 + 18,
-		);
-		this.ctx.fillText(
 			`Lines ${this.lines}`,
-			panelX + 8,
-			this.fontMain * 4 + 20,
-		);
-		this.ctx.fillText(
 			`Lvl ${this.level}`,
-			panelX + 8,
-			this.fontMain * 5 + 22,
-		);
+			`Pcs ${this.pieces}`,
+		];
+		stats.forEach((line, index) => {
+			this.ctx.fillText(
+				line,
+				panelX + pad,
+				this.fontMain + pad + this.fontSub * (index + 1) * 1.45 + 8,
+			);
+		});
+
+		this.ctx.fillStyle = FRAME.muted;
 		this.ctx.fillText(
-			`Pc ${this.pieces}`,
-			panelX + 8,
-			this.fontMain * 6 + 24,
+			'NEXT',
+			panelX + pad,
+			this.height - this.cell * 4.2,
 		);
+		this.drawNextPiece();
+	}
+
+	drawNextPiece() {
+		if (!this.next || !this.catalog) return;
+		const shape = this.catalog[this.next].rotations[0];
+		const color = this.catalog[this.next].color;
+		let minX = Infinity;
+		let minY = Infinity;
+		let maxX = -Infinity;
+		let maxY = -Infinity;
+		for (const [x, y] of shape) {
+			minX = Math.min(minX, x);
+			minY = Math.min(minY, y);
+			maxX = Math.max(maxX, x);
+			maxY = Math.max(maxY, y);
+		}
+		const cols = maxX - minX + 1;
+		const rows = maxY - minY + 1;
+		const cell = Math.min(this.cell * 0.78, (this.panelWidth - 16) / 4);
+		const originX = this.boardWidth + (this.panelWidth - cols * cell) / 2;
+		const originY = this.height - (rows + 0.7) * cell;
+		for (const [x, y] of shape) {
+			this.paintCell(
+				originX + (x - minX) * cell,
+				originY + (y - minY) * cell,
+				cell,
+				color,
+				1,
+			);
+		}
 	}
 
 	drawGameOver() {
 		if (!this.gameOver) return;
-		this.ctx.fillStyle = 'rgba(2, 6, 23, 0.7)';
-		this.ctx.fillRect(
-			0,
-			this.height * 0.42,
+		const h = this.cell * 2.4;
+		paintBanner(
+			this.ctx,
 			this.boardWidth,
-			this.cell * 3,
-		);
-		this.ctx.fillStyle = '#f8fafc';
-		this.ctx.font = `${Math.max(13, Math.floor(this.cell * 0.92))}px monospace`;
-		this.ctx.fillText(
-			'RESTARTING...',
-			Math.max(8, this.cell),
-			this.height * 0.42 + this.cell * 1.8,
+			this.height * 0.42,
+			h,
+			'RESTARTING',
 		);
 	}
 
 	draw() {
-		this.ctx.clearRect(0, 0, this.width, this.height);
-		this.ctx.fillStyle = this.background;
-		this.ctx.fillRect(0, 0, this.width, this.height);
-
+		paintCabinet(this.ctx, this.width, this.height, this.background);
 		this.drawGrid();
 		this.drawBoard();
 		this.drawCurrentPiece();
@@ -779,28 +809,9 @@ class AutoTetris extends HTMLElement {
 	}
 
 	renderRoot() {
-		this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          display: inline-block;
-          width: ${this.width}px;
-          height: ${this.height}px;
-          box-sizing: border-box;
-        }
-
-        canvas {
-          display: block;
-          width: ${this.width}px;
-          height: ${this.height}px;
-          border: 1px solid #334155;
-          border-radius: 8px;
-          box-shadow: 0 8px 24px rgba(2, 6, 23, 0.3);
-          image-rendering: auto;
-        }
-      </style>
-      <canvas width="${this.width}" height="${this.height}"></canvas>
-    `;
-		this.canvas = this.shadowRoot.querySelector('canvas');
+		const view = renderFrame(this.shadowRoot, this.width, this.height);
+		this.canvas = view.canvas;
+		this.ctx = view.ctx;
 	}
 }
 
