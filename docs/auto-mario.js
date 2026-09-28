@@ -67,6 +67,15 @@ const THEMES = {
 	},
 };
 
+function blockHop(state, tx, ty) {
+	const bump = state.fx?.find(
+		(fx) => fx.kind === 'bump' && fx.tx === tx && fx.ty === ty,
+	);
+	if (!bump) return 0;
+	const t = Math.min(1, bump.age / 8);
+	return Math.sin(t * Math.PI) * 6;
+}
+
 function clampWidth(raw) {
 	const parsed = Number.parseInt(raw ?? '', 10);
 	const value = Number.isFinite(parsed) ? parsed : 507;
@@ -324,6 +333,7 @@ class AutoMario extends HTMLElement {
 		);
 		this.drawBackdrop(theme);
 		this.drawTiles(theme);
+		this.drawFx(theme);
 		this.drawFlag();
 		this.drawActors();
 		this.drawPopups();
@@ -386,7 +396,7 @@ class AutoMario extends HTMLElement {
 					continue;
 				}
 				const x = tx * TILE;
-				const y = ty * TILE;
+				const y = ty * TILE - blockHop(state, tx, ty);
 				if (tile === Tile.Lava) {
 					ctx.fillStyle =
 						state.theme === 'bridge' ? '#0f766e' : '#fb7185';
@@ -531,6 +541,26 @@ class AutoMario extends HTMLElement {
 			);
 			ctx.fillStyle = shade(FRAME.gold, -0.2);
 			ctx.fillRect(exit.x - 6, GROUND_Y * TILE - 36, 24, 6);
+		}
+	}
+
+	drawFx(theme) {
+		const ctx = this.ctx;
+		for (const fx of this.state.fx ?? []) {
+			if (fx.kind === 'coin') {
+				const spin = Math.abs(Math.cos(fx.age * 0.55));
+				paintOrb(ctx, fx.x + 4, fx.y + 5, 1.5 + spin * 5.5, FRAME.gold);
+				continue;
+			}
+			if (fx.kind !== 'shard') continue;
+			ctx.save();
+			ctx.translate(fx.x + 4, fx.y + 4);
+			ctx.rotate(fx.rot || 0);
+			ctx.fillStyle = theme.brick;
+			ctx.fillRect(-4, -3, 8, 6);
+			ctx.fillStyle = 'rgba(255,255,255,0.38)';
+			ctx.fillRect(-4, -3, 8, 2);
+			ctx.restore();
 		}
 	}
 

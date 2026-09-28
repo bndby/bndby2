@@ -1,6 +1,7 @@
 import { createGame, step, LEVELS } from '../docs/mario/game.js';
 import { createDriver, drive } from '../docs/mario/ai.js';
 import { IDLE } from '../docs/mario/game.js';
+import { TILE, Tile, idx } from '../docs/mario/tiles.js';
 
 function assert(cond, message) {
 	if (!cond) throw new Error(message);
@@ -265,6 +266,39 @@ function pitAndStairs() {
 pitAndStairs();
 console.log('pits ok');
 
+function hitOverhead(tileX, tile, form) {
+	const state = createGame({ skipCard: true });
+	state.tiles[idx(tileX, 9, state.w)] = tile;
+	state.mario.form = form;
+	state.mario.h = form === 'small' ? 16 : 32;
+	state.mario.x = tileX * TILE;
+	state.mario.y = 10 * TILE;
+	state.mario.vy = -4;
+	state.mario.vx = 0;
+	state.mario.onGround = false;
+	step(state, { dir: 0, run: false, jump: 'full', down: false });
+	return state;
+}
+
+function blockFx() {
+	const coin = hitOverhead(16, Tile.Question, 'small');
+	assert(
+		coin.fx.some((fx) => fx.kind === 'coin'),
+		'из вопросика вылетает монетка',
+	);
+	assert(
+		coin.tiles[idx(16, 9, coin.w)] === Tile.Used,
+		'вопросик становится пустым',
+	);
+	const brick = hitOverhead(20, Tile.Brick, 'big');
+	const shards = brick.fx.filter((fx) => fx.kind === 'shard');
+	assert(shards.length >= 4, `осколков кирпича ${shards.length}`);
+	assert(brick.tiles[idx(20, 9, brick.w)] === Tile.Empty, 'кирпич исчезает');
+}
+
+blockFx();
+console.log('blocks ok');
+
 const focus = ['1-1', '1-2', '1-3', '1-4', '2-2'];
 for (const id of focus) {
 	const index = LEVELS.findIndex((level) => level.id === id);
@@ -275,4 +309,10 @@ for (const id of focus) {
 	console.log(
 		`${result.id} cleared=${result.cleared} coins=${result.coins}/${result.budget} (${coinPct}%) kills=${result.kills}/${result.enemies} power=${result.powerups}/${result.powerBudget} deaths=${result.deaths} cause=${result.cause} x=${result.x} mode=${result.mode} ${ms}ms`,
 	);
+	if (id === '1-1' || id === '1-2' || id === '1-4' || id === '2-2') {
+		assert(
+			result.cleared,
+			`${id} не пройден: ${result.mode} ${result.cause}`,
+		);
+	}
 }

@@ -261,6 +261,11 @@ export function chooseAction(state, previous = IDLE) {
 	let bestScore = -Infinity;
 	let bestJump = null;
 	let bestJumpScore = -Infinity;
+	let alt = null;
+	let altScore = -Infinity;
+	let altRaw = -Infinity;
+	let bestRaw = -Infinity;
+	const tense = hazardClose(state) || pitAhead(state) != null;
 	for (const action of ACTIONS) {
 		const score = rollout(state, action, target);
 		const sticky =
@@ -270,15 +275,35 @@ export function chooseAction(state, previous = IDLE) {
 			previous.run === action.run
 				? 25
 				: 0;
-		const total = score + sticky;
+		const total = score + sticky + (tense ? 0 : (Math.random() - 0.5) * 36);
 		if (total > bestScore) {
+			alt = best;
+			altScore = bestScore;
+			altRaw = bestRaw;
 			bestScore = total;
+			bestRaw = score;
 			best = action;
+		} else if (total > altScore) {
+			altScore = total;
+			altRaw = score;
+			alt = action;
 		}
 		if (action.dir > 0 && action.jump !== 'none' && total > bestJumpScore) {
 			bestJumpScore = total;
 			bestJump = action;
 		}
+	}
+	const pitSoon = pitAhead(state);
+	if (
+		alt &&
+		altRaw > -1e8 &&
+		bestRaw > -1e8 &&
+		pitSoon == null &&
+		!hazardClose(state) &&
+		bestScore - altScore < 140 &&
+		Math.random() < 0.3
+	) {
+		best = alt;
 	}
 	const pit = pitAhead(state);
 	if (
@@ -337,12 +362,65 @@ export function drive(state, memory) {
 		memory.cooldown = 0;
 	}
 	memory.wasAir = !grounded && !water;
+	const boss = bossPlan(state);
+	if (boss) {
+		memory.action = boss;
+		memory.cooldown = 2;
+		return memory.action;
+	}
 	if (memory.cooldown <= 0 && (grounded || water)) {
 		memory.action = chooseAction(state, memory.action);
-		memory.cooldown = memory.action.jump !== 'none' && !water ? 36 : 8;
+		const hop = memory.action.jump !== 'none' && !water;
+		memory.cooldown = (hop ? 36 : 8) + Math.floor(Math.random() * 3);
 	}
 	memory.cooldown -= 1;
 	return memory.action;
+}
+
+function hazardClose(state) {
+	const mario = state.mario;
+	return state.hazards.some((hazard) => {
+		if (hazard.kind !== 'firebar' && hazard.kind !== 'podoboo')
+			return false;
+		return (
+			Math.abs(hazard.x - mario.x) < 160 &&
+			hazard.y < mario.y + mario.h + 64
+		);
+	});
+}
+
+function hammerBlocks(state) {
+	const mario = state.mario;
+	const feet = mario.y + mario.h;
+	return state.hazards.some((hazard) => {
+		if (hazard.kind !== 'hammer' || hazard.alive === false) return false;
+		const ahead = hazard.x - (mario.x + mario.w);
+		if (ahead < -18 || ahead > 26) return false;
+		const bottom = hazard.y + hazard.h;
+		return bottom > mario.y - 2 && hazard.y < feet + 4;
+	});
+}
+
+function bossPlan(state) {
+	if (state.theme !== 'castle') return null;
+	const bowser = state.enemies.find(
+		(enemy) =>
+			enemy.alive !== false && enemy.kind === 'bowser' && !enemy.falling,
+	);
+	if (!bowser) return null;
+	const mario = state.mario;
+	if (mario.x > bowser.x + bowser.w + 4) return null;
+	const dx = bowser.x - (mario.x + mario.w);
+	if (dx > 180) return null;
+	const clearance = mario.y - (bowser.y + bowser.h);
+	if (!bowser.onGround && clearance > 2 && !hammerBlocks(state)) {
+		return { dir: 1, run: true, jump: 'none', down: false };
+	}
+	if (dx < 72 || hammerBlocks(state)) {
+		return { dir: -1, run: true, jump: 'none', down: false };
+	}
+	if (dx > 104) return { dir: 1, run: false, jump: 'none', down: false };
+	return { dir: 0, run: false, jump: 'none', down: false };
 }
 
 function rewardAbove(state) {
