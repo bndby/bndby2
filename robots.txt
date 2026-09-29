@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Clean-param: query
+
+Host: https://bnd.by/
+Sitemap: https://bnd.by/sitemap.xml
