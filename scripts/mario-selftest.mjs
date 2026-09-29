@@ -299,11 +299,87 @@ function blockFx() {
 blockFx();
 console.log('blocks ok');
 
-const focus = ['1-1', '1-2', '1-3', '1-4', '2-2'];
+function escapeBricks() {
+	const index = LEVELS.findIndex((level) => level.id === '2-1');
+	const state = createGame({ levelIndex: index, skipCard: true });
+	state.mario.form = 'small';
+	state.mario.h = 16;
+	state.mario.x = 884;
+	state.mario.y = 160;
+	state.mario.vx = 0;
+	state.mario.vy = 0;
+	state.mario.onGround = true;
+	state.camX = 750;
+	state.camMax = 750;
+	for (const enemy of state.enemies) {
+		if (enemy.x > 640 && enemy.x < 960) enemy.alive = false;
+	}
+	const driver = createDriver();
+	let mounted = false;
+	let minX = state.mario.x;
+	for (let frame = 0; frame < 700; frame += 1) {
+		const action = drive(state, driver);
+		step(state, state.mode === 'play' ? action : IDLE);
+		if (state.mario.x < minX) minX = state.mario.x;
+		const feet = state.mario.y + state.mario.h;
+		if (
+			state.mario.onGround &&
+			feet <= 9 * TILE + 1 &&
+			state.mario.x >= 49 * TILE
+		) {
+			mounted = true;
+			break;
+		}
+		if (state.mode !== 'play') break;
+	}
+	assert(
+		mounted,
+		`2-1 не забрался на кирпичи x=${Math.round(state.mario.x)} y=${Math.round(state.mario.y)} mode=${state.mode}`,
+	);
+	assert(
+		minX > 38 * TILE,
+		`2-1 отступил слишком далеко: ${Math.round(minX)}`,
+	);
+}
+
+escapeBricks();
+console.log('escape ok');
+
+function crossGap() {
+	const index = LEVELS.findIndex((level) => level.id === '1-3');
+	const state = createGame({ levelIndex: index, skipCard: true });
+	for (const enemy of state.enemies) {
+		if (enemy.x > 400 && enemy.x < 900) enemy.alive = false;
+	}
+	state.mario.form = 'big';
+	state.mario.h = 32;
+	state.mario.x = 552;
+	state.mario.y = 160;
+	state.mario.vx = 0;
+	state.mario.vy = 0;
+	state.mario.onGround = true;
+	state.camX = 418;
+	state.camMax = 418;
+	const driver = createDriver();
+	for (let frame = 0; frame < 500; frame += 1) {
+		const action = drive(state, driver);
+		step(state, state.mode === 'play' ? action : IDLE);
+		if (state.mario.x > 700 && state.mode === 'play') return;
+	}
+	assert(
+		false,
+		`1-3 не перепрыгнул разрыв x=${Math.round(state.mario.x)} y=${Math.round(state.mario.y)} mode=${state.mode}`,
+	);
+}
+
+crossGap();
+console.log('gap ok');
+
+const focus = ['1-1', '1-2', '1-3', '1-4', '2-1', '2-2'];
 for (const id of focus) {
 	const index = LEVELS.findIndex((level) => level.id === id);
 	const started = Date.now();
-	const result = simulate(index, id === '1-1' ? 9000 : 7000);
+	const result = simulate(index, id === '1-1' || id === '2-1' ? 9000 : 7000);
 	const ms = Date.now() - started;
 	const coinPct = Math.round((result.coins / result.budget) * 100);
 	console.log(
@@ -314,5 +390,9 @@ for (const id of focus) {
 			result.cleared,
 			`${id} не пройден: ${result.mode} ${result.cause}`,
 		);
+	}
+	if (id === '2-1' && !result.cleared) {
+		const inTunnel = result.x > 49 * TILE && result.x < 58 * TILE;
+		assert(!inTunnel, `2-1 застрял под кирпичами x=${result.x}`);
 	}
 }

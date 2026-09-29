@@ -1,4 +1,11 @@
-import { IDLE, cloneState, step } from './game.js';
+import {
+	IDLE,
+	cloneState,
+	corridorTrap,
+	headroom,
+	pinchNearby,
+	step,
+} from './game.js';
 import { GROUND_Y, LEVEL_H, TILE, Tile, idx, isSolid } from './tiles.js';
 
 const ACTIONS = [
@@ -183,7 +190,18 @@ function rollout(state, action, target) {
 		const lives = sim.lives;
 		const form = sim.mario.form;
 		const airborne = !sim.mario.onGround;
-		const input = holdJump ? action : { ...action, jump: 'none' };
+		if (
+			!holdJump &&
+			action.dir > 0 &&
+			sim.mario.onGround &&
+			sim.mario.vx > 1.15 &&
+			pitEdge(sim)
+		) {
+			holdJump = true;
+		}
+		const input = holdJump
+			? { ...action, jump: action.jump === 'none' ? 'full' : action.jump }
+			: { ...action, jump: 'none' };
 		step(sim, input);
 		if (holdJump && airborne && sim.mario.onGround) holdJump = false;
 		if (sim.coinTotal > coins) score += 640;
@@ -232,7 +250,7 @@ function willLand(state) {
 	const vx = mario.vx;
 	for (let frame = 0; frame < 90; frame += 1) {
 		const prevBottom = y + mario.h;
-		vy = Math.min(4.45, vy + (vy < 0 ? 0.2 : 0.34));
+		vy = Math.min(4.45, vy + (vy < 0 ? 0.145 : 0.34));
 		x += vx;
 		y += vy;
 		if (y > LEVEL_H * TILE) return false;
@@ -368,10 +386,29 @@ export function drive(state, memory) {
 		memory.cooldown = 2;
 		return memory.action;
 	}
+	const mount = mountPlan(state);
+	if (mount) {
+		const rising =
+			!grounded && memory.action.jump !== 'none' && state.mario.vy < 0;
+		if (!rising) memory.action = mount;
+		memory.cooldown = memory.action.jump !== 'none' ? 16 : 2;
+		return memory.action;
+	}
 	if (memory.cooldown <= 0 && (grounded || water)) {
 		memory.action = chooseAction(state, memory.action);
 		const hop = memory.action.jump !== 'none' && !water;
 		memory.cooldown = (hop ? 36 : 8) + Math.floor(Math.random() * 3);
+	}
+	if (
+		!water &&
+		grounded &&
+		state.mario.vx > 1.15 &&
+		memory.action.dir > 0 &&
+		memory.action.jump === 'none' &&
+		pitEdge(state)
+	) {
+		memory.action = { dir: 1, run: true, jump: 'full', down: false };
+		memory.cooldown = 12;
 	}
 	memory.cooldown -= 1;
 	return memory.action;
@@ -421,6 +458,72 @@ function bossPlan(state) {
 	}
 	if (dx > 104) return { dir: 1, run: false, jump: 'none', down: false };
 	return { dir: 0, run: false, jump: 'none', down: false };
+}
+
+function mountPlan(state) {
+	const mario = state.mario;
+	if (
+		mario.form !== 'small' ||
+		!mario.onGround ||
+		state.theme === 'underwater'
+	) {
+		return null;
+	}
+	if (!corridorTrap(state)) {
+		if (pinchNearby(state) && brickLip(state)) {
+			return { dir: 1, run: true, jump: 'full', down: false };
+		}
+		return null;
+	}
+	const room = headroom(state);
+	if (room >= 8 && brickLip(state)) {
+		return { dir: 1, run: true, jump: 'full', down: false };
+	}
+	if (foeBeside(state) && room > 16) {
+		return { dir: -1, run: true, jump: 'short', down: false };
+	}
+	if (mario.x <= state.camX + 6) return null;
+	return { dir: -1, run: true, jump: 'none', down: false };
+}
+
+function foeBeside(state) {
+	const mario = state.mario;
+	return state.enemies.some((enemy) => {
+		if (!enemy.alive || enemy.squish > 0) return false;
+		if (enemy.kind === 'piranha' || enemy.kind === 'bowser') return false;
+		const gap = mario.x - (enemy.x + enemy.w);
+		if (gap < -8 || gap > 28) return false;
+		return Math.abs(enemy.y - mario.y) < 22;
+	});
+}
+
+function brickLip(state) {
+	const mario = state.mario;
+	const feet = mario.y + mario.h;
+	const front = mario.x + mario.w;
+	const tx0 = Math.floor(front / TILE);
+	for (let tx = tx0; tx <= tx0 + 3; tx += 1) {
+		if (tx <= 0 || tx >= state.w) continue;
+		const topTy = Math.floor((feet - 80) / TILE);
+		const botTy = Math.floor((feet - 32) / TILE);
+		for (let ty = botTy; ty >= topTy; ty -= 1) {
+			if (ty < 2 || ty >= LEVEL_H) continue;
+			if (!isSolid(state.tiles[idx(tx, ty, state.w)])) continue;
+			if (isSolid(state.tiles[idx(tx - 1, ty, state.w)])) continue;
+			if (
+				isSolid(state.tiles[idx(tx, ty - 1, state.w)]) ||
+				isSolid(state.tiles[idx(tx, ty - 2, state.w)])
+			) {
+				continue;
+			}
+			const top = ty * TILE;
+			const dx = tx * TILE - front;
+			const dy = feet - top;
+			if (dx < 0 || dx > 48 || dy < 32 || dy > 80) continue;
+			return { dx, dy };
+		}
+	}
+	return null;
 }
 
 function rewardAbove(state) {
