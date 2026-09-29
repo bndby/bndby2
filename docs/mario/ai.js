@@ -1,4 +1,11 @@
-import { IDLE, cloneState, step } from './game.js';
+import {
+	IDLE,
+	cloneState,
+	corridorTrap,
+	headroom,
+	pinchNearby,
+	step,
+} from './game.js';
 import { GROUND_Y, LEVEL_H, TILE, Tile, idx, isSolid } from './tiles.js';
 
 const ACTIONS = [
@@ -368,6 +375,14 @@ export function drive(state, memory) {
 		memory.cooldown = 2;
 		return memory.action;
 	}
+	const mount = mountPlan(state);
+	if (mount) {
+		const rising =
+			!grounded && memory.action.jump !== 'none' && state.mario.vy < 0;
+		if (!rising) memory.action = mount;
+		memory.cooldown = memory.action.jump !== 'none' ? 16 : 2;
+		return memory.action;
+	}
 	if (memory.cooldown <= 0 && (grounded || water)) {
 		memory.action = chooseAction(state, memory.action);
 		const hop = memory.action.jump !== 'none' && !water;
@@ -421,6 +436,72 @@ function bossPlan(state) {
 	}
 	if (dx > 104) return { dir: 1, run: false, jump: 'none', down: false };
 	return { dir: 0, run: false, jump: 'none', down: false };
+}
+
+function mountPlan(state) {
+	const mario = state.mario;
+	if (
+		mario.form !== 'small' ||
+		!mario.onGround ||
+		state.theme === 'underwater'
+	) {
+		return null;
+	}
+	if (!corridorTrap(state)) {
+		if (pinchNearby(state) && brickLip(state)) {
+			return { dir: 1, run: true, jump: 'full', down: false };
+		}
+		return null;
+	}
+	const room = headroom(state);
+	if (room >= 8 && brickLip(state)) {
+		return { dir: 1, run: true, jump: 'full', down: false };
+	}
+	if (foeBeside(state) && room > 16) {
+		return { dir: -1, run: true, jump: 'short', down: false };
+	}
+	if (mario.x <= state.camX + 6) return null;
+	return { dir: -1, run: true, jump: 'none', down: false };
+}
+
+function foeBeside(state) {
+	const mario = state.mario;
+	return state.enemies.some((enemy) => {
+		if (!enemy.alive || enemy.squish > 0) return false;
+		if (enemy.kind === 'piranha' || enemy.kind === 'bowser') return false;
+		const gap = mario.x - (enemy.x + enemy.w);
+		if (gap < -8 || gap > 28) return false;
+		return Math.abs(enemy.y - mario.y) < 22;
+	});
+}
+
+function brickLip(state) {
+	const mario = state.mario;
+	const feet = mario.y + mario.h;
+	const front = mario.x + mario.w;
+	const tx0 = Math.floor(front / TILE);
+	for (let tx = tx0; tx <= tx0 + 3; tx += 1) {
+		if (tx <= 0 || tx >= state.w) continue;
+		const topTy = Math.floor((feet - 80) / TILE);
+		const botTy = Math.floor((feet - 32) / TILE);
+		for (let ty = botTy; ty >= topTy; ty -= 1) {
+			if (ty < 2 || ty >= LEVEL_H) continue;
+			if (!isSolid(state.tiles[idx(tx, ty, state.w)])) continue;
+			if (isSolid(state.tiles[idx(tx - 1, ty, state.w)])) continue;
+			if (
+				isSolid(state.tiles[idx(tx, ty - 1, state.w)]) ||
+				isSolid(state.tiles[idx(tx, ty - 2, state.w)])
+			) {
+				continue;
+			}
+			const top = ty * TILE;
+			const dx = tx * TILE - front;
+			const dy = feet - top;
+			if (dx < 0 || dx > 48 || dy < 32 || dy > 80) continue;
+			return { dx, dy };
+		}
+	}
+	return null;
 }
 
 function rewardAbove(state) {

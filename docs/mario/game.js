@@ -75,6 +75,7 @@ export function loadLevel(state, index, carry = {}) {
 	state.time = level.time;
 	state.timeAcc = 0;
 	state.camX = 0;
+	state.camMax = 0;
 	state.tiles = level.tiles.slice();
 	state.enemies = level.enemies.map((enemy) => {
 		const copy = { ...enemy };
@@ -1508,11 +1509,77 @@ function updateCollapse(state) {
 function updateCamera(state) {
 	const maxCam = Math.max(0, state.w * TILE - VIEW_W);
 	const desired = state.mario.x - VIEW_W * 0.38;
-	if (desired > state.camX) state.camX = Math.min(maxCam, desired);
+	if (state.camMax == null) state.camMax = state.camX || 0;
+	if (desired > state.camX) {
+		state.camX = Math.min(maxCam, desired);
+		if (state.camX > state.camMax) state.camMax = state.camX;
+	} else if (corridorTrap(state) && desired < state.camX) {
+		// Короткий откат: выйти из-под кирпичей, не возвращаясь к прошлым врагам.
+		const minCam = Math.max(0, state.camMax - 7 * TILE);
+		state.camX = Math.max(minCam, desired);
+	}
 	if (state.mode === 'play' && state.mario.x < state.camX + 1) {
 		state.mario.x = state.camX + 1;
 		if (state.mario.vx < 0) state.mario.vx = 0;
 	}
+}
+
+export function headroom(state) {
+	const mario = state.mario;
+	const x0 = Math.floor((mario.x + 1) / TILE);
+	const x1 = Math.floor((mario.x + mario.w - 1) / TILE);
+	let room = 999;
+	for (let tx = x0; tx <= x1; tx += 1) {
+		for (let ty = Math.floor((mario.y - 1) / TILE); ty >= 0; ty -= 1) {
+			if (tx < 0 || tx >= state.w) break;
+			if (!isSolid(state.tiles[idx(tx, ty, state.w)])) continue;
+			const bottom = ty * TILE + TILE;
+			if (bottom <= mario.y + 2) room = Math.min(room, mario.y - bottom);
+			break;
+		}
+	}
+	return room;
+}
+
+function columnPinch(state, tx, marioH) {
+	let prev = -1;
+	for (let ty = 0; ty < LEVEL_H; ty += 1) {
+		if (!isSolid(state.tiles[idx(tx, ty, state.w)])) continue;
+		if (prev >= 0 && ty > prev + 1) {
+			const gap = (ty - prev - 1) * TILE;
+			const floorTop = ty * TILE;
+			if (
+				gap < marioH + 6 &&
+				floorTop >= 8 * TILE &&
+				floorTop <= GROUND_Y * TILE
+			) {
+				return true;
+			}
+		}
+		prev = ty;
+	}
+	return false;
+}
+
+export function corridorTrap(state) {
+	const mario = state.mario;
+	if (!mario || mario.form !== 'small' || !mario.onGround) return false;
+	if (state.theme === 'underwater' || state.theme === 'castle') return false;
+	const room = headroom(state);
+	if (room < 8) return true;
+	if (room > 40) return false;
+	return pinchNearby(state);
+}
+
+export function pinchNearby(state, span = 8) {
+	const mario = state.mario;
+	if (!mario) return false;
+	const tx0 = Math.floor((mario.x + mario.w * 0.5) / TILE);
+	const limit = Math.min(state.w - 1, tx0 + span);
+	for (let tx = Math.max(0, tx0); tx <= limit; tx += 1) {
+		if (columnPinch(state, tx, mario.h)) return true;
+	}
+	return false;
 }
 
 export function defeat(state, cause) {
