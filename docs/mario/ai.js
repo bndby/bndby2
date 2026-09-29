@@ -190,7 +190,18 @@ function rollout(state, action, target) {
 		const lives = sim.lives;
 		const form = sim.mario.form;
 		const airborne = !sim.mario.onGround;
-		const input = holdJump ? action : { ...action, jump: 'none' };
+		if (
+			!holdJump &&
+			action.dir > 0 &&
+			sim.mario.onGround &&
+			sim.mario.vx > 1.15 &&
+			pitEdge(sim)
+		) {
+			holdJump = true;
+		}
+		const input = holdJump
+			? { ...action, jump: action.jump === 'none' ? 'full' : action.jump }
+			: { ...action, jump: 'none' };
 		step(sim, input);
 		if (holdJump && airborne && sim.mario.onGround) holdJump = false;
 		if (sim.coinTotal > coins) score += 640;
@@ -239,7 +250,7 @@ function willLand(state) {
 	const vx = mario.vx;
 	for (let frame = 0; frame < 90; frame += 1) {
 		const prevBottom = y + mario.h;
-		vy = Math.min(4.45, vy + (vy < 0 ? 0.2 : 0.34));
+		vy = Math.min(4.45, vy + (vy < 0 ? 0.145 : 0.34));
 		x += vx;
 		y += vy;
 		if (y > LEVEL_H * TILE) return false;
@@ -387,6 +398,17 @@ export function drive(state, memory) {
 		memory.action = chooseAction(state, memory.action);
 		const hop = memory.action.jump !== 'none' && !water;
 		memory.cooldown = (hop ? 36 : 8) + Math.floor(Math.random() * 3);
+	}
+	if (
+		!water &&
+		grounded &&
+		state.mario.vx > 1.15 &&
+		memory.action.dir > 0 &&
+		memory.action.jump === 'none' &&
+		pitEdge(state)
+	) {
+		memory.action = { dir: 1, run: true, jump: 'full', down: false };
+		memory.cooldown = 12;
 	}
 	memory.cooldown -= 1;
 	return memory.action;

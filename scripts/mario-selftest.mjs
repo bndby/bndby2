@@ -345,6 +345,36 @@ function escapeBricks() {
 escapeBricks();
 console.log('escape ok');
 
+function crossGap() {
+	const index = LEVELS.findIndex((level) => level.id === '1-3');
+	const state = createGame({ levelIndex: index, skipCard: true });
+	for (const enemy of state.enemies) {
+		if (enemy.x > 400 && enemy.x < 900) enemy.alive = false;
+	}
+	state.mario.form = 'big';
+	state.mario.h = 32;
+	state.mario.x = 552;
+	state.mario.y = 160;
+	state.mario.vx = 0;
+	state.mario.vy = 0;
+	state.mario.onGround = true;
+	state.camX = 418;
+	state.camMax = 418;
+	const driver = createDriver();
+	for (let frame = 0; frame < 500; frame += 1) {
+		const action = drive(state, driver);
+		step(state, state.mode === 'play' ? action : IDLE);
+		if (state.mario.x > 700 && state.mode === 'play') return;
+	}
+	assert(
+		false,
+		`1-3 не перепрыгнул разрыв x=${Math.round(state.mario.x)} y=${Math.round(state.mario.y)} mode=${state.mode}`,
+	);
+}
+
+crossGap();
+console.log('gap ok');
+
 const focus = ['1-1', '1-2', '1-3', '1-4', '2-1', '2-2'];
 for (const id of focus) {
 	const index = LEVELS.findIndex((level) => level.id === id);
