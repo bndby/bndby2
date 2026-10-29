@@ -29,6 +29,14 @@ Fullstack-разработчик с 20-летним стажем в веб-ра�
 
 <div class="grid cards" markdown>
 
+- :material-state-machine:{ .lg .middle } **FAPL**
+
+    ***
+
+    Декларативный метаязык фронтенда: компоненты, бизнес-процессы и контракты сервисов
+
+    [:octicons-arrow-right-24: Обзор](./fapl/index.md)<br /> [:octicons-arrow-right-24: Спецификация](./fapl/specification.md)
+
 - :material-file-document-outline:{ .lg .middle } **Доки**
 
     ***
